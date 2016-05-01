@@ -1,16 +1,19 @@
 {
     "name": "itephp/framework",
     "description": "The ItePHP framework.",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Michal Tomczak",
-            "email": "php@iteracja.com"
+            "email": "michal.tomczak@itephp.com"
         }
     ],
     "require": {
         "php": ">=5.4.0"
         },
+    "autoload": {
+        "psr-4": { "ItePHP\\": "src" }
+    },
     "minimum-stability": "dev"
 }
