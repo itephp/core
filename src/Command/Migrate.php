@@ -38,7 +38,7 @@ class Migrate extends Command{
 			$this->currentVersion=file_get_contents($this->getFilePath());
 
 		$migrateFiles=array();
-		$handleDir=opendir(__DIR__."/../../migrate");
+		$handleDir=opendir(__DIR__."/../../../../../src/Migrate");
 		while($file=readdir($handleDir)){
 			if($file!="." && $file!=".." && preg_match('/^Version([0-9]+)\.php$/',$file,$match)){
 				$migrateFiles[]=$match[1];
@@ -79,7 +79,7 @@ class Migrate extends Command{
 			$this->currentVersion=file_get_contents($this->getFilePath());
 
 		$migrateFiles=array();
-		$handleDir=opendir(__DIR__."/../../migrate");
+		$handleDir=opendir(__DIR__."/../../../../../src/Migrate");
 		while($file=readdir($handleDir)){
 			if($file!="." && $file!=".." && preg_match('/^Version([0-9]+)\.php$/',$file,$match)){
 				$migrateFiles[]=$match[1];
@@ -122,7 +122,7 @@ class Migrate extends Command{
 		$template=file_get_contents(__DIR__.'/../pattern/migrate.txt');
 		$template=str_replace('${date}', $now->format('YmdHis'), $template);
 
-		file_put_contents(__DIR__.'/../../migrate/Version'.$now->format('YmdHis').'.php', $template);
+		file_put_contents(__DIR__.'/../../../../../src/Migrate/Version'.$now->format('YmdHis').'.php', $template);
 	}
 
 	/**
@@ -131,7 +131,7 @@ class Migrate extends Command{
 	 * @since 0.18.0
 	 */
 	private function getFilePath(){
-		return __DIR__."/../../config/migrate.".$this->getEnviorment()->getName().".txt";
+		return __DIR__."/../../../../../config/migrate.".$this->getEnviorment()->getName().".txt";
 	}
 }
 
