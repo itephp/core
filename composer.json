@@ -1,0 +1,16 @@
+{
+    "name": "itephp/framework",
+    "description": "The ItePHP framework.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michal Tomczak",
+            "email": "php@iteracja.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+        },
+    "minimum-stability": "dev"
+}
