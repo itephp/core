@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,21 +9,21 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Core;
+namespace ItePHP\Core;
 
-use ItePHP\Core\Exception\ServiceNotFoundException;
-use ItePHP\Core\Exception\MethodNotFoundException;
-use ItePHP\Core\Core\ExecuteResources;
-use ItePHP\Core\Core\EventManager;
+use ItePHP\Exception\ServiceNotFoundException;
+use ItePHP\Exception\MethodNotFoundException;
+use ItePHP\Core\ExecuteResources;
+use ItePHP\Core\EventManager;
 
 /**
  * Base class for Event, Command and Controller.
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 abstract class Container{
@@ -45,7 +45,7 @@ abstract class Container{
 	/**
 	 * Constructor.
 	 *
-	 * @param \ItePHP\Core\Core\ExecuteResources $executeResources
+	 * @param \ItePHP\Core\ExecuteResources $executeResources
 	 * @since 0.1.0
 	 */
 	public function __construct(ExecuteResources $executeResources,EventManager $eventManager){
@@ -56,7 +56,7 @@ abstract class Container{
 	/**
 	 * Get Event manager
 	 *
-	 * @return \ItePHP\Core\Core\EventManager
+	 * @return \ItePHP\Core\EventManager
 	 */
 	public function getEventManager(){
 		return $this->eventManager;
@@ -65,7 +65,7 @@ abstract class Container{
 	/**
 	 * Get enviorment
 	 *
-	 * @return \ItePHP\Core\Core\Enviorment
+	 * @return \ItePHP\Core\Enviorment
 	 * @since 0.1.0
 	 */
 	public function getEnviorment(){
@@ -77,7 +77,7 @@ abstract class Container{
 	 *
 	 * @param string $name service name
 	 * @return object
-	 * @throws \ItePHP\Core\Exception\ServiceNotFoundException
+	 * @throws \ItePHP\Exception\ServiceNotFoundException
 	 * @since 0.1.0
 	 */
 	public function getService($name){
@@ -94,7 +94,7 @@ abstract class Container{
 	 * @param string $method
 	 * @param array $args
 	 * @return mixed
-	 * @throws \ItePHP\Core\Exception\MethodNotFoundException
+	 * @throws \ItePHP\Exception\MethodNotFoundException
 	 * @since 0.1.0
 	 */
 	public function __call($method, $args){

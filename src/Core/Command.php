@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,24 +9,24 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Core;
+namespace ItePHP\Core;
 
-use ItePHP\Core\Core\ContenerServices;
-use ItePHP\Core\Provider\Request;
-use ItePHP\Core\Provider\Response;
-use ItePHP\Core\Provider\Session;
-use ItePHP\Core\Exception\ServiceNotFoundException;
-use ItePHP\Core\Exception\MethodNotFoundException;
-use ItePHP\Core\Core\ExecuteResources;
+use ItePHP\Core\ContenerServices;
+use ItePHP\Provider\Request;
+use ItePHP\Provider\Response;
+use ItePHP\Provider\Session;
+use ItePHP\Exception\ServiceNotFoundException;
+use ItePHP\Exception\MethodNotFoundException;
+use ItePHP\Core\ExecuteResources;
 
 /**
  * Main class for project commands. Configured in config/commands.xml
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 abstract class Command extends Container{

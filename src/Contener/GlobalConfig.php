@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,21 +9,21 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Contener;
+namespace ItePHP\Contener;
 
-use ItePHP\Core\Parser\XML as XMLParser;
-use ItePHP\Core\Exception\InvalidConfigKeyException;
-use ItePHP\Core\Exception\ConfigAttributeNotFoundException;
-use ItePHP\Core\Core\Enviorment;
+use ItePHP\Parser\XML as XMLParser;
+use ItePHP\Exception\InvalidConfigKeyException;
+use ItePHP\Exception\ConfigAttributeNotFoundException;
+use ItePHP\Core\Enviorment;
 
 /**
  * Contener with all config.
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class GlobalConfig{
@@ -45,7 +45,7 @@ class GlobalConfig{
 	/**
 	 * Enviorment.
 	 *
-	 * @var \ItePHP\Core\Core\Enviorment $dir
+	 * @var \ItePHP\Core\Enviorment $dir
 	 */
 	private $enviorment;
 
@@ -53,7 +53,7 @@ class GlobalConfig{
 	 * Constructor.
 	 *
 	 * @param string $dir path to config files
-	 * @param \ItePHP\Core\Core\Enviorment $enviorment
+	 * @param \ItePHP\Core\Enviorment $enviorment
 	 * @since 0.1.0
 	 */
 	public function __construct($dir,Enviorment $enviorment){
@@ -176,7 +176,7 @@ class GlobalConfig{
 	/**
 	 * Parse xml node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @throws \InvalidConfigKeyException
 	 * @since 0.1.0
 	 */
@@ -217,7 +217,7 @@ class GlobalConfig{
 	/**
 	 * Parse variables node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @since 0.1.0
 	 */
 	private function appendVariables(XMLParser $dataXML){
@@ -234,7 +234,7 @@ class GlobalConfig{
 	/**
 	 * Parse services node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @throws \InvalidConfigKeyException
 	 * @since 0.1.0
 	 */
@@ -263,7 +263,7 @@ class GlobalConfig{
 	/**
 	 * Parse events node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @throws \InvalidConfigKeyException
 	 * @since 0.1.0
 	 */
@@ -289,7 +289,7 @@ class GlobalConfig{
 	/**
 	 * Parse resources node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @throws \InvalidConfigKeyException
 	 * @since 0.1.0
 	 */
@@ -307,7 +307,7 @@ class GlobalConfig{
 	/**
 	 * Parse snippets node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @throws \InvalidConfigKeyException
 	 * @since 0.1.0
 	 */
@@ -325,7 +325,7 @@ class GlobalConfig{
 	/**
 	 * Parse commands node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @throws \InvalidConfigKeyException
 	 * @since 0.1.0
 	 */
@@ -343,7 +343,7 @@ class GlobalConfig{
 	/**
 	 * Parse errors node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @throws \InvalidConfigKeyException
 	 * @since 0.1.0
 	 */
@@ -361,7 +361,7 @@ class GlobalConfig{
 	/**
 	 * Parse variables node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @throws \InvalidConfigKeyException
 	 * @since 0.1.0
 	 */
@@ -378,7 +378,7 @@ class GlobalConfig{
 	/**
 	 * Parse configs node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @throws \InvalidConfigKeyException
 	 * @since 0.1.0
 	 */
@@ -389,7 +389,7 @@ class GlobalConfig{
 	/**
 	 * Parse arguments node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @throws \InvalidConfigKeyException
 	 * @since 0.1.0
 	 */
@@ -400,7 +400,7 @@ class GlobalConfig{
 	/**
 	 * Parse actions node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @throws \InvalidConfigKeyException
 	 * @since 0.1.0
 	 */
@@ -426,7 +426,7 @@ class GlobalConfig{
 	 * Parse extra arguments for action
 	 *
 	 * @param string $xmlKey
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @param array $action
 	 * @since 0.1.0
 	 */
@@ -445,7 +445,7 @@ class GlobalConfig{
 	/**
 	 * Parse route node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @param array $action
 	 * @since 0.1.0
 	 */
@@ -463,7 +463,7 @@ class GlobalConfig{
 	/**
 	 * Parse presenter node
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @param array $action
 	 * @since 0.1.0
 	 */
@@ -594,7 +594,7 @@ class GlobalConfig{
 	/**
 	 * Get arguments data
 	 *
-	 * @param \ItePHP\Core\Parser\XML $dataXML
+	 * @param \ItePHP\Parser\XML $dataXML
 	 * @param array $requires
 	 * @param boolean $encodeVariables
 	 * @return array

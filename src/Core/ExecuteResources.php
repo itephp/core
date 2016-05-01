@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,23 +9,23 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Core;
+namespace ItePHP\Core;
 
-use ItePHP\Core\Contener\GlobalConfig;
-use ItePHP\Core\Core\Presenter;
-use ItePHP\Core\Provider\Response;
-use ItePHP\Core\Core\RequestProvider;
-use ItePHP\Core\Exception\ResourcesNotRegisteredException;
-use ItePHP\Core\Core\Enviorment;
+use ItePHP\Contener\GlobalConfig;
+use ItePHP\Core\Presenter;
+use ItePHP\Provider\Response;
+use ItePHP\Core\RequestProvider;
+use ItePHP\Exception\ResourcesNotRegisteredException;
+use ItePHP\Core\Enviorment;
 
 /**
  * Container for all execute resources e.g.: services, providers
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class ExecuteResources{
@@ -33,7 +33,7 @@ class ExecuteResources{
 	/**
 	 * Global config.
 	 *
-	 * @var \ItePHP\Core\Contener\GlobalConfig $globalConfig
+	 * @var \ItePHP\Contener\GlobalConfig $globalConfig
 	 */
 	private $globalConfig;
 
@@ -54,21 +54,21 @@ class ExecuteResources{
 	/**
 	 * Registered presenter.
 	 *
-	 * @var \ItePHP\Core\Core\Presenter $presenter
+	 * @var \ItePHP\Core\Presenter $presenter
 	 */
 	private $presenter;
 
 	/**
 	 * Registered request.
 	 *
-	 * @var \ItePHP\Core\Core\RequestProvider $request
+	 * @var \ItePHP\Core\RequestProvider $request
 	 */
 	private $request;
 
 	/**
 	 * Registered response.
 	 *
-	 * @var \ItePHP\Core\Provider\Response $response
+	 * @var \ItePHP\Provider\Response $response
 	 */
 	private $response;
 
@@ -82,14 +82,14 @@ class ExecuteResources{
 	/**
 	 * Registered enviorment.
 	 *
-	 * @var \ItePHP\Core\Core\Enviorment $enviorment
+	 * @var \ItePHP\Core\Enviorment $enviorment
 	 */
 	private $enviorment;
 
 	/**
 	 * Register global config.
 	 *
-	 * @param \ItePHP\Core\Contener\GlobalConfig $config
+	 * @param \ItePHP\Contener\GlobalConfig $config
 	 * @since 0.1.0
 	 */
 	public function registerGlobalConfig(GlobalConfig $config){
@@ -99,7 +99,7 @@ class ExecuteResources{
 	/**
 	 * Get global config.
 	 *
-	 * @return \ItePHP\Core\Contener\GlobalConfig
+	 * @return \ItePHP\Contener\GlobalConfig
 	 * @since 0.1.0
 	 */
 	public function getGlobalConfig(){
@@ -131,7 +131,7 @@ class ExecuteResources{
 	/**
 	 * Register presenter.
 	 *
-	 * @param \ItePHP\Core\Core\Presenter $presenter
+	 * @param \ItePHP\Core\Presenter $presenter
 	 * @since 0.1.0
 	 */
 	public function registerPresenter(Presenter $presenter){
@@ -141,8 +141,8 @@ class ExecuteResources{
 	/**
 	 * Get presenter.
 	 *
-	 * @return \ItePHP\Core\Core\Presenter
-	 * @throws \ItePHP\Core\Exception\ResourcesNotRegisteredException
+	 * @return \ItePHP\Core\Presenter
+	 * @throws \ItePHP\Exception\ResourcesNotRegisteredException
 	 * @since 0.1.0
 	 */
 	public function getPresenter(){
@@ -155,7 +155,7 @@ class ExecuteResources{
 	/**
 	 * Register enviorment.
 	 *
-	 * @param \ItePHP\Core\Core\Enviorment $enviorment
+	 * @param \ItePHP\Core\Enviorment $enviorment
 	 * @since 0.1.0
 	 */
 	public function registerEnviorment(Enviorment $enviorment){
@@ -165,7 +165,7 @@ class ExecuteResources{
 	/**
 	 * Get enviorment
 	 *
-	 * @return \ItePHP\Core\Core\Enviorment
+	 * @return \ItePHP\Core\Enviorment
 	 * @since 0.1.0
 	 */
 	public function getEnviorment(){
@@ -175,7 +175,7 @@ class ExecuteResources{
 	/**
 	 * Register request
 	 *
-	 * @param \ItePHP\Core\Core\RequestProvider $request
+	 * @param \ItePHP\Core\RequestProvider $request
 	 * @since 0.1.0
 	 */
 	public function registerRequest(RequestProvider $request){
@@ -185,8 +185,8 @@ class ExecuteResources{
 	/**
 	 * Get request.
 	 *
-	 * @return \ItePHP\Core\Core\RequestProvider
-	 * @throws \ItePHP\Core\Exception\ResourcesNotRegisteredException
+	 * @return \ItePHP\Core\RequestProvider
+	 * @throws \ItePHP\Exception\ResourcesNotRegisteredException
 	 * @since 0.1.0
 	 */
 	public function getRequest(){
@@ -199,7 +199,7 @@ class ExecuteResources{
 	/**
 	 * Register response.
 	 *
-	 * @param \ItePHP\Core\Provider\Response $response
+	 * @param \ItePHP\Provider\Response $response
 	 * @since 0.1.0
 	 */
 	public function registerResponse(Response $response){
@@ -209,8 +209,8 @@ class ExecuteResources{
 	/**
 	 * Get response.
 	 *
-	 * @return \ItePHP\Core\Provider\Response
-	 * @throws \ItePHP\Core\Exception\ResourcesNotRegisteredException
+	 * @return \ItePHP\Provider\Response
+	 * @throws \ItePHP\Exception\ResourcesNotRegisteredException
 	 * @since 0.1.0
 	 */
 	public function getResponse(){

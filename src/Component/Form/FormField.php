@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,21 +9,21 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Component\Form;
+namespace ItePHP\Component\Form;
 
-use ItePHP\Core\Component\Form\FormFormatter;
-use ItePHP\Core\Component\Form\BasicFormFormatter;
-use ItePHP\Core\Provider\Request;
-use ItePHP\Core\Core\ValidatorService;
+use ItePHP\Component\Form\FormFormatter;
+use ItePHP\Component\Form\BasicFormFormatter;
+use ItePHP\Provider\Request;
+use ItePHP\Core\ValidatorService;
 
 /**
  * FormBuilder field
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.15.0
  */
 abstract class FormField{
@@ -114,7 +114,7 @@ abstract class FormField{
 	/**
 	 * Set validator class rule
 	 *
-	 * @param \ItePHP\Core\Core\Validator $validator - validator class
+	 * @param \ItePHP\Core\Validator $validator - validator class
 	 * @since 0.15.0
 	 */
 	public function setValidator($validator=null){
@@ -125,7 +125,7 @@ abstract class FormField{
 	/**
 	 * Get validator class
 	 *
-	 * @return \ItePHP\Core\Core\Validator 
+	 * @return \ItePHP\Core\Validator 
 	 * @since 0.15.0
 	 */
 	public function getValidator(){

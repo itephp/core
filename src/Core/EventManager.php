@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,18 +9,18 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Core;
+namespace ItePHP\Core;
 
-use ItePHP\Core\Core\ExecuteResources;
+use ItePHP\Core\ExecuteResources;
 
 /**
  * Manager for events.
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class EventManager{
@@ -28,7 +28,7 @@ class EventManager{
 	/**
 	 * Enviorment.
 	 *
-	 * @var \ItePHP\Core\Core\ExecuteResources $resources
+	 * @var \ItePHP\Core\ExecuteResources $resources
 	 */
 	private $resources;
 
@@ -49,7 +49,7 @@ class EventManager{
 	/**
 	 * Constructor.
 	 *
-	 * @param \ItePHP\Core\Core\ExecuteResources $resources
+	 * @param \ItePHP\Core\ExecuteResources $resources
 	 * @since 0.1.0
 	 */
 	public function __construct(ExecuteResources $resources){
@@ -72,7 +72,7 @@ class EventManager{
 	 * Execute event.
 	 *
 	 * @param string $event event name
-	 * @param object $infoClass contener with event info eg.: \ItePHP\Core\Event\ExecutePresenterEvent
+	 * @param object $infoClass contener with event info eg.: \ItePHP\Event\ExecutePresenterEvent
 	 * @since 0.1.0
 	 */
 	public function fire($event,$infoClass=null){

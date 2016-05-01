@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,19 +9,19 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Event;
+namespace ItePHP\Event;
 
-use ItePHP\Core\Core\RequestProvider;
-use ItePHP\Core\Provider\Response;
+use ItePHP\Core\RequestProvider;
+use ItePHP\Provider\Response;
 
 /**
  * Contener with data for event "executedAction"
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class ExecutedActionEvent{
@@ -29,22 +29,22 @@ class ExecutedActionEvent{
 	/**
 	 * Request provider.
 	 *
-	 * @var \ItePHP\Core\Core\RequestProvider $request
+	 * @var \ItePHP\Core\RequestProvider $request
 	 */
 	private $request;
 
 	/**
 	 * Response.
 	 *
-	 * @var \ItePHP\Core\Provider\Response $response
+	 * @var \ItePHP\Provider\Response $response
 	 */
 	private $response;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \ItePHP\Core\Core\RequestProvider $request
-	 * @param \ItePHP\Core\Provider\Response $response
+	 * @param \ItePHP\Core\RequestProvider $request
+	 * @param \ItePHP\Provider\Response $response
 	 * @since 0.1.0
 	 */
 	public function __construct(RequestProvider $request , Response $response){
@@ -55,7 +55,7 @@ class ExecutedActionEvent{
 	/**
 	 * Get response.
 	 *
-	 * @return \ItePHP\Core\Provider\Response
+	 * @return \ItePHP\Provider\Response
 	 * @since 0.1.0
 	 */
 	public function getResponse(){
@@ -65,7 +65,7 @@ class ExecutedActionEvent{
 	/**
 	 * Get request
 	 *
-	 * @return \ItePHP\Core\Core\RequestProvider
+	 * @return \ItePHP\Core\RequestProvider
 	 * @since 0.1.0
 	 */
 	public function getRequest(){

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,19 +9,19 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Event;
-use ItePHP\Core\Core\Event;
-use ItePHP\Core\Provider\Response;
-use ItePHP\Core\Event\ExecutedActionEvent;
+namespace ItePHP\Event;
+use ItePHP\Core\Event;
+use ItePHP\Provider\Response;
+use ItePHP\Event\ExecutedActionEvent;
 
 /**
  * Event to setting security headers
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.14.0
  */
 class HttpSecurity extends Event{
@@ -29,7 +29,7 @@ class HttpSecurity extends Event{
 	/**
 	 * Init event.
 	 *
-	 * @param \ItePHP\Core\Event\ExecutedActionEvent $event
+	 * @param \ItePHP\Event\ExecutedActionEvent $event
 	 * @param array $config
 	 * @since 0.1.0
 	 */
@@ -42,7 +42,7 @@ class HttpSecurity extends Event{
 	/**
 	 * Support Strict-Transport-Security
 	 *
-	 * @param \ItePHP\Core\Provider\Response $response
+	 * @param \ItePHP\Provider\Response $response
 	 * @param array $config
 	 * @see https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
 	 * @since 0.1.0

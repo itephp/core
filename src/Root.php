@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,39 +9,39 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core;
+namespace ItePHP;
 
-use ItePHP\Core\Core\Autoloader;
-use ItePHP\Core\Contener\GlobalConfig;
-use ItePHP\Core\Contener\RequestConfig;
-use ItePHP\Core\Contener\ServiceConfig;
-use ItePHP\Core\Contener\CommandConfig;
-use ItePHP\Core\Provider\Response;
-use ItePHP\Core\Core\RequestProvider;
-use ItePHP\Core\Provider\Request;
-use ItePHP\Core\Provider\Session;
-use ItePHP\Core\Core\Presenter;
-use ItePHP\Core\Core\ErrorHandler;
-use ItePHP\Core\Core\EventManager;
-use ItePHP\Core\Event\ExecuteActionEvent;
-use ItePHP\Core\Event\ExecutedActionEvent;
-use ItePHP\Core\Event\ExecutePresenterEvent;
-use ItePHP\Core\Exception\ActionNotFoundException;
-use ItePHP\Core\Exception\CommandNotFoundException;
-use ItePHP\Core\Core\ExecuteResources;
-use ItePHP\Core\Core\Enviorment;
-use ItePHP\Core\Test\Request as RequestTest;
-use ItePHP\Core\Core\Router;
-use ItePHP\Core\Exception\ServiceNotFoundException;
+use ItePHP\Core\Autoloader;
+use ItePHP\Contener\GlobalConfig;
+use ItePHP\Contener\RequestConfig;
+use ItePHP\Contener\ServiceConfig;
+use ItePHP\Contener\CommandConfig;
+use ItePHP\Provider\Response;
+use ItePHP\Core\RequestProvider;
+use ItePHP\Provider\Request;
+use ItePHP\Provider\Session;
+use ItePHP\Core\Presenter;
+use ItePHP\Core\ErrorHandler;
+use ItePHP\Core\EventManager;
+use ItePHP\Event\ExecuteActionEvent;
+use ItePHP\Event\ExecutedActionEvent;
+use ItePHP\Event\ExecutePresenterEvent;
+use ItePHP\Exception\ActionNotFoundException;
+use ItePHP\Exception\CommandNotFoundException;
+use ItePHP\Core\ExecuteResources;
+use ItePHP\Core\Enviorment;
+use ItePHP\Test\Request as RequestTest;
+use ItePHP\Core\Router;
+use ItePHP\Exception\ServiceNotFoundException;
 
 /**
  * Main class of project
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  * @version 0.24.0
  */

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,24 +9,24 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Core;
+namespace ItePHP\Core;
 
-use ItePHP\Core\Root;
-use ItePHP\Core\Test\Request;
-use ItePHP\Core\Core\Enviorment;
-use ItePHP\Core\Test\BrowserEmulator;
-use ItePHP\Core\Provider\Session;
+use ItePHP\Root;
+use ItePHP\Test\Request;
+use ItePHP\Core\Enviorment;
+use ItePHP\Test\BrowserEmulator;
+use ItePHP\Provider\Session;
 
 require __DIR__.'/../core/Autoloader.php';
 
 /**
  * Helper for functionalit web test
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 abstract class WebTestCase extends \PHPUnit_Framework_TestCase{
@@ -34,14 +34,14 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase{
 	/**
 	 * Main ItePHP class.
 	 *
-	 * @var \ItePHP\Core\Root $root
+	 * @var \ItePHP\Root $root
 	 */
 	private $root;
 
 	/**
 	 * Enviorment
 	 *
-	 * @var \ItePHP\Core\Core\Enviorment $enviorment
+	 * @var \ItePHP\Core\Enviorment $enviorment
 	 */
 	private $enviorment;
 
@@ -86,7 +86,7 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase{
 	 * Create RequestTest
 	 *
 	 * @param string $url
-	 * @return \ItePHP\Core\Test\Request
+	 * @return \ItePHP\Test\Request
 	 * @since 0.1.0
 	 */
 	protected function createRequest($url){
@@ -97,8 +97,8 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase{
 	/**
 	 * Create BorwserEmulator.
 	 *
-	 * @param \ItePHP\Core\Provider\Session $session
-	 * @return \ItePHP\Core\Test\BrowserEmulator
+	 * @param \ItePHP\Provider\Session $session
+	 * @return \ItePHP\Test\BrowserEmulator
 	 * @since 0.1.0
 	 */
 	protected function createClient(Session $session=null){
@@ -108,7 +108,7 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase{
 	/**
 	 * Create Session.
 	 *
-	 * @param \ItePHP\Core\Provider\Session
+	 * @param \ItePHP\Provider\Session
 	 * @since 0.1.0
 	 */
 	protected function createSession(){

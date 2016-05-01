@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,22 +9,22 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Test;
+namespace ItePHP\Test;
 
-use ItePHP\Core\Exception\EmptyDataException;
-use ItePHP\Core\Exception\InvalidQuerySelectorException;
-use ItePHP\Core\Exception\ElementNotFoundException;
-use ItePHP\Core\Core\Enviorment;
-use ItePHP\Core\Provider\Session;
+use ItePHP\Exception\EmptyDataException;
+use ItePHP\Exception\InvalidQuerySelectorException;
+use ItePHP\Exception\ElementNotFoundException;
+use ItePHP\Core\Enviorment;
+use ItePHP\Provider\Session;
 
 /**
  * Emulator for functionality test
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class BrowserEmulator{

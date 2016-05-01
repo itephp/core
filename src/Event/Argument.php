@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,25 +9,25 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Event;
+namespace ItePHP\Event;
 
-use ItePHP\Core\Core\Event;
-use ItePHP\Core\Provider\Response;
-use ItePHP\Core\Event\ExecuteActionEvent;
-use ItePHP\Core\Exception\ValueNotFoundException;
-use ItePHP\Core\Exception\InvalidConfigValueException;
-use ItePHP\Core\Exception\RequiredArgumentException;
-use ItePHP\Core\Exception\InvalidArgumentException;
-use ItePHP\Core\Core\RequestProvider;
+use ItePHP\Core\Event;
+use ItePHP\Provider\Response;
+use ItePHP\Event\ExecuteActionEvent;
+use ItePHP\Exception\ValueNotFoundException;
+use ItePHP\Exception\InvalidConfigValueException;
+use ItePHP\Exception\RequiredArgumentException;
+use ItePHP\Exception\InvalidArgumentException;
+use ItePHP\Core\RequestProvider;
 
 /**
  * Event to foward http param ($_POST[],$_GET[],url) to controllr method.
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class Argument extends Event{
@@ -35,7 +35,7 @@ class Argument extends Event{
 	/**
 	 * Detect config argument.
 	 *
-	 * @param \ItePHP\Core\Event\ExecuteActionEvent $event
+	 * @param \ItePHP\Event\ExecuteActionEvent $event
 	 * @since 0.1.0
 	 */
 	public function onExecuteAction(ExecuteActionEvent $event){
@@ -53,11 +53,11 @@ class Argument extends Event{
 	/**
 	 * Validate argument.
 	 *
-	 * @param \ItePHP\Core\Core\RequestProvider $request
+	 * @param \ItePHP\Core\RequestProvider $request
 	 * @param array $config argument
 	 * @param int $position
-	 * @throws \ItePHP\Core\Exception\InvalidConfigValueException
-	 * @throws \ItePHP\Core\Exception\InvalidArgumentException
+	 * @throws \ItePHP\Exception\InvalidConfigValueException
+	 * @throws \ItePHP\Exception\InvalidArgumentException
 	 * @since 0.1.0
 	 */
 	private function validateArgument(RequestProvider $request , $config , $position){
@@ -96,11 +96,11 @@ class Argument extends Event{
 	/**
 	 * Validate url.
 	 *
-	 * @param \ItePHP\Core\Core\RequestProvider $request
+	 * @param \ItePHP\Core\RequestProvider $request
 	 * @param array $config argument
 	 * @param int $position
 	 * @return string
-	 * @throws \ItePHP\Core\Exception\RequiredArgumentException
+	 * @throws \ItePHP\Exception\RequiredArgumentException
 	 * @since 0.1.0
 	 */
 	private function validateUrl(RequestProvider $request , $config , $position){
@@ -117,11 +117,11 @@ class Argument extends Event{
 	/**
 	 * Validate POST.
 	 *
-	 * @param \ItePHP\Core\Core\RequestProvider $request
+	 * @param \ItePHP\Core\RequestProvider $request
 	 * @param array $config argument
 	 * @param int $position
 	 * @return string
-	 * @throws \ItePHP\Core\Exception\RequiredArgumentException
+	 * @throws \ItePHP\Exception\RequiredArgumentException
 	 * @since 0.1.0
 	 */
 	private function validatePost(RequestProvider $request , $config , $position){
@@ -141,11 +141,11 @@ class Argument extends Event{
 	/**
 	 * Validate GET.
 	 *
-	 * @param \ItePHP\Core\Core\RequestProvider $request
+	 * @param \ItePHP\Core\RequestProvider $request
 	 * @param array $config argument
 	 * @param int $position
 	 * @return string
-	 * @throws \ItePHP\Core\Exception\RequiredArgumentException
+	 * @throws \ItePHP\Exception\RequiredArgumentException
 	 * @since 0.22.0
 	 */
 	private function validateGet(RequestProvider $request , $config , $position){

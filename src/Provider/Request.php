@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,24 +9,24 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Provider;
+namespace ItePHP\Provider;
 
-use ItePHP\Core\Collection\Map;
-use ItePHP\Core\Provider\Session;
-use ItePHP\Core\Core\RequestProvider;
-use ItePHP\Core\Exception\HeaderNotFoundException;
-use ItePHP\Core\Core\FileUploaded;
-use ItePHP\Core\Exception\FileNotUploadedException;
-use ItePHP\Core\Contener\RequestConfig;
+use ItePHP\Collection\Map;
+use ItePHP\Provider\Session;
+use ItePHP\Core\RequestProvider;
+use ItePHP\Exception\HeaderNotFoundException;
+use ItePHP\Core\FileUploaded;
+use ItePHP\Exception\FileNotUploadedException;
+use ItePHP\Contener\RequestConfig;
 
 /**
  * Provider for request.
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class Request implements RequestProvider{
@@ -60,7 +60,7 @@ class Request implements RequestProvider{
 	/**
 	 * Get uploaded file
 	 * @param string $name - field name
-	 * @return ItePHP\Core\Core\FileUploaded|array[ItePHP\Core\Core\FileUploaded]
+	 * @return ItePHP\Core\FileUploaded|array[ItePHP\Core\FileUploaded]
 	 * @since 0.12.0
 	 */
 	public function getFile($name){

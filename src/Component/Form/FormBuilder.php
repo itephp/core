@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,28 +9,28 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Component\Form;
+namespace ItePHP\Component\Form;
 
-use ItePHP\Core\Component\Form\FormFormatter;
-use ItePHP\Core\Component\Form\BasicFormFormatter;
-use ItePHP\Core\Component\Form\BasicFormTransformer;
-use ItePHP\Core\Component\Form\Designer;
-use ItePHP\Core\Component\Form\Transformer;
-use ItePHP\Core\Core\RequestProvider;
-use ItePHP\Core\Core\ValidatorService;
-use ItePHP\Core\Exception\FieldNotFoundException;
-use ItePHP\Core\Exception\FileNotUploadedException;
-use ItePHP\Core\Core\FileUploaded;
-use ItePHP\Core\Component\Form\FormField;
+use ItePHP\Component\Form\FormFormatter;
+use ItePHP\Component\Form\BasicFormFormatter;
+use ItePHP\Component\Form\BasicFormTransformer;
+use ItePHP\Component\Form\Designer;
+use ItePHP\Component\Form\Transformer;
+use ItePHP\Core\RequestProvider;
+use ItePHP\Core\ValidatorService;
+use ItePHP\Exception\FieldNotFoundException;
+use ItePHP\Exception\FileNotUploadedException;
+use ItePHP\Core\FileUploaded;
+use ItePHP\Component\Form\FormField;
 
 /**
  * Generator form. Support for mapping data, validation and generate html code.
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.13.0
  */
 class FormBuilder{
@@ -62,7 +62,7 @@ class FormBuilder{
 	/**
 	 * Set service to validate field data
 	 *
-	 * @param \ItePHP\Core\Core\ValidatorService $validatorService
+	 * @param \ItePHP\Core\ValidatorService $validatorService
 	 * @since 0.13.0
 	 */
 	public function setValidatorService(ValidatorService $validatorService){
@@ -72,7 +72,7 @@ class FormBuilder{
 	/**
 	 * Set formatter with html rule pattern
 	 *
-	 * @param \ItePHP\Core\Component\Form\FormFormatter $formatter
+	 * @param \ItePHP\Component\Form\FormFormatter $formatter
 	 * @since 0.13.0
 	 */
 	public function setFormatter(FormFormatter $formatter){
@@ -82,7 +82,7 @@ class FormBuilder{
 	/**
 	 * Set designer with rule to generate fields
 	 *
-	 * @param \ItePHP\Core\Component\Form\Designer $designer
+	 * @param \ItePHP\Component\Form\Designer $designer
 	 * @since 0.18.0
 	 */
 	public function setDesigner(Designer $designer){
@@ -93,7 +93,7 @@ class FormBuilder{
 	/**
 	 * Set transformer with rule to encode/decode data
 	 *
-	 * @param \ItePHP\Core\Component\Form\Transformer $transformer
+	 * @param \ItePHP\Component\Form\Transformer $transformer
 	 * @since 0.22.0
 	 */
 	public function setTransformer(Transformer $transformer){
@@ -134,7 +134,7 @@ class FormBuilder{
 	/**
 	 * Add form field
 	 *
-	 * @param \ItePHP\Core\Component\Form\FormField $field
+	 * @param \ItePHP\Component\Form\FormField $field
 	 * @since 0.15.0
 	 */
 	public function addField(FormField $field){
@@ -261,8 +261,8 @@ class FormBuilder{
 	 * Get field object
 	 *
 	 * @param string $name - field name (html name tag)
-	 * @return \ItePHP\Core\Component\Form\FormField
-	 * @throws \ItePHP\Core\Exception\FieldNotFoundException - invalid param name
+	 * @return \ItePHP\Component\Form\FormField
+	 * @throws \ItePHP\Exception\FieldNotFoundException - invalid param name
 	 * @since 0.13.0
 	 */
 	public function getField($name){
@@ -370,7 +370,7 @@ class FormBuilder{
 	/**
 	 * Submit form. Check http confirm and validate fields
 	 *
-	 * @param \ItePHP\Core\Core\RequestProvider $request
+	 * @param \ItePHP\Core\RequestProvider $request
 	 * @since 0.17.0
 	 */
 	public function submit(RequestProvider $request){

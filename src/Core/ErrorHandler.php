@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,31 +9,31 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Core;
+namespace ItePHP\Core;
 
-use ItePHP\Core\Root;
-use ItePHP\Core\Provider\Response;
-use ItePHP\Core\Presenter\HTML as HTMLPresenter;
-use ItePHP\Core\Exception\SyntaxException;
-use ItePHP\Core\Exception\RuntimeException;
-use ItePHP\Core\Core\ExecuteResources;
-use ItePHP\Core\Exception\ResourcesNotRegisteredException;
-use ItePHP\Core\Contener\RequestConfig;
-use ItePHP\Core\Presenter\HTML;
-use ItePHP\Core\Event\ExecutePresenterEvent;
-use ItePHP\Core\Provider\Request;
-use ItePHP\Core\Test\Request as RequestTest;
-use ItePHP\Core\Provider\Session;
-use ItePHP\Core\Core\EventManager;
+use ItePHP\Root;
+use ItePHP\Provider\Response;
+use ItePHP\Presenter\HTML as HTMLPresenter;
+use ItePHP\Exception\SyntaxException;
+use ItePHP\Exception\RuntimeException;
+use ItePHP\Core\ExecuteResources;
+use ItePHP\Exception\ResourcesNotRegisteredException;
+use ItePHP\Contener\RequestConfig;
+use ItePHP\Presenter\HTML;
+use ItePHP\Event\ExecutePresenterEvent;
+use ItePHP\Provider\Request;
+use ItePHP\Test\Request as RequestTest;
+use ItePHP\Provider\Session;
+use ItePHP\Core\EventManager;
 
 /**
  * Handler for errors.
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class ErrorHandler{
@@ -41,7 +41,7 @@ class ErrorHandler{
 	/**
 	 * ExecuteResources.
 	 *
-	 * @var \ItePHP\Core\Core\ExecuteResources $resources
+	 * @var \ItePHP\Core\ExecuteResources $resources
 	 */	
 	private $resources;
 
@@ -62,15 +62,15 @@ class ErrorHandler{
 	/**
 	 * Event manager
 	 *
-	 * @var \ItePHP\Core\Core\EventManager $eventManager
+	 * @var \ItePHP\Core\EventManager $eventManager
 	 */	
 	private $eventManager;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \ItePHP\Core\Core\ExecuteResources $resource
-	 * @param \ItePHP\Core\Core\EventManager $eventManager
+	 * @param \ItePHP\Core\ExecuteResources $resource
+	 * @param \ItePHP\Core\EventManager $eventManager
 	 * @since 0.1.0
 	 */	
 	public function __construct(ExecuteResources $resources,EventManager $eventManager){
@@ -129,7 +129,7 @@ class ErrorHandler{
 	 * @param string $errstr
 	 * @param string $errfile
 	 * @param int $errline
-	 * @throws \ItePHP\Core\Exception\RuntimeException
+	 * @throws \ItePHP\Exception\RuntimeException
 	 * @since 0.1.0
 	 */	
 	public function error($errno, $errstr, $errfile, $errline){
@@ -193,7 +193,7 @@ class ErrorHandler{
 	/**
 	 * Find presenter for error action.
 	 *
-	 * @return \ItePHP\Core\Core\Presenter
+	 * @return \ItePHP\Core\Presenter
 	 * @since 0.1.0
 	 */	
 	private function findPresenter(){

@@ -1,7 +1,7 @@
 <?php
 
 namespace Migrate;
-use ItePHP\Core\Command\Migrate;
+use ItePHP\Command\Migrate;
 
 class Version${date}{
 	

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,23 +9,23 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Event;
+namespace ItePHP\Event;
 
-use ItePHP\Core\Core\Event;
-use ItePHP\Core\Provider\Response;
-use ItePHP\Core\Event\ExecuteActionEvent;
-use ItePHP\Core\Exception\ValueNotFoundException;
-use ItePHP\Core\Exception\PermissionDeniedException;
-use ItePHP\Core\Core\RequestProvider;
+use ItePHP\Core\Event;
+use ItePHP\Provider\Response;
+use ItePHP\Event\ExecuteActionEvent;
+use ItePHP\Exception\ValueNotFoundException;
+use ItePHP\Exception\PermissionDeniedException;
+use ItePHP\Core\RequestProvider;
 
 /**
  * Event for support authenticate user
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class Authenticate extends Event{
@@ -33,7 +33,7 @@ class Authenticate extends Event{
 	/**
 	 * Detect config authenticate.
 	 *
-	 * @param \ItePHP\Core\Event\ExecuteActionEvent $event
+	 * @param \ItePHP\Event\ExecuteActionEvent $event
 	 * @param array $eventConfig
 	 * @since 0.1.0
 	 */
@@ -52,11 +52,11 @@ class Authenticate extends Event{
 	/**
 	 * Check authenticate.
 	 *
-	 * @param \ItePHP\Core\Event\ExecuteActionEvent $event
+	 * @param \ItePHP\Event\ExecuteActionEvent $event
 	 * @param array $config
 	 * @param array $eventConfig
-	 * @throws \ItePHP\Core\Exception\ValueNotFoundException
-	 * @throws \ItePHP\Core\Exception\PermissionDeniedException
+	 * @throws \ItePHP\Exception\ValueNotFoundException
+	 * @throws \ItePHP\Exception\PermissionDeniedException
 	 * @since 0.1.0
 	 */
 	private function execute(ExecuteActionEvent $event,$config,$eventConfig){
@@ -102,8 +102,8 @@ class Authenticate extends Event{
 	 * Check authenticate.
 	 *
 	 * @param string $redirect
-	 * @param \ItePHP\Core\Core\RequestProvider $request
-	 * @return \ItePHP\Core\Provider\Response
+	 * @param \ItePHP\Core\RequestProvider $request
+	 * @return \ItePHP\Provider\Response
 	 * @since 0.1.0
 	 */
 	private function createResponseRedirect($redirect,RequestProvider $request){

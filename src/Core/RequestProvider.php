@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,17 +9,17 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Core;
+namespace ItePHP\Core;
 
 
 /**
  * Interface for request
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 interface RequestProvider{
@@ -28,7 +28,7 @@ interface RequestProvider{
 	 * Get uploaded file.
 	 *
 	 * @param string $name field name
-	 * @return \ItePHP\Core\Core\FileUploaded
+	 * @return \ItePHP\Core\FileUploaded
 	 * @since 0.12.0
 	 */
 	public function getFile($name);
@@ -36,7 +36,7 @@ interface RequestProvider{
 	/**
 	 * Get config.
 	 *
-	 * @return \ItePHP\Core\Contener\RequestConfig
+	 * @return \ItePHP\Contener\RequestConfig
 	 * @since 0.1.0
 	 */
 	public function getConfig();
@@ -62,7 +62,7 @@ interface RequestProvider{
 	 *
 	 * @param string $name header name
 	 * @return string
-	 * @throws \ItePHP\Core\Exception\HeaderNotFoundException
+	 * @throws \ItePHP\Exception\HeaderNotFoundException
 	 * @since 0.1.0
 	 */
 	public function getHeader($name);
@@ -111,7 +111,7 @@ interface RequestProvider{
 	/**
 	 * Get session provider.
 	 *
-	 * @return \ItePHP\Core\Core\SessionProvider
+	 * @return \ItePHP\Core\SessionProvider
 	 * @since 0.1.0
 	 */
 	public function getSession();
@@ -159,7 +159,7 @@ interface RequestProvider{
 	/**
 	 * Get presenter.
 	 *
-	 * @return \ItePHP\Core\Core\Presenter
+	 * @return \ItePHP\Core\Presenter
 	 * @since 0.1.0
 	 */
 	public function getPresenter();

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,20 +9,20 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Controller;
+namespace ItePHP\Controller;
 
-use ItePHP\Core\Core\Controller;
-use ItePHP\Core\Provider\Response;
-use ItePHP\Core\Exception\HeaderNotFoundException;
+use ItePHP\Core\Controller;
+use ItePHP\Provider\Response;
+use ItePHP\Exception\HeaderNotFoundException;
 
 /**
  * Controller to release raw files e.g.: .css, .js. Configured in config/resources.xml.
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class Resource extends Controller{
@@ -30,7 +30,7 @@ class Resource extends Controller{
 	/**
 	 * Download resource files by browser.
 	 *
-	 * @return \ItePHP\Core\Provider\Response
+	 * @return \ItePHP\Provider\Response
 	 * @since 0.1.0
 	 */
 	public function download(){
@@ -128,7 +128,7 @@ class Resource extends Controller{
 	/**
 	 * Set headers for range data support.
 	 *
-	 * @param \ItePHP\Core\Provider\Response $response
+	 * @param \ItePHP\Provider\Response $response
 	 * @param long $fileSize
 	 * @since 0.1.0
 	 */

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,21 +9,21 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Component\Grid;
+namespace ItePHP\Component\Grid;
 
-use ItePHP\Core\Component\Grid\GridFormatter;
-use ItePHP\Core\Component\Grid\GridDataManager;
-use ItePHP\Core\Component\Grid\Column;
-use ItePHP\Core\Core\RequestProvider;
+use ItePHP\Component\Grid\GridFormatter;
+use ItePHP\Component\Grid\GridDataManager;
+use ItePHP\Component\Grid\Column;
+use ItePHP\Core\RequestProvider;
 
 /**
  * Generator grid. Support for mapping data, pagination and generate html code.
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.17.0
  */
 class GridBuilder{
@@ -51,7 +51,7 @@ class GridBuilder{
 	/**
 	 * Set formatter with html rule pattern
 	 *
-	 * @param \ItePHP\Core\Component\Grid\GridFormatter $formatter
+	 * @param \ItePHP\Component\Grid\GridFormatter $formatter
 	 * @since 0.17.0
 	 */
 	public function setFormatter(GridFormatter $formatter){
@@ -61,7 +61,7 @@ class GridBuilder{
 	/**
 	 * Set formatter with html rule pattern
 	 *
-	 * @param \ItePHP\Core\Component\Grid\GridDataManager $dataManager
+	 * @param \ItePHP\Component\Grid\GridDataManager $dataManager
 	 * @since 0.17.0
 	 */
 	public function setDataManager(GridDataManager $dataManager){
@@ -71,7 +71,7 @@ class GridBuilder{
 	/**
 	 * Get DataManager
 	 *
-	 * @return \ItePHP\Core\Component\Grid\GridDataManager
+	 * @return \ItePHP\Component\Grid\GridDataManager
 	 * @since 0.18.0
 	 */
 	public function getDataManager(){

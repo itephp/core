@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,20 +9,20 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Provider;
+namespace ItePHP\Provider;
 
-use ItePHP\Core\Exception\InvalidStatusCodeException;
-use ItePHP\Core\Exception\HeaderNotFoundException;
-use ItePHP\Core\Core\Presenter;
+use ItePHP\Exception\InvalidStatusCodeException;
+use ItePHP\Exception\HeaderNotFoundException;
+use ItePHP\Core\Presenter;
 
 /**
  * Provider for response.
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class Response{

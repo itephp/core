@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ItePHP: Freamwork PHP (http://php.iteracja.com)
+ * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
  *
  * Licensed under The MIT License
@@ -9,18 +9,18 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright (c) NewClass (http://newclass.pl)
- * @link          http://php.iteracja.com ItePHP Project
+ * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core\Core;
+namespace ItePHP\Core;
 
-use ItePHP\Core\Exception\FileFailSavedException;
+use ItePHP\Exception\FileFailSavedException;
 
 /**
  * Support for uploaded file.
  *
- * @author Michal Tomczak (michal.tomczak@iteracja.com)
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
 class FileUploaded{
@@ -83,7 +83,7 @@ class FileUploaded{
 	 *
 	 * @param string $path path dir to save file
 	 * @param string $name file name if is empty then set name on origin name
-	 * @throws \ItePHP\Core\Exception\FileFailSavedException
+	 * @throws \ItePHP\Exception\FileFailSavedException
 	 * @since 0.12.0
 	 */
 	public function save($path,$name=null){
