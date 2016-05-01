@@ -15,7 +15,6 @@
 
 namespace ItePHP;
 
-use ItePHP\Core\Autoloader;
 use ItePHP\Contener\GlobalConfig;
 use ItePHP\Contener\RequestConfig;
 use ItePHP\Contener\ServiceConfig;
@@ -47,14 +46,12 @@ use ItePHP\Exception\ServiceNotFoundException;
  */
 class Root{
 	
-	private $autoloader;
 	private $errorHandler;
 	private $executeResources;
 	private $eventManager;
 	private $router;
 
-	public function __construct($autoloader,$debug,$silent,$name){
-		$this->autoloader=$autoloader;
+	public function __construct($debug,$silent,$name){
 		$enviorment=new Enviorment($debug,$silent,$name);
 		$this->executeResources=new ExecuteResources();
 		$this->executeResources->registerEnviorment($enviorment);
@@ -62,7 +59,7 @@ class Root{
 		$this->eventManager=new EventManager($this->executeResources);
 		$this->errorHandler=new ErrorHandler($this->executeResources,$this->eventManager);
 
-		$this->executeResources->registerGlobalConfig(new GlobalConfig(__DIR__.'/../config',$enviorment));
+		$this->executeResources->registerGlobalConfig(new GlobalConfig(__DIR__.'/../../../../config',$enviorment));
 		$this->registerServices($this->executeResources);
 		$this->registerEvents($this->executeResources);
 		$this->registerSnippets($this->executeResources);

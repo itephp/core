@@ -21,7 +21,7 @@ use ItePHP\Core\Enviorment;
 use ItePHP\Test\BrowserEmulator;
 use ItePHP\Provider\Session;
 
-require __DIR__.'/../core/Autoloader.php';
+require __DIR__.'/../../../../vendor/autoload.php';
 
 /**
  * Helper for functionalit web test
@@ -51,8 +51,7 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase{
 	 * @since 0.1.0
 	 */
 	public function __construct(){
-		$autoloader=new Autoloader();
-		$this->root=new Root($autoloader,true,true,'test');
+		$this->root=new Root(true,true,'test');
 		$this->enviorment=new Enviorment(true,true,'test');
 	}
 
