@@ -34,13 +34,17 @@ class Validator implements ValidatorService{
 	/**
 	 * {@inheritdoc}
 	 */
-	public function validate($validator,$value){	
+	public function validate($validator,$value){
+		if(is_string($validator)){
+			$validator=new $validator(); //FIXME only validation name, no object?
+		}
 		return $validator->validate($value);
 	}
 
 	/**
 	 * validate multiple values
-	 * @arg validators - array with value and validators: 
+	 *
+	 * @param array $validators - array with value and validators: 
 	 * array(
 	 * 'field name'=>array(
 	 *		'validator rule class'
@@ -65,9 +69,10 @@ class Validator implements ValidatorService{
 	}
 
 	/**
-	 * Validate data from storage array
-	 * @arg $validators - array with rules validation example: array('nameField'=>'Validator\ExampleClassValidator')
-	 * @arg $storage - array with values, example array('nameField1'=>'value1','nameField2'=>'value2')
+	 * Validate data from storage array.
+	 *
+	 * @param array $validators - array with rules validation example: array('nameField'=>'Validator\ExampleClassValidator')
+	 * @param array $storage - array with values, example array('nameField1'=>'value1','nameField2'=>'value2')
 	 * @return array with errors. If success then empty array.
 	 * @since 0.13.0
 	 */
