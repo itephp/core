@@ -24,6 +24,7 @@ namespace ItePHP\Test;
 class Response{
 	private $response;
 	private $content;
+
 	public function __construct(\ItePHP\Provider\Response $response,$content){
 		$this->response=$response;
 		$this->content=$content;
@@ -31,6 +32,10 @@ class Response{
 
 	public function getContent(){
 		return $this->content;
+	}
+
+	public function getStatusCode(){
+		return $this->response->getStatusCode();
 	}
 
 }

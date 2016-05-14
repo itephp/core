@@ -53,7 +53,7 @@ class BrowserEmulator{
 		$this->executeRequest('POST',$url,$data);
 		$this->history[]=$url;
 		$this->historyCursor++;
-
+		return $this;
 	}
 
 	public function back(){
@@ -97,7 +97,7 @@ class BrowserEmulator{
 		libxml_clear_errors();
 
 		//detect parts
-		if(!preg_match('/(?:^| )(.*?)(?:(\.|#)(.*?)){0,1}($| )/',$query, $match)){
+		if(!preg_match('/(?:^| )([^[]*?)((\.|#)([^[]*?)){0,1}($|(?:\[(.*?)=(?:"|\')(.*?)(?:"|\')\]| ))/',$query, $match)){
 			throw new InvalidQuerySelectorException($query);
 		}
 		$tag=$match[1];
@@ -112,6 +112,14 @@ class BrowserEmulator{
 			$id=$match[3];
 		}
 
+		//attribute
+		$attributeName=null;
+		$attributeValue=null;
+		if(isset($match[6]) && $match[6]!=''){ 
+			$attributeName=$match[6];
+			$attributeValue=$match[7];
+		}
+
 		$nodes=array();
 		foreach($document->getElementsByTagName('*') as $node){
 
@@ -123,6 +131,10 @@ class BrowserEmulator{
 			}
 
 			if($id && $id!=$node->getAttribute('id')){
+				continue;
+			}
+
+			if($attributeName && $attributeValue!=$node->getAttribute($attributeName)){
 				continue;
 			}
 
@@ -156,6 +168,17 @@ class BrowserEmulator{
 
 	}
 
+	public function createRequest($url,$session=null){
+		if(!$session){
+			$session=$this->session;
+		}
+		return new Request($url,$this->enviorment,$session);
+	}
+
+	public function createSession(){
+		return new Session($this->enviorment);
+	}
+
 	private function executeRequest($type,$url,$data=array()){
 		$this->request=new Request($url,$this->enviorment,$this->session);
 		$this->request->setType($type);
@@ -163,7 +186,15 @@ class BrowserEmulator{
 		$this->response=$this->request->execute();
 
 		$this->detectRedirect();
+	}
 
+	public function execute(Request $request){
+		$this->request=$request;
+		$this->response=$request->execute();
+
+		$this->detectRedirect();
+
+		return $this;
 	}
 
 	private function detectRedirect(){

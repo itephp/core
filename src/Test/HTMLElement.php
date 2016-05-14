@@ -52,6 +52,10 @@ class HTMLElement{
 		return $this->node->getAttribute($name);
 	}
 
+	public function getTagName(){
+		return $this->node->tagName;
+	}
+
 	public function getElement($query){
 		$nodes=$this->findElements($query);
 		if(count($nodes)==0){
@@ -64,7 +68,7 @@ class HTMLElement{
 	public function findElements($query){
 
 		//detect parts
-		if(!preg_match('/(?:^| )(.*?)((\.|#)(.*?)){0,1}($| )/',$query, $match)){
+		if(!preg_match('/(?:^| )([^[]*?)((\.|#)([^[]*?)){0,1}($|(?:\[(.*?)=(?:"|\')(.*?)(?:"|\')\]| ))/',$query, $match)){
 			throw new InvalidQuerySelectorException($query);
 		}
 
@@ -79,6 +83,14 @@ class HTMLElement{
 		if($match[2]=='#'){
 			$id=$match[3];
 		}
+
+		//attribute
+		$attributeName=null;
+		$attributeValue=null;
+		if(isset($match[6]) && $match[6]!=''){ 
+			$attributeName=$match[6];
+			$attributeValue=$match[7];
+		}
 		
 		$nodes=array();
 		foreach($this->node->getElementsByTagName('*') as $node){
@@ -91,6 +103,10 @@ class HTMLElement{
 			}
 
 			if($id && $id!=$node->getAttribute('id')){
+				continue;
+			}
+
+			if($attributeName && $attributeValue!=$node->getAttribute($attributeName)){
 				continue;
 			}
 

@@ -34,6 +34,10 @@ class InputElement extends FormFieldElement{
 		return $this->getAttribute('value');
 	}
 
+	public function getType(){
+		return $this->getAttribute('type');
+	}
+
 	public function setData($data){
 		$this->data=$data;
 		return $this;

@@ -15,13 +15,15 @@
 
 namespace ItePHP\Core;
 
+define('ITE_ROOT', realpath(__DIR__.'/../../../../../'));
+define('ITE_WEB', ITE_ROOT.'/web');
+define('ITE_SRC', ITE_ROOT.'/src');
+
 use ItePHP\Root;
 use ItePHP\Test\Request;
 use ItePHP\Core\Enviorment;
 use ItePHP\Test\BrowserEmulator;
 use ItePHP\Provider\Session;
-
-require __DIR__.'/../../../../vendor/autoload.php';
 
 /**
  * Helper for functionalit web test
