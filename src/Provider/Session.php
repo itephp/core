@@ -27,14 +27,20 @@ use ItePHP\Core\Enviorment;
  */
 class Session implements SessionProvider{
 
+	private $id;
 
 	public function __construct(Enviorment $enviorment){
-		if(!$enviorment->isSilent())
-			session_start();
+		if(!$enviorment->isSilent()){
+			session_start();			
+			$this->id=session_id();
+		}
+		else{//test
+			$this->id=mt_rand(1,10000000);
+		}
 	}
 
 	public function getId(){
-		return session_id();
+		return $this->id;
 	}
 
 	public function get($key){

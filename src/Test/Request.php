@@ -189,8 +189,12 @@ class Request implements RequestProvider{
 		return $this->files[$name];
 	}
 
-	public function addFile($name,$size,$error=null){
-		$this->files[$name]=new FileUploaded();
+	public function addFile($name,$path){
+		$tmp_name=tempnam(sys_get_temp_dir(),'ite');
+		$error=null;
+		$size=filesize($path);
+		copy($path,$tmp_name);
+		$this->files[$name]=new FileUploaded(compact('name','tmp_name','error','size'));
 	}
 
 

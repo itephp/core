@@ -101,6 +101,17 @@ class FormBuilder{
 	}
 
 	/**
+	 * Get transformer with rule to encode/decode data
+	 *
+	 * @param \ItePHP\Component\Form\Transformer $transformer
+	 * @return Transformer
+	 * @since 0.22.0
+	 */
+	public function getTransformer(){
+		return $this->transformer;
+	}
+
+	/**
 	 * Set addon form tags
 	 *
 	 * @param array $tags - array widh data (all field is optional):
@@ -275,6 +286,16 @@ class FormBuilder{
 	}
 
 	/**
+	 * Get all fields object
+	 *
+	 * @return array
+	 * @since 0.2.0
+	 */
+	public function getFields(){
+		return $this->fields;
+	}
+
+	/**
 	 * Check confirmed form (clicked submit button in frontend/sended fields value)
 	 *
 	 * @return boolean - if success then true else false
@@ -412,7 +433,7 @@ class FormBuilder{
 					$field->setData('');
 				}
 			}
-			else if(preg_match('/^(.*?)(\[.*\])$/',$field->getName(),$result)){//array
+			else if(preg_match('/^(.*?)(\[.*\])$/',$field->getName(),$result) && isset($storage[$result[1]])){//array
 				if(!preg_match_all("/\[(.*?)\]/", $result[2], $resultDeep)){
 					throw new \Exception('Invalid field name.');//FIXME dedicate exception
 				}
@@ -433,7 +454,7 @@ class FormBuilder{
 					$field->setData($value);
 				}
 			}
-			else{//for checkbox
+			else{//for checkbox or disabled field
 				$field->setData(null);
 			}
 		}

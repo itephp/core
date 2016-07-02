@@ -99,7 +99,7 @@ class FileUploaded{
 			$destPath.='/'.$this->name;
 		}
 
-		if(!move_uploaded_file($this->tmpName, $destPath)){
+		if(!copy($this->tmpName, $destPath)){
 			//detect error reason
 			$reason='Unknown';
 			if(!file_exists($path)){
@@ -162,4 +162,3 @@ class FileUploaded{
 		return $this->extension;
 	}
 }
-
