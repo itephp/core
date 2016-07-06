@@ -241,23 +241,42 @@ class GlobalConfig{
 	private function appendService($dataXML){
 		$arguments=$this->getArguments($dataXML , array('name','class'));
 		$config=array();
-		$serviceArguments=array();
+		$methods=[];
 		foreach($dataXML as $xmlKey=>$xmlValue){
 			switch($xmlKey){
-				case 'config':
-					$configData=$this->getArguments($xmlValue , array('enviorment'));
-					if($configData['enviorment']==$this->enviorment->getName())
-						$config=$this->appendConfig($xmlValue,$arguments);
-				break;
-				case 'argument':
-					$serviceArguments[]=$this->appendArgument($xmlValue,$arguments);
+				case 'method':
+					$method=$this->getArguments($xmlValue , array('name'));
+					$method['arguments']=$this->getServiceMethod($xmlValue,$arguments);
+					$methods[]=$method;
 				break;
 				default:
 					throw new InvalidConfigKeyException($xmlKey);
 			}
 		}
 
-		$this->setServiceData($arguments['name'],$arguments+array('config'=>$config,'arguments'=>$serviceArguments));
+		$this->setServiceData($arguments['name'],$arguments+array('methods'=>$methods));
+
+	}
+
+	/**
+	 * Parse service methods node
+	 *
+	 * @param \ItePHP\Parser\XML $dataXML
+	 * @throws \InvalidConfigKeyException
+	 * @since 0.2.0
+	 */
+	private function getServiceMethod($dataXML){
+		$attributes=[];
+		foreach($dataXML as $xmlKey=>$xmlValue){
+			switch($xmlKey){
+				case 'argument':
+					$attributes[]=$this->getArguments($xmlValue , array('type','value'));
+				break;
+				default:
+					throw new InvalidConfigKeyException($xmlKey);
+			}
+		}
+		return $attributes;
 	}
 
 	/**

@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <variable name="var.test" value="test" />
+    <variable name="var.test2" value="data2" />
+</content>
+

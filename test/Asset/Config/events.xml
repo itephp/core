@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <event bind="executeAction" class="ItePHP\Event\Authenticate" method="method1">
+        <config enviorment="dev" maxTime="1200" />
+        <config enviorment="prod" maxTime="1200" />
+    </event>
+    <event bind="executedAction" class="ItePHP\Event\Argument" method="method2" />
+</content>

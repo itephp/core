@@ -83,18 +83,18 @@ class DependencyInjection{
 
 	private function getMethodArguments(MetadataMethod $metadata){
 		$arguments=[];
-		foreach ($metadata->getAttributes() as $attribute) {
+		foreach ($metadata->getArguments() as $argument) {
 			$value=null;
 
-			switch($attribute['type']){
+			switch($argument['type']){
 				case MetadataMethod::PRIMITIVE_TYPE:
-					$value=$attribute['value'];
+					$value=$argument['value'];
 				break;
 				case MetadataMethod::STATIC_TYPE:
-					$value=constant($attribute['value']);
+					$value=constant($argument['value']);
 				break;
 				case MetadataMethod::REFERENCE_TYPE:
-					$value=$this->get($attribute['value']);
+					$value=$this->get($argument['value']);
 				break;
 
 				default:

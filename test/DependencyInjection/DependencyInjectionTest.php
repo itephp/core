@@ -3,9 +3,6 @@
 namespace Test;
 
 require_once(__DIR__.'/../autoload.php');
-require_once(ROOT.'/src/DependencyInjection/MetadataClass.php');
-require_once(ROOT.'/src/DependencyInjection/MetadataMethod.php');
-require_once(ROOT.'/test/Asset/StandaloneClass.php');
 
 use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\DependencyInjection\MetadataClass;
@@ -20,12 +17,12 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase{
 		$metadataClass=new MetadataClass('standalone','Asset\StandaloneClass');
 
 		$metadataMethod=new MetadataMethod('__construct');
-		$metadataMethod->addAttribute(MetadataMethod::PRIMITIVE_TYPE,'param1');
-		$metadataMethod->addAttribute(MetadataMethod::PRIMITIVE_TYPE,'param2');
+		$metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'param1');
+		$metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'param2');
 		$metadataClass->registerInvoke($metadataMethod);
 
 		$metadataMethod=new MetadataMethod('setParam3');
-		$metadataMethod->addAttribute(MetadataMethod::PRIMITIVE_TYPE,'data');
+		$metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'data');
 		$metadataClass->registerInvoke($metadataMethod);
 
 		$di=new DependencyInjection();
@@ -44,12 +41,12 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase{
 		$metadataClass=new MetadataClass('standalone','Asset\StandaloneClass');
 
 		$metadataMethod=new MetadataMethod('__construct');
-		$metadataMethod->addAttribute(MetadataMethod::PRIMITIVE_TYPE,'param1');
-		$metadataMethod->addAttribute(MetadataMethod::PRIMITIVE_TYPE,'param2');
+		$metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'param1');
+		$metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'param2');
 		$metadataClass->registerInvoke($metadataMethod);
 
 		$metadataMethod=new MetadataMethod('setParam3');
-		$metadataMethod->addAttribute(MetadataMethod::STATIC_TYPE,'Asset\StandaloneClass::DATA');
+		$metadataMethod->addArgument(MetadataMethod::STATIC_TYPE,'Asset\StandaloneClass::DATA');
 		$metadataClass->registerInvoke($metadataMethod);
 
 		$di->register($metadataClass);
@@ -57,7 +54,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase{
 		$metadataClass=new MetadataClass('dependency','Asset\DependencyClass');
 
 		$metadataMethod=new MetadataMethod('setStandalone');
-		$metadataMethod->addAttribute(MetadataMethod::REFERENCE_TYPE,'standalone');
+		$metadataMethod->addArgument(MetadataMethod::REFERENCE_TYPE,'standalone');
 		$metadataClass->registerInvoke($metadataMethod);
 
 		$metadataMethod=new MetadataMethod('enableFlag');

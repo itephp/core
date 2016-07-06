@@ -28,7 +28,7 @@ class MetadataMethod{
 	const REFERENCE_TYPE='reference';
 	
 	private $name;
-	private $attributes=[];
+	private $arguments=[];
 
 	public function __construct($methodName){
 		$this->name=$methodName;
@@ -38,12 +38,12 @@ class MetadataMethod{
 		return $this->name;
 	}
 
-	public function addAttribute($type,$value){
-		$this->attributes[]=['type'=>$type,'value'=>$value];
+	public function addArgument($type,$value){
+		$this->arguments[]=['type'=>$type,'value'=>$value];
 	}
 
-	public function getAttributes(){
-		return $this->attributes;
+	public function getArguments(){
+		return $this->arguments;
 	}
 
 }
