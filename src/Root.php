@@ -25,7 +25,6 @@ use ItePHP\Provider\Request;
 use ItePHP\Provider\Session;
 use ItePHP\Core\Presenter;
 use ItePHP\Core\ErrorHandler;
-use ItePHP\Core\EventManager;
 use ItePHP\Event\ExecuteActionEvent;
 use ItePHP\Event\ExecutedActionEvent;
 use ItePHP\Event\ExecutePresenterEvent;
@@ -36,33 +35,46 @@ use ItePHP\Core\Enviorment;
 use ItePHP\Test\Request as RequestTest;
 use ItePHP\Core\Router;
 use ItePHP\Exception\ServiceNotFoundException;
+use ItePHP\DependencyInjection\DependencyInjection;
+use ItePHP\DependencyInjection\MetadataClass;
+use ItePHP\DependencyInjection\MetadataMethod;
+
 
 /**
  * Main class of project
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
- * @version 0.24.0
+ * @version 0.3.0
  */
 class Root{
 	
 	private $errorHandler;
 	private $executeResources;
-	private $eventManager;
 	private $router;
+	private $dependencyInjection;
 
 	public function __construct($debug,$silent,$name){
 		$enviorment=new Enviorment($debug,$silent,$name);
 		$this->executeResources=new ExecuteResources();
 		$this->executeResources->registerEnviorment($enviorment);
 		$this->router=new Router();
-		$this->eventManager=new EventManager($this->executeResources);
-		$this->errorHandler=new ErrorHandler($this->executeResources,$this->eventManager);
+		$this->dependencyInjection=new DependencyInjection();
+		$this->registerEventManager();
+		$this->errorHandler=new ErrorHandler($this->executeResources,$this->dependencyInjection->get('ite.eventManager'));
 
 		$this->executeResources->registerGlobalConfig(new GlobalConfig(__DIR__.'/../../../../config',$enviorment));
 		$this->registerServices($this->executeResources);
 		$this->registerEvents($this->executeResources);
 		$this->registerSnippets($this->executeResources);
+	}
+
+	private function registerEventManager(){
+		$metadataClass=new MetadataClass('ite.eventManager','ItePHP\Core\EventManager');
+		$metadataMethod=new MetadataMethod('__construct');
+		$metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,$this->executeResources);
+		$metadataClass->registerInvoke($metadataMethod);
+		$this->dependencyInjection->register($metadataClass);
 	}
 
 
@@ -72,7 +84,7 @@ class Root{
 			$this->executeResources->registerUrl($command[0]);
 			array_shift($command);
 			$dispatcher=$this->router->createCommandDispatcher($this->executeResources->getEnviorment(),$this->executeResources->getGlobalConfig(),$this->executeResources->getUrl(),$command);
-			$dispatcher->execute($this->executeResources,$this->eventManager);
+			$dispatcher->execute($this->executeResources,$this->dependencyInjection->get('ite.eventManager'));
 
 		}
 		catch(\Exception $e){
@@ -92,7 +104,7 @@ class Root{
 			$this->executeResources->registerUrl($url);
 
 			$dispatcher=$this->router->createHttpDispatcher($this->executeResources->getEnviorment(),$this->executeResources->getGlobalConfig(),$this->executeResources->getUrl());
-			$dispatcher->execute($this->executeResources,$this->eventManager);
+			$dispatcher->execute($this->executeResources,$this->dependencyInjection->get('ite.eventManager'));
 		}
 		catch(\Exception $e){
 			$this->errorHandler->exception($e);
@@ -107,7 +119,7 @@ class Root{
 		try{
 			$dispatcher=$this->router->createHttpTestDispatcher($this->executeResources->getEnviorment(),$this->executeResources->getGlobalConfig(),$this->executeResources->getUrl());
 			$dispatcher->setRequest($request);
-			$dispatcher->execute($this->executeResources,$this->eventManager);
+			$dispatcher->execute($this->executeResources,$this->dependencyInjection->get('ite.eventManager'));
 
 		}
 		catch(\Exception $e){
@@ -132,7 +144,7 @@ class Root{
 	private function registerEvents(ExecuteResources $executeResources){
 		foreach($executeResources->getGlobalConfig()->getEvents() as $bind=>$configs){
 			foreach($configs as $config){
-				$this->eventManager->register($bind,$config);
+				$this->dependencyInjection->get('ite.eventManager')->register($bind,$config);
 			}
 		}
 
@@ -140,7 +152,7 @@ class Root{
 
 	private function registerServices(ExecuteResources $executeResources){
 		foreach($executeResources->getGlobalConfig()->getServices() as $service){
-			$executeResources->registerService($service['name'] , new $service['class'](new ServiceConfig($service['config']),$this->eventManager));
+			$executeResources->registerService($service['name'] , new $service['class'](new ServiceConfig($service['config']),$this->dependencyInjection->get('ite.eventManager')));
 		}
 	}
 

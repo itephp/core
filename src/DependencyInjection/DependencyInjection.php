@@ -21,7 +21,7 @@ use \ReflectionClass;
  * Manager for dependency injeciton
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.2.0
+ * @since 0.3.0
  */
 class DependencyInjection{
 
