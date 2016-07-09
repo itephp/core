@@ -39,6 +39,10 @@ use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\DependencyInjection\MetadataClass;
 use ItePHP\DependencyInjection\MetadataMethod;
 
+use ItePHP\Config\ConfigBuilder;
+use ItePHP\Config\ConfigBuilderNode;
+use ItePHP\Config\XmlFileReader;
+
 
 /**
  * Main class of project
@@ -53,20 +57,47 @@ class Root{
 	private $executeResources;
 	private $router;
 	private $dependencyInjection;
+	private $config;
+	private $enviorment;
 
-	public function __construct($debug,$silent,$name){
-		$enviorment=new Enviorment($debug,$silent,$name);
+	public function __construct($enviorment){
+		$this->enviorment=$enviorment;
 		$this->executeResources=new ExecuteResources();
 		$this->executeResources->registerEnviorment($enviorment);
+
 		$this->router=new Router();
 		$this->dependencyInjection=new DependencyInjection();
 		$this->registerEventManager();
 		$this->errorHandler=new ErrorHandler($this->executeResources,$this->dependencyInjection->get('ite.eventManager'));
 
-		$this->executeResources->registerGlobalConfig(new GlobalConfig(__DIR__.'/../../../../config',$enviorment));
+		$this->initConfig();
+		// $this->executeResources->registerGlobalConfig(new GlobalConfig(__DIR__.'/../../../../config',$enviorment));
 		$this->registerServices($this->executeResources);
 		$this->registerEvents($this->executeResources);
 		$this->registerSnippets($this->executeResources);
+	}
+
+	private function initConfig(){
+		//config structure
+		$xmlReader=new XmlFileReader(ITE_ROOT.'/config/structure.xml');
+		$structureConfig=new ConfigBuilder($xmlReader);
+
+		$structureNode=new ConfigBuilderNode('structure');
+		$structureNode->addAttribute('class');
+
+		$structureConfig->addNode($structureNode);
+
+		$structureContainer=$structureConfig->parse();
+
+		$xmlReader=new XmlFileReader(ITE_ROOT.'/config/'.$this->enviorment->getName().'.xml');
+		$mainConfig=new ConfigBuilder($xmlReader);
+		foreach($structureContainer->getNodes('structure') as $structureNode){
+			$className=$structureNode->getAttribute('class');
+			$structureObj=$className();
+			$structureObj->config($mainConfig);
+		}
+
+		$this->config=$mainConfig->parse();
 	}
 
 	private function registerEventManager(){

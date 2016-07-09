@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<service name="serviceName" class="ItePHP\Config\ConfigBuilder" singletone="false" >
+		<method name="__constructor">
+			<argument type="primitive" value="data1" />
+			<argument type="reference" value="manager" />
+		</method>
+
+		<method name="setData">
+			<argument type="primitive" value="1" />
+		</method>
+	</service>
+
+	<service name="serviceName2" class="ItePHP\Config\ConfigContainer" >
+	</service>
+
+	<variable />
+</content>
