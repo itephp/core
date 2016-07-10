@@ -14,8 +14,8 @@ class ConfigBuilderNodeTest extends \PHPUnit_Framework_TestCase{
 	protected function setUp(){
 		$this->node=new ConfigBuilderNode('service');
 		$this->node->addAttribute('class');
-		$this->node->addAttribute('singletone',false,"true");
-		$this->node->addAttribute('autoup',false);
+		$this->node->addAttribute('singletone',"true");
+		$this->node->addAttribute('autoup',"");
 
 		$subNode=new ConfigBuilderNode('method');
 

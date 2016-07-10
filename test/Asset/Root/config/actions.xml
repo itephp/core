@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<action class="Test\Asset\Root\Controller\TestController" method="index" route="\/" presenter="ItePHP\Presenter\HTML" />
+
+</content>

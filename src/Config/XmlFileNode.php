@@ -15,20 +15,32 @@
 
 namespace ItePHP\Config;
 
+use \SimpleXMLElement;
 /**
  * Xml reader.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.4.0
  */
-class XmlFileNode implements FileReaderNode{
+class XmlFileNode implements ReaderNode{
 	
+	/**
+	 *
+	 * @var SimpleXMLElement
+	 */ 
 	private $data;
 
-	public function __construct($node){
+	/**
+	 *
+	 * @param SimpleXMLElement $node
+	 */
+	public function __construct(SimpleXMLElement $node){
 		$this->data=$node;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getNodes($name){
 		$nodes=[];
 		foreach($this->data->children() as $kNode=>$node){
@@ -42,11 +54,14 @@ class XmlFileNode implements FileReaderNode{
 		return $nodes;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getAttribute($name){
 		$attributes=$this->data->attributes();
 		if(!isset($attributes[$name])){
 			throw new ConfigException('Argument '.$name.' not found.');
 		}
-		return $attributes[$name];
+		return (string)$attributes[$name];
 	}
 }

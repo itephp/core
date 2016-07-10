@@ -44,10 +44,16 @@ class ConfigBuilderArgument{
 	 * @param boolean $required
 	 * @param string $default
 	 */
-	public function __construct($name,$required,$default){
+	public function __construct($name,$default=null){
 		$this->name=$name;
+		$required=true;
+		if($default!=null){
+			$this->default=$default;
+			$required=false;
+		}
+
 		$this->required=$required;
-		$this->default=$default;
+
 	}
 
 	/**

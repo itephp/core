@@ -23,31 +23,93 @@ namespace ItePHP\Config;
  */
 class ConfigBuilder{
 	
+	/**
+	 *
+	 * @var array
+	 */
 	private $nodes=[];
 
-	private $fileReader;
+	/**
+	 *
+	 * @var array
+	 */
+	private $readers=[];
 
-	public function __construct(FileReader $fileReader){
-		$this->fileReader=$fileReader;
+	/**
+	 *
+	 * @param Reader $Reader
+	 */
+	public function __construct(){
 	}
 
+	public function addReader(Reader $reader){
+		$this->readers[]=$reader;
+	}
+
+	/**
+	 *
+	 * @param ConfigBuilderNode $node
+	 */
 	public function addNode(ConfigBuilderNode $node){
 		$this->nodes[]=$node;
 	}
 
+	/**
+	 *
+	 * @return ConfigContainer
+	 */
 	public function parse(){
-		//TODO parse
 		$nodes=[];
-		foreach($this->nodes as $node){
-			$nodes[$node->getName()]=$this->parseNodes($this->fileReader,$node);
+
+		foreach($this->readers as $reader){
+			$nodes=$this->mergeNodes($nodes,$this->parseReader($reader));
 		}
 
 		return new ConfigContainer($nodes);
 	}
 
-	private function parseNodes($fileReader,ConfigBuilderNode $node){
+	/**
+	 *
+	 * @param array $originNode
+	 * @param array $newNodes
+	 * @return array
+	 */
+	private function mergeNodes($originNode,$newNodes){
+		foreach($newNodes as $nodeName=>$node){
+			if(!isset($originNode[$nodeName])){
+				$originNode[$nodeName]=[];
+			}
+
+			$originNode[$nodeName]=array_merge($originNode[$nodeName],$node);
+		}
+
+		return $originNode;
+
+	}
+
+	/**
+	 *
+	 * @param Reader $reader
+	 * @return array
+	 */
+	private function parseReader(Reader $reader){
 		$nodes=[];
-		$fileNodes=$fileReader->getNodes($node->getName());
+		foreach($this->nodes as $node){
+			$nodes[$node->getName()]=$this->parseNodes($reader,$node);
+		}
+
+		return $nodes;
+	}
+
+	/**
+	 *
+	 * @param Reader $reader
+	 * @param ConfigBuilderNode $node 
+	 * @return array
+	 */
+	private function parseNodes(Reader $reader,ConfigBuilderNode $node){
+		$nodes=[];
+		$fileNodes=$reader->getNodes($node->getName());
 		foreach($fileNodes as $fileNode){
 			$nodes[]=$this->parseNode($fileNode,$node);
 		}
@@ -55,29 +117,41 @@ class ConfigBuilder{
 		return $nodes;
 	}
 
-	private function parseNode($fileNode,ConfigBuilderNode $node){
+	/**
+	 *
+	 * @param ReaderNode $readerNode
+	 * @param ConfigBuilderNode $node 
+	 * @return ConfigContainerNode
+	 */
+	private function parseNode(ReaderNode $readerNode,ConfigBuilderNode $node){
 		$arguments=[];
 		$nodes=[];
 		foreach($node->getAttributes() as $argument){
-			$arguments[$argument->getName()]=$this->parseAttribute($fileNode,$argument);
+			$arguments[$argument->getName()]=$this->parseAttribute($readerNode,$argument);
 		}
 
 		foreach($node->getNodes() as $node){
-			$nodes[$node->getName()]=$this->parseNodes($fileNode,$node);
+			$nodes[$node->getName()]=$this->parseNodes($readerNode,$node);
 		}
 
 		return new ConfigContainerNode($nodes,$arguments);
 
 	}
 
-	private function parseAttribute($fileNode,ConfigBuilderArgument $argument){
+	/**
+	 *
+	 * @param ReaderNode $readerNode
+	 * @param ConfigBuilderArgument $argument 
+	 * @return string
+	 */
+	private function parseAttribute(ReaderNode $readerNode,ConfigBuilderArgument $argument){
 		$value=null;
 		try{
-			$value=$fileNode->getAttribute($argument->getName());
+			$value=$readerNode->getAttribute($argument->getName());
 		}
 		catch(ConfigException $e){
 			if($argument->isRequired()){
-				throw new $e;
+				throw $e;
 			}
 			$value=$argument->getDefault();
 		}

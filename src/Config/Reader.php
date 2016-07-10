@@ -16,42 +16,18 @@
 namespace ItePHP\Config;
 
 /**
- * Xml file reader
+ * Source reader.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.4.0
  */
-class XmlFileReader implements Reader{
-	
-	/**
-	 *
-	 * @var SimpleXMLElement
-	 */ 
-	private $data;
+interface Reader{
 
 	/**
 	 *
-	 * @param string $file
-	 */ 
-	public function __construct($file){
-		$this->data=new \SimpleXMLElement(file_get_contents($file));
+	 * @param string $name
+	 * @return array
+	 */
+	public function getNodes($name);
 
-
-	}
-
-    /**
-     * {@inheritdoc}
-     */
-	public function getNodes($name){
-		$nodes=[];
-		foreach($this->data->children() as $kNode=>$node){
-			if($kNode!=$name){
-				continue;
-			}
-
-			$nodes[]=new XmlFileNode($node);
-		}
-
-		return $nodes;
-	}
 }

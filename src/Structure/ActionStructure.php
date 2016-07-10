@@ -13,16 +13,31 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Config;
+namespace ItePHP\Structure;
+
+use ItePHP\Config\ConfigBuilder;
+use ItePHP\Config\ConfigBuilderNode;
 
 /**
- * File reader.
+ * Structure for actions.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.4.0
  */
-interface FileReader{
+class ActionStructure implements Structure{
 
-	public function getNodes($name);
+    /**
+     * {@inheritdoc}
+     */
+	public function doConfig(ConfigBuilder $configBuilder){
+		$actionNode=new ConfigBuilderNode('action');
+		$actionNode->addAttribute('class');
+		$actionNode->addAttribute('method');
+		$actionNode->addAttribute('route');
+		$actionNode->addAttribute('presenter');
+
+		$configBuilder->addNode($actionNode);
+
+	}	
 
 }

@@ -13,8 +13,5 @@
 		</method>
 	</service>
 
-	<service name="serviceName2" class="ItePHP\Config\ConfigContainer" >
-	</service>
-
 	<variable />
 </content>

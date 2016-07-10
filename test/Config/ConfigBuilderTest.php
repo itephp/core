@@ -13,8 +13,13 @@ class ConfigBuilderTest extends \PHPUnit_Framework_TestCase{
 	private $config;
 
 	public function setUp(){
+		$this->config=new ConfigBuilder();
+
 		$xmlReader=new XmlFileReader(__DIR__.'/../Asset/Config/example.xml');
-		$this->config=new ConfigBuilder($xmlReader);
+		$this->config->addReader($xmlReader);
+
+		$xmlReader=new XmlFileReader(__DIR__.'/../Asset/Config/example2.xml');
+		$this->config->addReader($xmlReader);
 
 		$argumentNode=new ConfigBuilderNode('argument');
 		$argumentNode->addAttribute('type');
@@ -27,7 +32,7 @@ class ConfigBuilderTest extends \PHPUnit_Framework_TestCase{
 		$serviceNode=new ConfigBuilderNode('service');
 		$serviceNode->addAttribute('name');
 		$serviceNode->addAttribute('class');
-		$serviceNode->addAttribute('singletone',false,'true');
+		$serviceNode->addAttribute('singletone','true');
 		$serviceNode->addNode($methodNode);
 
 		$this->config->addNode($serviceNode);
@@ -42,7 +47,6 @@ class ConfigBuilderTest extends \PHPUnit_Framework_TestCase{
 		$container=$this->config->parse();
 
 		$this->parseServiceNodes($container);
-
 		$this->assertCount(1,$container->getNodes('variable'));
 	}
 

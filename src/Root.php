@@ -79,22 +79,37 @@ class Root{
 
 	private function initConfig(){
 		//config structure
+		$structureConfig=new ConfigBuilder();
+
 		$xmlReader=new XmlFileReader(ITE_ROOT.'/config/structure.xml');
-		$structureConfig=new ConfigBuilder($xmlReader);
+		$structureConfig->addReader($xmlReader);
 
 		$structureNode=new ConfigBuilderNode('structure');
 		$structureNode->addAttribute('class');
-
 		$structureConfig->addNode($structureNode);
 
 		$structureContainer=$structureConfig->parse();
 
 		$xmlReader=new XmlFileReader(ITE_ROOT.'/config/'.$this->enviorment->getName().'.xml');
-		$mainConfig=new ConfigBuilder($xmlReader);
+		$importConfig=new ConfigBuilder();
+		$importConfig->addReader($xmlReader);
+
+		$importNode=new ConfigBuilderNode('import');
+		$importNode->addAttribute('file');
+		$importConfig->addNode($importNode);
+
+		$importContainer=$importConfig->parse();
+		$mainConfig=new ConfigBuilder();
+
+		foreach($importContainer->getNodes('import') as $importNode){
+			$xmlReader=new XmlFileReader(ITE_ROOT.'/config/'.$importNode->getAttribute('file'));
+			$mainConfig->addReader($xmlReader);
+		}
+
 		foreach($structureContainer->getNodes('structure') as $structureNode){
 			$className=$structureNode->getAttribute('class');
-			$structureObj=$className();
-			$structureObj->config($mainConfig);
+			$structureObj=new $className();
+			$structureObj->doConfig($mainConfig);
 		}
 
 		$this->config=$mainConfig->parse();
@@ -127,11 +142,8 @@ class Root{
 
 	}
 
-	public function executeRequest(){
+	public function executeRequest($url){
 		try{
-			$url=strstr($_SERVER['REQUEST_URI'],'?',true);
-			if(!$url)
-				$url=$_SERVER['REQUEST_URI'];
 			$this->executeResources->registerUrl($url);
 
 			$dispatcher=$this->router->createHttpDispatcher($this->executeResources->getEnviorment(),$this->executeResources->getGlobalConfig(),$this->executeResources->getUrl());

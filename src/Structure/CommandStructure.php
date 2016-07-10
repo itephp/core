@@ -13,45 +13,30 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Config;
+namespace ItePHP\Structure;
+
+use ItePHP\Config\ConfigBuilder;
+use ItePHP\Config\ConfigBuilderNode;
 
 /**
- * Xml file reader
+ * Structure for commands.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.4.0
  */
-class XmlFileReader implements Reader{
-	
-	/**
-	 *
-	 * @var SimpleXMLElement
-	 */ 
-	private $data;
-
-	/**
-	 *
-	 * @param string $file
-	 */ 
-	public function __construct($file){
-		$this->data=new \SimpleXMLElement(file_get_contents($file));
-
-
-	}
+class CommandStructure implements Structure{
 
     /**
      * {@inheritdoc}
      */
-	public function getNodes($name){
-		$nodes=[];
-		foreach($this->data->children() as $kNode=>$node){
-			if($kNode!=$name){
-				continue;
-			}
+	public function doConfig(ConfigBuilder $configBuilder){
+		$commandNode=new ConfigBuilderNode('command');
+		$commandNode->addAttribute('class');
+		$commandNode->addAttribute('method');
+		$commandNode->addAttribute('name');
 
-			$nodes[]=new XmlFileNode($node);
-		}
+		$configBuilder->addNode($commandNode);
 
-		return $nodes;
-	}
+	}	
+
 }

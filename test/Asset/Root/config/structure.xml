@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+
+<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<structure class="ItePHP\Structure\ImportStructure" />
+	<structure class="ItePHP\Structure\ActionStructure" />
+	<structure class="ItePHP\Structure\CommandStructure" />
+	<structure class="ItePHP\Structure\ErrorStructure" />
+	<structure class="ItePHP\Structure\EventStructure" />
+	<structure class="ItePHP\Structure\ServiceStructure" />
+	<structure class="ItePHP\Structure\SnippetStructure" />
+	<structure class="ItePHP\Structure\VariableStructure" />
+
+</content>

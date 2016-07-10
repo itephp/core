@@ -63,8 +63,8 @@ class ConfigBuilderNode{
 	 * @param boolean $required
 	 * @param string default
 	 */	
-	public function addAttribute($name,$required=true,$default=null){
-		$this->attributes[$name]=new ConfigBuilderArgument($name,$required,$default);
+	public function addAttribute($name,$default=null){
+		$this->attributes[$name]=new ConfigBuilderArgument($name,$default);
 	}
 
 	/**

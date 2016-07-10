@@ -12,7 +12,7 @@ use Asset\DependencyClass;
 
 class DependencyInjectionTest extends \PHPUnit_Framework_TestCase{
 	
-	public function testInvokeStandalone(){
+	public function testGetStandalone(){
 
 		$metadataClass=new MetadataClass('standalone','Asset\StandaloneClass');
 
@@ -35,7 +35,7 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase{
 		$this->assertEquals('data',$standaloneClass->getParam3());
 	}
 
-	public function testInvokeDependency(){
+	public function testGetDependency(){
 		$di=new DependencyInjection();
 
 		$metadataClass=new MetadataClass('standalone','Asset\StandaloneClass');
