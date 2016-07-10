@@ -13,24 +13,18 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Exception;
-use ItePHP\Core\Exception;
+namespace Asset\Root\Controller;
+use ItePHP\Core\Controller;
 
 /**
- * Throw when executed url not configured in config/actions.xml
- *
- * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
-class RouteNotFoundException extends Exception{
+class TestController extends Controller{
 	
 	/**
-	 * Constructor.
 	 *
-	 * @param string $url
-	 * @since 0.1.0
+	 * @return array
 	 */
-	public function __construct($url){
-		parent::__construct(3,'Route not found for url: '.$url.".","Page not found.");
+	public function index(){
+		return $this->getService('test')->getText();
 	}
 }

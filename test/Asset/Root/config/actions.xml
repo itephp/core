@@ -2,6 +2,6 @@
 
 <content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-	<action class="Test\Asset\Root\Controller\TestController" method="index" route="\/" presenter="ItePHP\Presenter\HTML" />
+	<action class="Asset\Root\Controller\TestController" method="index" route="\/test" presenter="ItePHP\Presenter\HTML" />
 
 </content>

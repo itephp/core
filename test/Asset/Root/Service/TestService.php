@@ -12,25 +12,30 @@
  * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+namespace Asset\Root\Service;
 
-namespace ItePHP\Core;
-
-use ItePHP\Core\Response;
-use ItePHP\Core\Enviorment;
-
-/**
- * Interface for generator view
- *
- * @author Michal Tomczak (michal.tomczak@itephp.com)
- */
-interface Presenter{
+class TestService{
 	
 	/**
-	 * Method with render rules.
 	 *
-	 * @param Enviorment $enviorment
-	 * @param Response $response
+	 * @var string
 	 */
-	public function render(Enviorment $enviorment , Response $response);
+	private $text;
+
+	/**
+	 *
+	 * @param string $text
+	 */
+	public function __construct($text){
+		$this->text=$text;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getText(){
+		return $this->text;
+	}
 
 }

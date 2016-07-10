@@ -12,11 +12,12 @@ use ItePHP\Root;
 class RootTest extends \PHPUnit_Framework_TestCase{
 	
 	public function testExecuteRequest(){
-
+		$_SERVER=[];
+		$_SERVER['REMOTE_ADDR']='127.0.0.1';
 		$envioroment=new Enviorment(true,true,'test');
 
 		$root=new Root($envioroment);
-		$root->executeRequest('test/api.html');
+		$root->executeRequest('/test');
 
 	}
 }

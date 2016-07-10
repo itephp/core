@@ -16,8 +16,8 @@
 namespace ItePHP\Presenter;
 
 use ItePHP\Core\Presenter;
-use ItePHP\Provider\Response;
-use ItePHP\Contener\RequestConfig;
+use ItePHP\Core\Response;
+use ItePHP\Core\Enviorment;
 
 /**
  * Presenter for html.
@@ -27,10 +27,11 @@ use ItePHP\Contener\RequestConfig;
  */
 class HTML implements Presenter{
 
-	public function render(RequestConfig $config , Response $response){
+	public function render(Enviorment $config , Response $response){
 
-		if(!$config->isSilent())
-			header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());
+		if(!$config->isSilent()){
+			header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());			
+		}
 
 		foreach($response->getHeaders() as $name=>$value){
 			header($name.': '.$value);

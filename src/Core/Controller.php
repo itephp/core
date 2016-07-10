@@ -19,18 +19,18 @@ use ItePHP\Core\ContenerServices;
 use ItePHP\Core\RequestProvider;
 use ItePHP\Provider\Response;
 use ItePHP\Provider\Session;
-use ItePHP\Exception\ServiceNotFoundException;
-use ItePHP\Exception\MethodNotFoundException;
 use ItePHP\Core\ExecuteResources;
 use ItePHP\Core\EventManager;
+
+use ItePHP\DependencyInjection\DependencyInjection;
+use ItePHP\Core\MethodNotFoundException;
 
 /**
  * Main class for project controllers
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
-abstract class Controller extends Container{
+abstract class Controller{
 
 	/**
 	 * RequestProvider
@@ -47,38 +47,36 @@ abstract class Controller extends Container{
 	private $session;
 
 	/**
-	 * Services
-	 *
-	 * @var array $services
-	 */
-	private $services=array();
-
-	/**
 	 * Snippets
 	 *
 	 * @var array $snippets
 	 */
-	private $snippets=array();	
+	private $snippets=[];	
+
+	/**
+	 *
+	 * @var DependencyInjection
+	 */
+	private $dependencyInjection;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \ItePHP\Core\RequestProvider $request
-	 * @param \ItePHP\Core\ExecuteResources $executeResources
-	 * @param \ItePHP\Core\EventManager $eventManager
-	 * @since 0.1.0
+	 * @param RequestProvider $request
+	 * @param DependencyInjection $dependencyInjection
+	 * @param array $snippets
 	 */
-	public function __construct(RequestProvider $request, ExecuteResources $executeResources,EventManager $eventManager){
+	public function __construct(RequestProvider $request,DependencyInjection $dependencyInjection,$snippets){
 		$this->request=$request;
 		$this->session=$request->getSession();
-		parent::__construct($executeResources,$eventManager);
+		$this->dependencyInjection=$dependencyInjection;
+		$this->snippets=$snippets;
 	}
 
 	/**
 	 * Get request provider object
 	 *
 	 * @return \ItePHP\Core\RequestProvider
-	 * @since 0.1.0
 	 */
 	public function getRequest(){
 		return $this->request;
@@ -88,9 +86,48 @@ abstract class Controller extends Container{
 	 * Get session provider object.
 	 *
 	 * @return \ItePHP\Core\SessionProvider
-	 * @since 0.1.0
 	 */
 	public function getSession(){
 		return $this->session;
 	}
+
+	/**
+	 * Get Event manager
+	 *
+	 * @return \ItePHP\Core\EventManager
+	 */
+	public function getEventManager(){
+		return $this->dependencyInjection->get('ite.eventManager');
+	}
+
+	/**
+	 * Get service
+	 *
+	 * @param string $name service name
+	 * @return object
+	 */
+	public function getService($name){
+		return $this->dependencyInjection->get($name);
+	}
+
+	/**
+	 * Execute snipper method.
+	 *
+	 * @param string $method
+	 * @param array $args
+	 * @return mixed
+	 * @throws \ItePHP\Exception\MethodNotFoundException
+	 */
+	public function __call($method, $args){
+		if(isset($snippets[$method])){
+	        return call_user_func_array(array($snippets[$method], $method),
+            array_merge([$this],$args)
+			);
+
+		}
+		else{
+			throw new MethodNotFoundException(get_class($this),$method);
+		}
+
+    }
 }

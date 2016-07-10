@@ -16,35 +16,34 @@
 namespace ItePHP\Event;
 
 use ItePHP\Core\RequestProvider;
-use ItePHP\Provider\Response;
+use ItePHP\Core\Response;
 
 /**
  * Contener with data for event "executedAction"
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class ExecutedActionEvent{
 
 	/**
 	 * Request provider.
 	 *
-	 * @var \ItePHP\Core\RequestProvider $request
+	 * @var RequestProvider $request
 	 */
 	private $request;
 
 	/**
 	 * Response.
 	 *
-	 * @var \ItePHP\Provider\Response $response
+	 * @var Response $response
 	 */
 	private $response;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \ItePHP\Core\RequestProvider $request
-	 * @param \ItePHP\Provider\Response $response
+	 * @param RequestProvider $request
+	 * @param Response $response
 	 * @since 0.1.0
 	 */
 	public function __construct(RequestProvider $request , Response $response){
@@ -55,7 +54,7 @@ class ExecutedActionEvent{
 	/**
 	 * Get response.
 	 *
-	 * @return \ItePHP\Provider\Response
+	 * @return Response
 	 * @since 0.1.0
 	 */
 	public function getResponse(){
@@ -65,7 +64,7 @@ class ExecutedActionEvent{
 	/**
 	 * Get request
 	 *
-	 * @return \ItePHP\Core\RequestProvider
+	 * @return RequestProvider
 	 * @since 0.1.0
 	 */
 	public function getRequest(){

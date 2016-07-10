@@ -13,16 +13,25 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Parser;
+namespace ItePHP\Core;
+use ItePHP\Core\Exception;
 
 /**
- * Interface for parser config file.
+ * Throw when controller doesn't have executed method.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
-interface ParserInterface extends \Iterator{
-	public function getValue($key);
-	public function loadFromFile($path);
-	public function loadFromString($data);
+class MethodNotFoundException extends Exception{
+	
+	/**
+	 * Constructor.
+	 *
+	 * @param string $className
+	 * @param string $methodName
+	 * @since 0.1.0
+	 */
+	public function __construct($className,$methodName){
+		parent::__construct(9,"Method '".$className."::".$methodName."' not found.","Internal server error.");
+	}
 }

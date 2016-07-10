@@ -12,41 +12,34 @@
  * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+namespace Asset\Root\Event;
 
-namespace ItePHP\Contener;
+use Asset\Root\Service\TestService;
+use ItePHP\Event\ExecuteActionEvent;
+use ItePHP\Event\ExecutedActionEvent;
 
-/**
- * Contener with service config.
- *
- * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
- */
-class ServiceConfig{
+class TestEvent{
 	
 	/**
-	 * Config data.
 	 *
-	 * @var array $class
+	 * @var TestService
 	 */
-	private $config;
+	private $test;
 
 	/**
-	 * Constructor.
-	 * @param array $config
-	 * @since 0.1.0
+	 *
+	 * @param TestService $testService
 	 */
-	public function __construct($config){
-		$this->config=$config;
+	public function __construct($testService){
+		$this->test=$testService;
 	}
 
-	/**
-	 * Get config value.
-	 *
-	 * @param string $key
-	 * @return mixed
-	 * @since 0.1.0
-	 */
-	public function get($key){
-		return $this->config[$key];
+	public function doExecuteAction(ExecuteActionEvent $event){
+
 	}
+
+	public function doExecutedAction(ExecutedActionEvent $event){
+		
+	}
+
 }

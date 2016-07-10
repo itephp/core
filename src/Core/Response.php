@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Provider;
+namespace ItePHP\Core;
 
 use ItePHP\Exception\InvalidStatusCodeException;
 use ItePHP\Exception\HeaderNotFoundException;

@@ -2,6 +2,10 @@
 
 <content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-	<service name="test" class="Test\Asset\Root\Service\ServiceTest" method="index" route="\/" presenter="ItePHP\Presenter\HTML" />
+	<service name="test" class="Asset\Root\Service\TestService">
+		<method name="__construct">
+			<argument type="primitive" value="hello" />
+		</method>
+	</service>
 
 </content>

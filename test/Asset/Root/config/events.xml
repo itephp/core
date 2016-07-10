@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+
+<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<event class="Asset\Root\Event\TestEvent">
+		<method name="__construct">
+			<argument type="reference" value="test" />
+		</method>
+		<bind name="executeAction" method="doExecuteAction" />
+		<bind name="executedAction" method="doExecutedAction" />
+	</event>
+
+</content>

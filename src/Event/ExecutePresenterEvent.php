@@ -16,36 +16,34 @@
 namespace ItePHP\Event;
 
 use ItePHP\Core\RequestProvider;
-use ItePHP\Provider\Response;
+use ItePHP\Core\Response;
 
 /**
  * Contener with data for event "executePresenter"
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class ExecutePresenterEvent{
 
 	/**
 	 * Request provider.
 	 *
-	 * @var \ItePHP\Core\RequestProvider $request
+	 * @var RequestProvider $request
 	 */
 	private $request;
 
 	/**
 	 * Response.
 	 *
-	 * @var \ItePHP\Provider\Response $response
+	 * @var Response $response
 	 */
 	private $response;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \ItePHP\Core\RequestProvider $request
-	 * @param \ItePHP\Provider\Response $response
-	 * @since 0.1.0
+	 * @param RequestProvider $request
+	 * @param Response $response
 	 */
 	public function __construct(RequestProvider $request,Response $response){
 		$this->request=$request;
@@ -55,8 +53,7 @@ class ExecutePresenterEvent{
 	/**
 	 * Get request.
 	 *
-	 * @return \ItePHP\Core\RequestProvider
-	 * @since 0.1.0
+	 * @return RequestProvider
 	 */
 	public function getRequest(){
 		return $this->request;
@@ -65,8 +62,7 @@ class ExecutePresenterEvent{
 	/**
 	 * Set response.
 	 *
-	 * @param \ItePHP\Provider\Response $response
-	 * @since 0.1.0
+	 * @param Response $response
 	 */
 	public function setResponse(Response $response){
 		$this->response=$response;
@@ -75,8 +71,7 @@ class ExecutePresenterEvent{
 	/**
 	 * Get response.
 	 *
-	 * @return \ItePHP\Provider\Response
-	 * @since 0.1.0
+	 * @return Response
 	 */
 	public function getResponse(){
 		return $this->response;

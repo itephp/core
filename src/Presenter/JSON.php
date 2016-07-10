@@ -16,8 +16,8 @@
 namespace ItePHP\Presenter;
 
 use ItePHP\Core\Presenter;
-use ItePHP\Provider\Response;
-use ItePHP\Contener\RequestConfig;
+use ItePHP\Core\Response;
+use ItePHP\Core\Enviorment;
 
 /**
  * Presenter for json.
@@ -27,7 +27,7 @@ use ItePHP\Contener\RequestConfig;
  */
 class JSON implements Presenter{
 
-	public function render(RequestConfig $config , Response $response){
+	public function render(Enviorment $config , Response $response){
 		$this->setHeaders($config,$response);
 		echo json_encode($response->getContent());
 	}

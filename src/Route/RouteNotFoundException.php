@@ -13,49 +13,23 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Parser;
+namespace ItePHP\Route;
 
 /**
- * Xml file parser.
+ * Throw when executed url not configured in config/actions.xml
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
-class XML{
+class RouteNotFoundException extends \Exception{
 	
 	/**
 	 * Constructor.
 	 *
-	 * @param string $data
-	 * @param string $type
-	 * @since 0.1.0
+	 * @param string $url
+	 * @since 0.4.0
 	 */
-	public function __construct($data,$type='FILE'){
-		if($type=='FILE')
-			$this->data=new \SimpleXMLElement(file_get_contents($data));
-		else
-			$this->data=new \SimpleXMLElement($data);
-	}
-
-	/**
-	 * Get data.
-	 *
-	 * @return mixed
-	 * @since 0.1.0
-	 */
-	public function get(){
-		return $this->data;
-	}
-
-	/**
-	 * Get child data.
-	 *
-	 * @param string $name
-	 * @return mixed
-	 * @since 0.1.0
-	 */
-	public function getChild($name){
-		$data=$this->data->children();
-		return $data[0];
+	public function __construct($url){
+		parent::__construct('Route not found for url: '.$url.".");
 	}
 }

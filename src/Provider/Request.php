@@ -21,7 +21,6 @@ use ItePHP\Core\RequestProvider;
 use ItePHP\Exception\HeaderNotFoundException;
 use ItePHP\Core\FileUploaded;
 use ItePHP\Exception\FileNotUploadedException;
-use ItePHP\Contener\RequestConfig;
 
 /**
  * Provider for request.
@@ -31,7 +30,6 @@ use ItePHP\Contener\RequestConfig;
  */
 class Request implements RequestProvider{
 
-	private $config;
 	private $data=array();
 	private $query=array();
 	private $session;
@@ -45,14 +43,9 @@ class Request implements RequestProvider{
 	private $clientIp;
 	private $files=array();
 
-	public function __construct(RequestConfig $config,$url,Session $session){
-		$this->config=$config;
+	public function __construct($url,Session $session){
 		$this->url=$url;
 		$this->session=$session;
-		$this->controller=$this->config->getController();
-		$this->method=$this->config->getMethod();
-		$this->class=$this->config->getClass();
-		$this->extra=$this->config->getExtra();
 		$this->prepare();
 
 	}
@@ -69,10 +62,6 @@ class Request implements RequestProvider{
 		}
 
 		return $this->files[$name];
-	}
-
-	public function getConfig(){
-		return $this->config;
 	}
 
 	public function getUrl(){
@@ -106,10 +95,6 @@ class Request implements RequestProvider{
 		unset($this->arguments[$index]);
 	}
 
-	public function getRoute(){
-		return $this->config->getRoute();
-	}
-
 	public function getSession(){
 		return $this->session;
 	}
@@ -133,10 +118,6 @@ class Request implements RequestProvider{
 
 	public function setMethod($method){
 		$this->method=$method;
-	}
-
-	public function getPresenter(){
-		return $this->config->getPresenter();
 	}
 
 	public function getExtra(){

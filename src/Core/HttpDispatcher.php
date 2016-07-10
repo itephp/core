@@ -15,143 +15,147 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\ExecuteResources;
-use ItePHP\Provider\Response;
+use ItePHP\Route\Dispatcher;
+use ItePHP\DependencyInjection\DependencyInjection;
+use ItePHP\Core\Response;
+use ItePHP\Core\ActionNotFoundException;
+use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Enviorment;
+
 use ItePHP\Event\ExecuteActionEvent;
 use ItePHP\Event\ExecutedActionEvent;
 use ItePHP\Event\ExecutePresenterEvent;
-use ItePHP\Core\EventManager;
-use ItePHP\Exception\ActionNotFoundException;
-use ItePHP\Provider\Session;
-use ItePHP\Core\RequestProvider;
-use ItePHP\Provider\Request;
-use ItePHP\Contener\RequestConfig;
 
 /**
  * Dispatcher for http request
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class HttpDispatcher  implements Dispatcher {
 
 	/**
 	 * Request
 	 *
-	 * @var \ItePHP\Core\RequestProvider $request
+	 * @var RequestProvider
 	 */
 	protected $request;
 
 	/**
-	 * ExecuteResources
 	 *
-	 * @var \ItePHP\Core\ExecuteResources $resources
+	 * @var string
 	 */
-	protected $resources;
+	protected $className;
 
 	/**
-	 * ExecuteResources
 	 *
-	 * @var \ItePHP\Contener\RequestConfig $config
+	 * @var string
 	 */
-	protected $config;
+	protected $methodName;
+
+	/**
+	 *
+	 * @var string
+	 */
+	protected $presenterName;
+
+	/**
+	 *
+	 * @var DependencyInjection
+	 */
+	protected $dependencyInjection;
+
+	/**
+	 *
+	 * @var Enviorment
+	 */
+	protected $enviorment;
+
+	/**
+	 *
+	 * @var array
+	 */
+	protected $snippets;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \ItePHP\Contener\RequestConfig $config
-	 * @since 0.1.0
+	 * @param string $className
+	 * @param string $methodName
+	 * @param string $presenterName
+	 * @param DependencyInjection $dependencyInjection
+	 * @param RequestProvider $request
+	 * @param Enviorment $enviorment
+	 * @param array $snippets
 	 */
-	public function __construct(RequestConfig $config){
-		$this->config=$config;
+	public function __construct($className,$methodName,$presenterName,DependencyInjection $dependencyInjection,RequestProvider $request,Enviorment $enviorment,$snippets){
+		$this->className=$className;
+		$this->methodName=$methodName;
+		$this->presenterName=$presenterName;
+		$this->request=$request;
+		$this->dependencyInjection=$dependencyInjection;
+		$this->enviorment=$enviorment;
+		$this->snippets=$snippets;
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @param \ItePHP\Core\ExecuteResources $resources
-	 * @param \ItePHP\Core\EventManager $eventManager
-	 * @since 0.1.0
 	 */
-	public function execute(ExecuteResources $resources,EventManager $eventManager){
-		$this->resources=$resources;
-		$this->eventManager=$eventManager;
-		$session=new Session($this->resources->getEnviorment());
-		$this->request=new Request($this->config,$this->resources->getUrl(),$session);
-		$this->resources->registerRequest($this->request);
+	public function execute(){
+		$eventManager=$this->dependencyInjection->get('ite.eventManager');
+		$presenter=new $this->presenterName();
 
-		$this->callMethod();
-
-	}	
-
-	/**
-	 * Execute controller method
-	 *
-	 * @throws \ItePHP\Exception\ActionNotFoundException
-	 * @since 0.1.0
-	 */
-	protected function callMethod(){
-
-		$this->resources->registerPresenter($this->getPresenter());
-		$response=new Response();
-		$response->setPresenter($this->resources->getPresenter());
 		$event=new ExecuteActionEvent($this->request);
-		$this->eventManager->fire('executeAction',$event);
-		if(!$event->getResponse()){
-
-			$controllerName=$this->request->getClass();
-			$controller=new $controllerName($this->request,$this->resources,$this->eventManager);
-
-			if(!is_callable(array($controller,$this->request->getMethod()))){
-				throw new ActionNotFoundException($controllerName,$this->request->getMethod());
-			}
-
-			$controllerData=call_user_func_array(array($controller, $this->request->getMethod()), $this->request->getArguments());
-			if($controllerData instanceof Response){
-				$response=$controllerData;
-				if(!$response->getPresenter())
-					$response->setPresenter($this->resources->getPresenter());
-				else
-					$this->resources->registerPresenter($response->getPresenter());
-			}
-			else
-				$response->setContent($controllerData);
-			$event=new ExecutedActionEvent($this->request,$response);
-			$this->eventManager->fire('executedAction',$event);
-
+		$eventManager->fire('executeAction',$event);
+		if($event->getResponse()){
+			$response=$event->getResponse();
 		}
-		else
-			$response=$event->getResponse();			
+		else{
+			$response=$this->invokeController();
+		}
 
-		$this->resources->registerResponse($response);
-
-		$this->prepareView($this->request , $this->resources->getPresenter() , $response);
+		$this->prepareView($presenter , $response);
 	}
 
-	/**
-	 * Get presenter
-	 *
-	 * @return \ItePHP\Core\Presenter
-	 * @since 0.1.0
-	 */
-	protected function getPresenter(){
-		$presenterConfig=$this->config->getPresenter();
-		return new $presenterConfig['class']($this->services);
+	private function invokeController(){
+		$eventManager=$this->dependencyInjection->get('ite.eventManager');
+
+		$controller=new $this->className($this->request,$this->dependencyInjection,$this->snippets);
+
+		if(!is_callable(array($controller,$this->methodName))){
+			throw new ActionNotFoundException($this->className,$this->methodName);
+		}
+		$response=null;
+		$controllerData=call_user_func_array([$controller, $this->methodName], $this->request->getArguments());
+		if($controllerData instanceof Response){
+			$response=$controllerData;
+		}
+		else{
+			$response=new Response();
+			$response->setContent($controllerData);
+		}
+
+		if(!$response->getPresenter()){
+			$response->setPresenter(new $this->presenterName());				
+		}
+
+		$event=new ExecutedActionEvent($this->request,$response);
+		$eventManager->fire('executedAction',$event);
+
+		return $response;
 	}
 
 	/**
 	 * Render view
 	 *
-	 * @param \ItePHP\Core\RequestProvider $request
 	 * @param \ItePHP\Core\Presenter $presenter
 	 * @param \ItePHP\Provider\Response $response
-	 * @since 0.1.0
 	 */
-	protected function prepareView(RequestProvider $request , Presenter $presenter , Response $response){
-		$event=new ExecutePresenterEvent($request,$response);
-		$this->eventManager->fire('executePresenter',$event);
+	protected function prepareView(Presenter $presenter , Response $response){
+		$eventManager=$this->dependencyInjection->get('ite.eventManager');
+		$event=new ExecutePresenterEvent($this->request,$response);
+		$eventManager->fire('executePresenter',$event);
 
-		$presenter->render($request->getConfig() , $response);
+		$presenter->render($this->enviorment , $response);
 	}
 
 

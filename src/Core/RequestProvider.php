@@ -32,14 +32,6 @@ interface RequestProvider{
 	 * @since 0.12.0
 	 */
 	public function getFile($name);
-
-	/**
-	 * Get config.
-	 *
-	 * @return \ItePHP\Contener\RequestConfig
-	 * @since 0.1.0
-	 */
-	public function getConfig();
 	
 	/**
 	 * Get http url.
@@ -101,14 +93,6 @@ interface RequestProvider{
 	public function removeArgument($name);
 
 	/**
-	 * Route config.
-	 *
-	 * @return array
-	 * @since 0.1.0
-	 */
-	public function getRoute();
-
-	/**
 	 * Get session provider.
 	 *
 	 * @return \ItePHP\Core\SessionProvider
@@ -155,22 +139,6 @@ interface RequestProvider{
 	 * @since 0.1.0
 	 */
 	public function setMethod($method);
-
-	/**
-	 * Get presenter.
-	 *
-	 * @return \ItePHP\Core\Presenter
-	 * @since 0.1.0
-	 */
-	public function getPresenter();
-
-	/**
-	 * Get extra config action.
-	 *
-	 * @return array
-	 * @since 0.1.0
-	 */
-	public function getExtra();
 
 	/**
 	 * Get request POST data.

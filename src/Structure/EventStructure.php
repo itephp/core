@@ -39,11 +39,14 @@ class EventStructure implements Structure{
 		$methodNode->addAttribute('name');
 		$methodNode->addNode($argumentNode);
 
+		$bindNode=new ConfigBuilderNode('bind');
+		$bindNode->addAttribute('name');
+		$bindNode->addAttribute('method');
+
 		$eventNode=new ConfigBuilderNode('event');
 		$eventNode->addAttribute('class');
-		$eventNode->addAttribute('method');
-		$eventNode->addAttribute('bind');
 		$eventNode->addNode($methodNode);
+		$eventNode->addNode($bindNode);
 
 		$configBuilder->addNode($eventNode);
 

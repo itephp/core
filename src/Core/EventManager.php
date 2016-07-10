@@ -28,44 +28,27 @@ class EventManager{
 	/**
 	 * Enviorment.
 	 *
-	 * @var \ItePHP\Core\ExecuteResources $resources
-	 */
-	private $resources;
-
-	/**
-	 * Enviorment.
-	 *
 	 * @var array $events
 	 */
 	private $events=array();
 
 	/**
-	 * Cache classes.
-	 *
-	 * @var array $cacheClasses
-	 */
-	private $cacheClasses=array();
-
-	/**
-	 * Constructor.
-	 *
-	 * @param \ItePHP\Core\ExecuteResources $resources
-	 * @since 0.1.0
-	 */
-	public function __construct(ExecuteResources $resources){
-		$this->resources=$resources;
-	}
-
-	/**
 	 * Register event.
 	 *
 	 * @param string $event event name
-	 * @param array $config event config
+	 * @param object $obj
+	 * @param string $methodName
 	 * @since 0.1.0
 	 */
-	public function register($event,$config){
-		$this->events+=array($event=>array());
-		$this->events[$event][]=$config;
+	public function register($event,$obj,$methodName){
+		$this->events+=[
+			$event=>[
+			]
+		];
+		$this->events[$event][]=[
+			'object'=>$obj,
+			'methodName'=>$methodName,
+			];
 	}
 
 	/**
@@ -75,15 +58,13 @@ class EventManager{
 	 * @param object $infoClass contener with event info eg.: \ItePHP\Event\ExecutePresenterEvent
 	 * @since 0.1.0
 	 */
-	public function fire($event,$infoClass=null){
-		if(isset($this->events[$event])){
-			foreach($this->events[$event] as $bind=>$config){
-				$className=$config['class'];
-				if(!isset($this->cacheClasses[$className]))
-					$this->cacheClasses[$className]=new $className($this->resources,$this);
-				call_user_func_array(array($this->cacheClasses[$className], $config['method']), array($infoClass,$config['config']));
+	public function fire($eventName,$infoClass=null){
+		if(isset($this->events[$eventName])){
+			foreach($this->events[$eventName] as $bind=>$data){
+				call_user_func_array([$data['object'], $data['methodName']], [$infoClass]);
 			}
 		}
+		//FIXME throw exception?
 	}
 
 }

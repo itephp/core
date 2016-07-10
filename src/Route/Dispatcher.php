@@ -13,25 +13,18 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Exception;
-use ItePHP\Core\Exception;
+namespace ItePHP\Route;
 
 /**
- * Throw when controller doesn't have executed method.
+ * Dispatcher.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
-class MethodNotFoundException extends Exception{
-	
+interface Dispatcher{
+
 	/**
-	 * Constructor.
 	 *
-	 * @param string $className
-	 * @param string $methodName
-	 * @since 0.1.0
-	 */
-	public function __construct($className,$methodName){
-		parent::__construct(9,"Method '".$className."::".$methodName."' not found.","Internal server error.");
-	}
+	 */	
+	public function execute();
+
 }
