@@ -35,11 +35,11 @@ class JSON implements Presenter{
 	private function setHeaders($requestConfig,$response){
 		if(!$requestConfig->isSilent()){
 			header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());
-		}
-		header('Content-type: application/json');
-		foreach($response->getHeaders() as $name=>$value){
-			if($name!='content-type')
-				header($name.': '.$value);
+			header('Content-type: application/json');
+			foreach($response->getHeaders() as $name=>$value){
+				if($name!='content-type')
+					header($name.': '.$value);
+			}
 		}
 
 	}

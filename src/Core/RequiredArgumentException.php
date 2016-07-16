@@ -13,27 +13,26 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Exception;
+namespace ItePHP\Core;
 
 use ItePHP\Core\Exception;
 
 /**
- * Throw when event argument can not parse http param.
+ * Throw when event argument can not required http param.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
-class InvalidArgumentException extends Exception{
-
+class RequiredArgumentException extends Exception{
+	
 	/**
 	 * Constructor.
 	 *
 	 * @param int $position
 	 * @param string $name
-	 * @param string $message
 	 * @since 0.1.0
-	 */	
-	public function __construct($position,$name,$message){
-		parent::__construct(200+$position,'Invalid argument "'.$name.'": '.$message);
+	 */
+	public function __construct($position,$name){
+		parent::__construct(100+$position,'Required argument "'.$name.'".');
 	}
 }

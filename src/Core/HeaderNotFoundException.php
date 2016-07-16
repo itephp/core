@@ -13,24 +13,25 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Exception;
+namespace ItePHP\Core;
+
 use ItePHP\Core\Exception;
 
 /**
- * Throw when FileUploaded can not get file data from php.
+ * Throw when Request or Response can not find http header.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
-class FileNotUploadedException extends Exception{
+class HeaderNotFoundException extends Exception{
 	
 	/**
 	 * Constructor.
 	 *
-	 * @param string $name
+	 * @param string $headerName
 	 * @since 0.1.0
 	 */	
-	public function __construct($name){
-		parent::__construct(17,'File '.$name.' not uploaded.');
+	public function __construct($headerName){
+		parent::__construct(11,"Header '".$headerName."' not found.","Internal server error.");
 	}
 }

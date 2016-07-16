@@ -16,7 +16,9 @@
 namespace ItePHP\Core;
 
 use ItePHP\Route\Dispatcher;
+
 use ItePHP\DependencyInjection\DependencyInjection;
+
 use ItePHP\Core\Response;
 use ItePHP\Core\ActionNotFoundException;
 use ItePHP\Core\RequestProvider;
@@ -26,12 +28,14 @@ use ItePHP\Event\ExecuteActionEvent;
 use ItePHP\Event\ExecutedActionEvent;
 use ItePHP\Event\ExecutePresenterEvent;
 
+use ItePHP\Config\ConfigContainerNode;
+
 /**
  * Dispatcher for http request
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class HttpDispatcher  implements Dispatcher {
+class HTTPDispatcher  implements Dispatcher {
 
 	/**
 	 * Request
@@ -79,28 +83,29 @@ class HttpDispatcher  implements Dispatcher {
 	/**
 	 * Constructor.
 	 *
-	 * @param string $className
-	 * @param string $methodName
-	 * @param string $presenterName
+	 * @param ConfigContainerNode $config
 	 * @param DependencyInjection $dependencyInjection
 	 * @param RequestProvider $request
 	 * @param Enviorment $enviorment
 	 * @param array $snippets
 	 */
-	public function __construct($className,$methodName,$presenterName,DependencyInjection $dependencyInjection,RequestProvider $request,Enviorment $enviorment,$snippets){
-		$this->className=$className;
-		$this->methodName=$methodName;
-		$this->presenterName=$presenterName;
+	public function __construct(ConfigContainerNode $config,DependencyInjection $dependencyInjection,RequestProvider $request,Enviorment $enviorment,$snippets){
+		$this->config=$config;
+		$this->className=$config->getAttribute('class');
+		$this->methodName=$config->getAttribute('method');
+		$this->presenterName=$config->getAttribute('presenter');
 		$this->request=$request;
 		$this->dependencyInjection=$dependencyInjection;
 		$this->enviorment=$enviorment;
 		$this->snippets=$snippets;
 	}
 
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public function execute(){
+		$this->request->setConfig($this->config);
 		$eventManager=$this->dependencyInjection->get('ite.eventManager');
 		$presenter=new $this->presenterName();
 

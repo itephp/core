@@ -13,25 +13,27 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Exception;
+namespace ItePHP\Core;
+
 use ItePHP\Core\Exception;
 
 /**
- * Throw when Global config can not parse node value.
+ * Throw when event argument can not parse http param.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
-class InvalidConfigValueException extends Exception{
-	
+class InvalidArgumentException extends Exception{
+
 	/**
 	 * Constructor.
 	 *
-	 * @param string $key
-	 * @param string $value
+	 * @param int $position
+	 * @param string $name
+	 * @param string $message
 	 * @since 0.1.0
-	 */
-	public function __construct($key,$value){
-		parent::__construct(8,'Invalid config value \''.$value.'\' for key \''.$key.'\'.','Invalid configuration.');
+	 */	
+	public function __construct($position,$name,$message){
+		parent::__construct(200+$position,'Invalid argument "'.$name.'": '.$message);
 	}
 }

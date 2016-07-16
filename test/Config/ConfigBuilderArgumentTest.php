@@ -22,7 +22,15 @@ class ConfigBuilderArgumentTest extends \PHPUnit_Framework_TestCase{
 		$ca=new ConfigBuilderArgument('class','data');
 
 		$this->assertFalse($ca->isRequired());
+
+		$ca=new ConfigBuilderArgument('class','');
+		$this->assertFalse($ca->isRequired());
+
+		$ca=new ConfigBuilderArgument('class',false);
+		$this->assertFalse($ca->isRequired());
+
 	}
+
 
 	public function testGetDefault(){
 		$ca=new ConfigBuilderArgument('class','data');

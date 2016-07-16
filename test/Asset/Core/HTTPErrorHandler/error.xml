@@ -1,0 +1,6 @@
+<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<error pattern=".*\.json" presenter="ItePHP\Presenter\JSON" />
+	<error pattern=".*" presenter="ItePHP\Presenter\HTML" />
+
+</content>

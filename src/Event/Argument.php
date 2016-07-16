@@ -15,14 +15,14 @@
 
 namespace ItePHP\Event;
 
-use ItePHP\Core\Event;
 use ItePHP\Provider\Response;
 use ItePHP\Event\ExecuteActionEvent;
-use ItePHP\Exception\ValueNotFoundException;
-use ItePHP\Exception\InvalidConfigValueException;
-use ItePHP\Exception\RequiredArgumentException;
-use ItePHP\Exception\InvalidArgumentException;
+use ItePHP\Core\InvalidConfigValueException;
+use ItePHP\Core\RequiredArgumentException;
+use ItePHP\Core\InvalidArgumentException;
 use ItePHP\Core\RequestProvider;
+use ItePHP\Config\ConfigContainerNode;
+use ItePHP\Service\Validator;
 
 /**
  * Event to foward http param ($_POST[],$_GET[],url) to controllr method.
@@ -30,8 +30,22 @@ use ItePHP\Core\RequestProvider;
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
-class Argument extends Event{
-	
+class Argument{
+
+	/**
+	 *
+	 * @var Validator
+	 */
+	private $validator;
+
+	/**
+	 *
+	 * @param Validator $validator 
+	 */
+	public function __construct(Validator $validator){
+		$this->validator=$validator;
+	}
+
 	/**
 	 * Detect config argument.
 	 *
@@ -39,14 +53,10 @@ class Argument extends Event{
 	 * @since 0.1.0
 	 */
 	public function onExecuteAction(ExecuteActionEvent $event){
-
 		$request=$event->getRequest();
 		$position=1;
-		foreach($request->getExtra() as $extra){
-			foreach($extra as $parameter=>$config){
-				if($parameter=='argument')
-					$this->validateArgument($request,$config,$position++);				
-			}
+		foreach($request->getConfig()->getNodes('argument') as $argument){
+			$this->validateArgument($request,$argument,$position++);				
 		}
 	}
 
@@ -54,7 +64,7 @@ class Argument extends Event{
 	 * Validate argument.
 	 *
 	 * @param \ItePHP\Core\RequestProvider $request
-	 * @param array $config argument
+	 * @param ConfigContainerNode $config argument
 	 * @param int $position
 	 * @throws \ItePHP\Exception\InvalidConfigValueException
 	 * @throws \ItePHP\Exception\InvalidArgumentException
@@ -62,34 +72,36 @@ class Argument extends Event{
 	 */
 	private function validateArgument(RequestProvider $request , $config , $position){
 		$value=null;
-		switch($config['storage']){
+		switch($config->getAttribute('storage')){
 			case 'url':
 				$value=$this->validateUrl($request , $config , $position);
 			break;
 			case 'post':
-				$value=$this->validatePost($request , $config , $position);
+				$value=$this->validatePost($request->getData() , $config , $position);
 			break;
 			case 'get':
-				$value=$this->validateGet($request , $config , $position);
+				$value=$this->validateGetPost($request->getQuery() , $config , $position);
 			break;
 			default:
-				throw new InvalidConfigValueException('storage',$config['storage']);
+				throw new InvalidConfigValueException('storage',$config->getAttribute('storage'));
 
 		}
 
-		if(isset($config['validator'])){
-			$validator=$this->getService('validator');
+		$validatorName=$config->getAttribute('validator');
+		if($validatorName!==''){
 
-			$error=$validator->validate(new $config['validator'](),$value);
-			if($error)
-				throw new InvalidArgumentException($position,$config['name'],$error);
+			$error=$this->validator->validate(new $validatorName(),$value);
+			if($error){
+				throw new InvalidArgumentException($position,$config->getAttribute('name'),$error);				
+			}
 		}
 
-		if(isset($config['mapper'])){
-			$mapper=new $config['mapper']($this);
+		$mapperName=$config->getAttribute('mapper');
+		if($mapperName!==''){
+			$mapper=new $mapperName();
 			$value=$mapper->cast($value);
 		}
-		$request->setArgument($config['name'],$value);
+		$request->setArgument($config->getAttribute('name'),$value);
 
 	}
 
@@ -97,7 +109,7 @@ class Argument extends Event{
 	 * Validate url.
 	 *
 	 * @param \ItePHP\Core\RequestProvider $request
-	 * @param array $config argument
+	 * @param ConfigContainerNode $config argument
 	 * @param int $position
 	 * @return string
 	 * @throws \ItePHP\Exception\RequiredArgumentException
@@ -105,61 +117,41 @@ class Argument extends Event{
 	 */
 	private function validateUrl(RequestProvider $request , $config , $position){
 		$url=$request->getUrl();
-
-		if(preg_match('/^'.$config['pattern'].'$/',$url,$matches) && isset($matches[1]))
-			return $matches[1];
-		else if(isset($config['default']))
-			return $config['default'];
-		else
-			throw new RequiredArgumentException($position,$config['name']);
-	}
-
-	/**
-	 * Validate POST.
-	 *
-	 * @param \ItePHP\Core\RequestProvider $request
-	 * @param array $config argument
-	 * @param int $position
-	 * @return string
-	 * @throws \ItePHP\Exception\RequiredArgumentException
-	 * @since 0.1.0
-	 */
-	private function validatePost(RequestProvider $request , $config , $position){
-		$postData=$request->getData();
-		$argumentName=$config['name'];
-		if(!isset($postData[$argumentName])){
-			if(isset($config['default']))
-				return $config['default'];
-			else
-				throw new RequiredArgumentException($position,$argumentName);
-
+		$default=$config->getAttribute('default');
+		if(preg_match('/^'.$config->getAttribute('pattern').'$/',$url,$matches) && isset($matches[1])){
+			return $matches[1];			
 		}
-
-		return $postData[$argumentName];
+		else if($default!==false){
+			return $config['default'];			
+		}
+		else{
+			throw new RequiredArgumentException($position,$config->getAttribute('name'));			
+		}
 	}
 
 	/**
 	 * Validate GET.
 	 *
-	 * @param \ItePHP\Core\RequestProvider $request
-	 * @param array $config argument
+	 * @param array $data http post/get data
+	 * @param ConfigContainerNode $config argument
 	 * @param int $position
 	 * @return string
 	 * @throws \ItePHP\Exception\RequiredArgumentException
 	 * @since 0.22.0
 	 */
-	private function validateGet(RequestProvider $request , $config , $position){
-		$getData=$request->getQuery();
-		$argumentName=$config['name'];
-		if(!isset($getData[$argumentName])){
-			if(isset($config['default']))
-				return $config['default'];
-			else
-				throw new RequiredArgumentException($position,$argumentName);
-
+	private function validateGetPost($data , $config , $position){
+		$argumentName=$config->getAttribute('name');
+		$default=$config->getAttribute('default');
+		if(!isset($data[$argumentName])){
+			if($default!==false){
+				return $default;
+			}
+			else{
+				throw new RequiredArgumentException($position,$argumentName);				
+			}
 		}
 
-		return $getData[$argumentName];
+		return $data[$argumentName];
 	}
 
 

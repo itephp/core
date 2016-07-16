@@ -13,36 +13,25 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace Asset\Root\Controller;
-use ItePHP\Core\Controller;
+namespace ItePHP\Core;
+use ItePHP\Core\Exception;
 
 /**
+ * Throw when Global config can not parse node value.
+ *
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
+ * @since 0.1.0
  */
-class TestController extends Controller{
+class InvalidConfigValueException extends Exception{
 	
 	/**
+	 * Constructor.
 	 *
-	 * @return array
+	 * @param string $key
+	 * @param string $value
+	 * @since 0.1.0
 	 */
-	public function index(){
-		return $this->getService('test')->getText();
+	public function __construct($key,$value){
+		parent::__construct(8,'Invalid config value \''.$value.'\' for key \''.$key.'\'.','Invalid configuration.');
 	}
-
-	/**
-	 *
-	 * @return array
-	 */
-	public function error(){
-		throw new \Exception('error');
-	}
-
-	/**
-	 *
-	 * @param string $arg
-	 * @return array
-	 */
-	public function argument($arg){
-		return $arg;
-	}
-
 }

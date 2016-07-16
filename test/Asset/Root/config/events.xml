@@ -10,4 +10,11 @@
 		<bind name="executedAction" method="doExecutedAction" />
 	</event>
 
+	<event class="ItePHP\Event\Argument">
+		<method name="__construct">
+			<argument type="reference" value="validator" />
+		</method>		
+		<bind name="executeAction" method="onExecuteAction" />
+	</event>
+
 </content>

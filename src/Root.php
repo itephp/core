@@ -15,23 +15,16 @@
 
 namespace ItePHP;
 
-use ItePHP\Contener\GlobalConfig;
-use ItePHP\Contener\RequestConfig;
-use ItePHP\Contener\ServiceConfig;
-use ItePHP\Contener\CommandConfig;
 use ItePHP\Core\RequestProvider;
 use ItePHP\Provider\Request;
 use ItePHP\Provider\Session;
-use ItePHP\Core\Presenter;
 use ItePHP\Event\ExecuteActionEvent;
 use ItePHP\Event\ExecutedActionEvent;
 use ItePHP\Event\ExecutePresenterEvent;
 use ItePHP\Exception\ActionNotFoundException;
 use ItePHP\Exception\CommandNotFoundException;
-use ItePHP\Core\ExecuteResources;
 use ItePHP\Core\Enviorment;
 use ItePHP\Test\Request as RequestTest;
-use ItePHP\Exception\ServiceNotFoundException;
 use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\DependencyInjection\MetadataClass;
 use ItePHP\DependencyInjection\MetadataMethod;
@@ -42,13 +35,16 @@ use ItePHP\Config\XmlFileReader;
 use ItePHP\Config\ConfigContainer;
 use ItePHP\Config\ConfigContainerNode;
 
-use ItePHP\Core\HttpDispatcher;
+use ItePHP\Core\HTTPDispatcher;
 use ItePHP\Core\Response;
 
 use ItePHP\Route\Router;
 
 use ItePHP\Error\ErrorManager;
 use ItePHP\Core\CriticalErrorHandler;
+use ItePHP\Core\HTTPErrorHandler;
+use ItePHP\Route\RouteNotFoundException;
+use ItePHP\Core\HTTPException;
 
 /**
  * Main class of project
@@ -59,8 +55,6 @@ use ItePHP\Core\CriticalErrorHandler;
  */
 class Root{
 	
-	private $executeResources;
-
 	/**
 	 *
 	 * @var DependencyInjection
@@ -93,15 +87,13 @@ class Root{
 
 	public function __construct(Enviorment $enviorment){
 		$this->enviorment=$enviorment;
-		$this->executeResources=new ExecuteResources();
-		$this->executeResources->registerEnviorment($enviorment);
 
 		$this->dependencyInjection=new DependencyInjection();
-		$this->registerEventManager();
 		$this->errorManager=new ErrorManager();
 		$this->errorManager->addHandler(new CriticalErrorHandler($enviorment));
 
 		$this->initConfig();
+		$this->registerEventManager();
 		$this->registerServices();
 		$this->registerEvents();
 		$this->registerSnippets();
@@ -168,27 +160,34 @@ class Root{
 
 	public function executeRequest($url){
 
-		$this->reconfigureErrorManager();
-
 		$session=new Session($this->enviorment);
 		$request=new Request($url,$session);
+
+		$this->reconfigureErrorManager($request);
 
 		try{
 			$dispatcher=$this->createHttpRouter($request)->createDispatcher($url);
 			$dispatcher->execute();
 		}
-		catch(\Exception $e){//FIXME check route not found exception (then set 404 status code)
+		catch(RouteNotFoundException $e){
+			$this->errorManager->exception(new HTTPException(404,$e->getMessage()));
+		}
+		catch(\Exception $e){
 			$this->errorManager->exception($e);
 		}
 
 	}
 
-	private function reconfigureErrorManager(){
+	private function reconfigureErrorManager(Request $request){
 		$removeHandlers=$this->errorManager->getHandlers();
 
-		$this->errorManager->addHandler(new HTTPErrorHandler($this->enviorment,$this->config));
+		$this->errorManager->addHandler(
+			new HTTPErrorHandler(
+				$this->enviorment,$this->config,$this->dependencyInjection->get('ite.eventManager'),$request
+			)
+		);
 
-		foreach($removeHandlers as $handlers){
+		foreach($removeHandlers as $handler){
 			$this->errorManager->removeHandler($handler);
 		}
 
@@ -197,10 +196,9 @@ class Root{
 	private function createHttpRouter(RequestProvider $request){
 		$router=new Router();
 
-		foreach($this->config->getNodes('action') as $actionNodes){
-			$router->addAction($actionNodes->getAttribute('route'),
-				new HttpDispatcher($actionNodes->getAttribute('class'),$actionNodes->getAttribute('method'),
-					$actionNodes->getAttribute('presenter'),
+		foreach($this->config->getNodes('action') as $actionNode){
+			$router->addAction($actionNode->getAttribute('route'),
+				new HttpDispatcher($actionNode,
 					$this->dependencyInjection,
 					$request,
 					$this->enviorment,$this->snippets

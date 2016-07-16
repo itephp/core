@@ -28,9 +28,6 @@ class Validator implements ValidatorService{
 	
 	private $entityManager;
 
-	public function __construct(ServiceConfig $serviceConfig){		
-	}
-
 	/**
 	 * {@inheritdoc}
 	 */

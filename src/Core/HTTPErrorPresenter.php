@@ -25,7 +25,7 @@ use ItePHP\Core\Response;
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.4.0
  */
-class HttpErrorPresenter implements Presenter{
+class HTTPErrorPresenter implements Presenter{
 
     /**
      * {@inheritdoc}

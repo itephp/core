@@ -4,4 +4,10 @@
 
 	<action class="Asset\Root\Controller\TestController" method="index" route="\/test" presenter="ItePHP\Presenter\HTML" />
 
+	<action class="Asset\Root\Controller\TestController" method="error" route="\/error" presenter="ItePHP\Presenter\HTML" />
+
+	<action class="Asset\Root\Controller\TestController" method="argument" route="\/argument" presenter="ItePHP\Presenter\HTML">
+		<argument storage="get" name="var" validator="ItePHP\Validator\Text" />
+	</action>
+
 </content>

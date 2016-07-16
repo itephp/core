@@ -32,7 +32,7 @@ use ItePHP\Contener\RequestConfig;
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
-class HttpTestDispatcher  extends HttpDispatcher {
+class HTTPTestDispatcher  extends HttpDispatcher {
 
 	/**
 	 * Set Request test

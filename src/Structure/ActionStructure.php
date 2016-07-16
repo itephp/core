@@ -30,11 +30,20 @@ class ActionStructure implements Structure{
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
+		$argumentNode=new ConfigBuilderNode('argument');
+		$argumentNode->addAttribute('storage');
+		$argumentNode->addAttribute('name');
+		$argumentNode->addAttribute('pattern','');
+		$argumentNode->addAttribute('validator','');
+		$argumentNode->addAttribute('mapper','');
+		$argumentNode->addAttribute('default',false);
+		
 		$actionNode=new ConfigBuilderNode('action');
 		$actionNode->addAttribute('class');
 		$actionNode->addAttribute('method');
 		$actionNode->addAttribute('route');
 		$actionNode->addAttribute('presenter');
+		$actionNode->addNode($argumentNode);
 
 		$configBuilder->addNode($actionNode);
 

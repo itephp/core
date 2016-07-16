@@ -8,4 +8,6 @@
 		</method>
 	</service>
 
+	<service name="validator" class="ItePHP\Service\Validator" />
+
 </content>

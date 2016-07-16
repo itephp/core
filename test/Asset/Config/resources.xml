@@ -1,8 +1,0 @@
-<?xml version="1.0" ?>
-
-<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
-    <resource pattern="\/css\/(.*)\.[0-9]+\.css" expire="31536000" path="/css/{1}.css" />
-   <resource pattern="\/fonts\/(.*)" expire="0" path="/fonts/{1}" />
-
-</content>

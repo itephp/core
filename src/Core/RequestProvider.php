@@ -15,6 +15,8 @@
 
 namespace ItePHP\Core;
 
+use ItePHP\Config\ConfigContainerNode;
+
 
 /**
  * Interface for request
@@ -101,46 +103,6 @@ interface RequestProvider{
 	public function getSession();
 
 	/**
-	 * Get controller class name.
-	 *
-	 * @return string
-	 * @since 0.1.0
-	 */
-	public function getClass();
-
-	/**
-	 * Get controller name
-	 *
-	 * @return string
-	 * @since 0.1.0
-	 */
-	public function getController();
-
-	/**
-	 * Set controller name
-	 *
-	 * @param string $controller
-	 * @since 0.1.0
-	 */
-	public function setController($controller);
-
-	/**
-	 * Get controller method name.
-	 *
-	 * @return string
-	 * @since 0.1.0
-	 */
-	public function getMethod();
-
-	/**
-	 * Set controller method name.
-	 *
-	 * @param string $method
-	 * @since 0.1.0
-	 */
-	public function setMethod($method);
-
-	/**
 	 * Get request POST data.
 	 *
 	 * @return array
@@ -203,5 +165,19 @@ interface RequestProvider{
 	 * @since 0.18.0 
 	 */
 	public function isFullUploadedData();
+
+	/**
+	 *
+	 * @return ConfigContainerNode
+	 * @since 0.4.0 
+	 */
+	public function getConfig();
+
+	/**
+	 *
+	 * @param ConfigContainerNode $config
+	 * @since 0.4.0 
+	 */
+	public function setConfig(ConfigContainerNode $config);
 
 }

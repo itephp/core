@@ -37,11 +37,8 @@ class ConfigBuilder{
 
 	/**
 	 *
-	 * @param Reader $Reader
+	 * @param Reader $reader
 	 */
-	public function __construct(){
-	}
-
 	public function addReader(Reader $reader){
 		$this->readers[]=$reader;
 	}

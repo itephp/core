@@ -18,9 +18,10 @@ namespace ItePHP\Provider;
 use ItePHP\Collection\Map;
 use ItePHP\Provider\Session;
 use ItePHP\Core\RequestProvider;
-use ItePHP\Exception\HeaderNotFoundException;
+use ItePHP\Core\HeaderNotFoundException;
 use ItePHP\Core\FileUploaded;
-use ItePHP\Exception\FileNotUploadedException;
+use ItePHP\Core\FileNotUploadedException;
+use ItePHP\Config\ConfigContainerNode;
 
 /**
  * Provider for request.
@@ -36,12 +37,14 @@ class Request implements RequestProvider{
 	private $arguments=array();
 	private $url;
 	private $headers=array();
-	private $controller;
-	private $method;
-	private $class;
-	private $extra;
 	private $clientIp;
 	private $files=array();
+
+	/**
+	 *
+	 * @var ConfigContainerNode
+	 */
+	private $config;
 
 	public function __construct($url,Session $session){
 		$this->url=$url;
@@ -99,29 +102,18 @@ class Request implements RequestProvider{
 		return $this->session;
 	}
 
-	public function getClass(){
-		return $this->class;
+    /**
+     * {@inheritdoc}
+     */
+	public function getConfig(){
+		return $this->config;
 	}
 
-	public function getController(){
-		return $this->controller;
-	}
-
-	public function setController($controller){
-		$this->class="Controller\\".$controller; //FIXME może jednak jakoś inaczej to zapisywać np w controller pełna ścieżka
-		$this->controller=$controller;
-	}
-
-	public function getMethod(){
-		return $this->method;
-	}
-
-	public function setMethod($method){
-		$this->method=$method;
-	}
-
-	public function getExtra(){
-		return $this->extra;
+    /**
+     * {@inheritdoc}
+     */
+	public function setConfig(ConfigContainerNode $config){
+		$this->config=$config;
 	}
 
 	public function getData(){

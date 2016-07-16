@@ -15,10 +15,10 @@ class ConfigBuilderTest extends \PHPUnit_Framework_TestCase{
 	public function setUp(){
 		$this->config=new ConfigBuilder();
 
-		$xmlReader=new XmlFileReader(__DIR__.'/../Asset/Config/example.xml');
+		$xmlReader=new XmlFileReader(__DIR__.'/../Asset/Config/ConfigBuilder/example.xml');
 		$this->config->addReader($xmlReader);
 
-		$xmlReader=new XmlFileReader(__DIR__.'/../Asset/Config/example2.xml');
+		$xmlReader=new XmlFileReader(__DIR__.'/../Asset/Config/ConfigBuilder/example2.xml');
 		$this->config->addReader($xmlReader);
 
 		$argumentNode=new ConfigBuilderNode('argument');

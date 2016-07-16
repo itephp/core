@@ -22,6 +22,8 @@ use ItePHP\Core\HTTPException;
 use ItePHP\Core\EventManager;
 use ItePHP\Presenter\HTML as HTMLPresenter;
 use ItePHP\Event\ExecutePresenterEvent;
+use ItePHP\Core\RequestProvider;
+use ItePHP\Config\ConfigContainer;
 
 /**
  *
@@ -50,22 +52,31 @@ class HTTPErrorHandler implements ErrorHandler{
 
 	/**
 	 *
+	 * @var RequestProvider
+	 */ 
+	private $request;
+
+	/**
+	 *
 	 * @param Enviorment $enviorment
 	 * @param ConfigContainer $config
 	 */
-	public function __construct(Enviorment $enviorment,ConfigContainer $config,EventManager $eventManager){
+	public function __construct(Enviorment $enviorment,ConfigContainer $config,EventManager $eventManager,RequestProvider $request){
 		$this->enviorment=$enviorment;
 		$this->config=$config;
 		$this->eventManager=$eventManager;
+		$this->request=$request;
 	}
 
     /**
      * {@inheritdoc}
      */
 	public function execute(Exception $exception){
-		error_log($exception->getMessage()." ".$exception->getFile()."(".$exception->getLine().")");
+		if(!$this->enviorment->isSilent()){
+			error_log($exception->getMessage()." ".$exception->getFile()."(".$exception->getLine().")");
+		}
 
-		$presenter=$this->getPresenter();
+		$presenter=$this->getPresenter($this->request->getUrl());
 
 		$response=new Response();
 		$response->setStatusCode(500);
@@ -74,9 +85,8 @@ class HTTPErrorHandler implements ErrorHandler{
 			$response->setStatusCode($exception->getStatusCode());
 		}
 
-		$event=new ExecutePresenterEvent($this->resources->getRequest(),$response);
+		$event=new ExecutePresenterEvent($this->request,$response);
 		$this->eventManager->fire('executePresenter',$event);
-		$this->execute($this->enviorment,$response);
 
 		$presenter->render($this->enviorment,$response);
 

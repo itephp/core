@@ -13,26 +13,35 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Exception;
+namespace ItePHP\Core;
 
-use ItePHP\Core\Exception;
+use \Exception;
 
 /**
- * Throw when event argument can not required http param.
+ * Throw when in php file is synax error.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
+ * @since 0.4.0
  */
-class RequiredArgumentException extends Exception{
+class HTTPException extends Exception{
 	
 	/**
 	 * Constructor.
 	 *
-	 * @param int $position
-	 * @param string $name
+	 * @param int $statusCode
+	 * @param string $message
 	 * @since 0.1.0
 	 */
-	public function __construct($position,$name){
-		parent::__construct(100+$position,'Required argument "'.$name.'".');
+	public function __construct($statusCode,$message){
+		$this->statusCode=$statusCode;
+		parent::__construct($message);
+	}
+
+	/**
+	 *
+	 * @return int
+	 */
+	public function getStatusCode(){
+		return $this->statusCode;
 	}
 }

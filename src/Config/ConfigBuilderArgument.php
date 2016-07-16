@@ -47,7 +47,8 @@ class ConfigBuilderArgument{
 	public function __construct($name,$default=null){
 		$this->name=$name;
 		$required=true;
-		if($default!=null){
+
+		if($default!==null){
 			$this->default=$default;
 			$required=false;
 		}
