@@ -23,7 +23,6 @@ use ItePHP\Core\RequestProvider;
 use ItePHP\Provider\Request;
 use ItePHP\Provider\Session;
 use ItePHP\Core\Presenter;
-use ItePHP\Core\ErrorHandler;
 use ItePHP\Event\ExecuteActionEvent;
 use ItePHP\Event\ExecutedActionEvent;
 use ItePHP\Event\ExecutePresenterEvent;
@@ -48,6 +47,9 @@ use ItePHP\Core\Response;
 
 use ItePHP\Route\Router;
 
+use ItePHP\Error\ErrorManager;
+use ItePHP\Core\CriticalErrorHandler;
+
 /**
  * Main class of project
  *
@@ -57,7 +59,6 @@ use ItePHP\Route\Router;
  */
 class Root{
 	
-	private $errorHandler;
 	private $executeResources;
 
 	/**
@@ -84,6 +85,12 @@ class Root{
 	 */
 	private $enviorment;
 
+	/**
+	 *
+	 * @var ErrorManager
+	 */
+	private $errorManager;
+
 	public function __construct(Enviorment $enviorment){
 		$this->enviorment=$enviorment;
 		$this->executeResources=new ExecuteResources();
@@ -91,7 +98,8 @@ class Root{
 
 		$this->dependencyInjection=new DependencyInjection();
 		$this->registerEventManager();
-		$this->errorHandler=new ErrorHandler($this->executeResources,$this->dependencyInjection->get('ite.eventManager'));
+		$this->errorManager=new ErrorManager();
+		$this->errorManager->addHandler(new CriticalErrorHandler($enviorment));
 
 		$this->initConfig();
 		$this->registerServices();
@@ -140,12 +148,6 @@ class Root{
 		$this->config=$mainConfig->parse();
 	}
 
-	private function registerEventManager(){
-		$metadataClass=new MetadataClass('ite.eventManager','ItePHP\Core\EventManager');
-		$this->dependencyInjection->register($metadataClass);
-	}
-
-
 	public function executeCommand($command){
 		$sigint=0;
 		try{
@@ -165,6 +167,9 @@ class Root{
 	}
 
 	public function executeRequest($url){
+
+		$this->reconfigureErrorManager();
+
 		$session=new Session($this->enviorment);
 		$request=new Request($url,$session);
 
@@ -173,8 +178,18 @@ class Root{
 			$dispatcher->execute();
 		}
 		catch(\Exception $e){//FIXME check route not found exception (then set 404 status code)
-			throw $e;
-			$this->errorHandler->exception($e);
+			$this->errorManager->exception($e);
+		}
+
+	}
+
+	private function reconfigureErrorManager(){
+		$removeHandlers=$this->errorManager->getHandlers();
+
+		$this->errorManager->addHandler(new HTTPErrorHandler($this->enviorment,$this->config));
+
+		foreach($removeHandlers as $handlers){
+			$this->errorManager->removeHandler($handler);
 		}
 
 	}
@@ -207,7 +222,7 @@ class Root{
 
 		}
 		catch(\Exception $e){
-			$this->errorHandler->exception($e);
+			$this->errorManager->exception($e);
 		}
 		$content=ob_get_clean();
 		ob_flush();
@@ -219,6 +234,11 @@ class Root{
 
 	public function getService($name){
 		return $this->dependencyInjection->get($name);
+	}
+
+	private function registerEventManager(){
+		$metadataClass=new MetadataClass('ite.eventManager','ItePHP\Core\EventManager');
+		$this->dependencyInjection->register($metadataClass);
 	}
 
 	private function registerEvents(){

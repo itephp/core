@@ -17,7 +17,13 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 		$envioroment=new Enviorment(true,true,'test');
 
 		$root=new Root($envioroment);
+
+		ob_start();
 		$root->executeRequest('/test');
+		$result=ob_get_clean();
+		ob_flush();
+
+		$this->assertEquals('hello',$result);
 
 	}
 }
