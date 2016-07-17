@@ -23,7 +23,9 @@ use ItePHP\Core\ExecuteResources;
 use ItePHP\Core\EventManager;
 
 use ItePHP\DependencyInjection\DependencyInjection;
+
 use ItePHP\Core\MethodNotFoundException;
+use ItePHP\Core\Container;
 
 /**
  * Main class for project controllers
@@ -35,57 +37,46 @@ abstract class Controller{
 	/**
 	 * RequestProvider
 	 *
-	 * @var \ItePHP\Core\RequestProvider $request
+	 * @var RequestProvider $request
 	 */
 	private $request;
 
 	/**
 	 * SessionProvider
 	 *
-	 * @var \ItePHP\Core\SessionProvider $session
+	 * @var SessionProvider $session
 	 */
 	private $session;
 
 	/**
-	 * Snippets
 	 *
-	 * @var array $snippets
+	 * @var Container
 	 */
-	private $snippets=[];	
-
-	/**
-	 *
-	 * @var DependencyInjection
-	 */
-	private $dependencyInjection;
+	private $container;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param RequestProvider $request
-	 * @param DependencyInjection $dependencyInjection
-	 * @param array $snippets
+	 * @param Container $container
 	 */
-	public function __construct(RequestProvider $request,DependencyInjection $dependencyInjection,$snippets){
+	public function __construct(RequestProvider $request,Container $container){
 		$this->request=$request;
 		$this->session=$request->getSession();
-		$this->dependencyInjection=$dependencyInjection;
-		$this->snippets=$snippets;
+		$this->container=$container;
 	}
 
 	/**
-	 * Get request provider object
 	 *
-	 * @return \ItePHP\Core\RequestProvider
+	 * @return RequestProvider
 	 */
 	public function getRequest(){
 		return $this->request;
 	}
 
 	/**
-	 * Get session provider object.
 	 *
-	 * @return \ItePHP\Core\SessionProvider
+	 * @return SessionProvider
 	 */
 	public function getSession(){
 		return $this->session;
@@ -94,10 +85,10 @@ abstract class Controller{
 	/**
 	 * Get Event manager
 	 *
-	 * @return \ItePHP\Core\EventManager
+	 * @return EventManager
 	 */
 	public function getEventManager(){
-		return $this->dependencyInjection->get('ite.eventManager');
+		return $this->container->getEventManager();
 	}
 
 	/**
@@ -107,7 +98,7 @@ abstract class Controller{
 	 * @return object
 	 */
 	public function getService($name){
-		return $this->dependencyInjection->get($name);
+		return $this->container->getService($name);
 	}
 
 	/**
@@ -116,18 +107,10 @@ abstract class Controller{
 	 * @param string $method
 	 * @param array $args
 	 * @return mixed
-	 * @throws \ItePHP\Exception\MethodNotFoundException
+	 * @throws MethodNotFoundException
 	 */
 	public function __call($method, $args){
-		if(isset($snippets[$method])){
-	        return call_user_func_array(array($snippets[$method], $method),
-            array_merge([$this],$args)
-			);
-
-		}
-		else{
-			throw new MethodNotFoundException(get_class($this),$method);
-		}
-
+		$snippet=$this->container->getSnippet($method);
+        return call_user_func_array([$snippet, $method],array_merge([$this->container],$args));
     }
 }

@@ -23,7 +23,7 @@ use ItePHP\Core\EventManager;
 use ItePHP\Presenter\HTML as HTMLPresenter;
 use ItePHP\Event\ExecutePresenterEvent;
 use ItePHP\Core\RequestProvider;
-use ItePHP\Config\ConfigContainer;
+use ItePHP\Core\Config;
 
 /**
  *
@@ -40,7 +40,7 @@ class HTTPErrorHandler implements ErrorHandler{
 
 	/**
 	 *
-	 * @var ConfigContainer
+	 * @var Config
 	 */ 
 	private $config;
 
@@ -59,9 +59,11 @@ class HTTPErrorHandler implements ErrorHandler{
 	/**
 	 *
 	 * @param Enviorment $enviorment
-	 * @param ConfigContainer $config
+	 * @param Config $config
+	 * @param EventManager $eventManager
+	 * @param RequestProvider $request
 	 */
-	public function __construct(Enviorment $enviorment,ConfigContainer $config,EventManager $eventManager,RequestProvider $request){
+	public function __construct(Enviorment $enviorment,Config $config,EventManager $eventManager,RequestProvider $request){
 		$this->enviorment=$enviorment;
 		$this->config=$config;
 		$this->eventManager=$eventManager;

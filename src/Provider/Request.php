@@ -15,13 +15,12 @@
 
 namespace ItePHP\Provider;
 
-use ItePHP\Collection\Map;
 use ItePHP\Provider\Session;
 use ItePHP\Core\RequestProvider;
 use ItePHP\Core\HeaderNotFoundException;
 use ItePHP\Core\FileUploaded;
 use ItePHP\Core\FileNotUploadedException;
-use ItePHP\Config\ConfigContainerNode;
+use ItePHP\Core\Config;
 
 /**
  * Provider for request.
@@ -42,7 +41,7 @@ class Request implements RequestProvider{
 
 	/**
 	 *
-	 * @var ConfigContainerNode
+	 * @var Config
 	 */
 	private $config;
 
@@ -112,7 +111,7 @@ class Request implements RequestProvider{
     /**
      * {@inheritdoc}
      */
-	public function setConfig(ConfigContainerNode $config){
+	public function setConfig(Config $config){
 		$this->config=$config;
 	}
 

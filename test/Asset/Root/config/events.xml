@@ -4,15 +4,16 @@
 
 	<event class="Asset\Root\Event\TestEvent">
 		<method name="__construct">
-			<argument type="reference" value="test" />
+			<argument type="reference" value="service.test" />
 		</method>
 		<bind name="executeAction" method="doExecuteAction" />
 		<bind name="executedAction" method="doExecutedAction" />
 	</event>
 
-	<event class="ItePHP\Event\Argument">
+	<event class="ItePHP\Event\ArgumentEvent">
 		<method name="__construct">
-			<argument type="reference" value="validator" />
+			<argument type="reference" value="container" />
+			<argument type="reference" value="service.validator" />
 		</method>		
 		<bind name="executeAction" method="onExecuteAction" />
 	</event>

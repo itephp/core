@@ -5,5 +5,7 @@
 	<import file="actions.xml" />
 	<import file="services.xml" />
 	<import file="events.xml" />
+	<import file="snippets.xml" />
+	<import file="variables.xml" />
 
 </content>

@@ -23,12 +23,13 @@ use ItePHP\Core\Response;
 use ItePHP\Core\ActionNotFoundException;
 use ItePHP\Core\RequestProvider;
 use ItePHP\Core\Enviorment;
+use ItePHP\Core\Container;
 
 use ItePHP\Event\ExecuteActionEvent;
 use ItePHP\Event\ExecutedActionEvent;
 use ItePHP\Event\ExecutePresenterEvent;
 
-use ItePHP\Config\ConfigContainerNode;
+use ItePHP\Core\Config;
 
 /**
  * Dispatcher for http request
@@ -64,9 +65,9 @@ class HTTPDispatcher  implements Dispatcher {
 
 	/**
 	 *
-	 * @var DependencyInjection
+	 * @var Container
 	 */
-	protected $dependencyInjection;
+	protected $container;
 
 	/**
 	 *
@@ -76,28 +77,26 @@ class HTTPDispatcher  implements Dispatcher {
 
 	/**
 	 *
-	 * @var array
+	 * @var Config
 	 */
-	protected $snippets;
+	protected $config;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param ConfigContainerNode $config
-	 * @param DependencyInjection $dependencyInjection
+	 * @param Config $config
+	 * @param Container $container
 	 * @param RequestProvider $request
 	 * @param Enviorment $enviorment
-	 * @param array $snippets
 	 */
-	public function __construct(ConfigContainerNode $config,DependencyInjection $dependencyInjection,RequestProvider $request,Enviorment $enviorment,$snippets){
+	public function __construct(Config $config,Container $container,RequestProvider $request,Enviorment $enviorment){
 		$this->config=$config;
 		$this->className=$config->getAttribute('class');
 		$this->methodName=$config->getAttribute('method');
 		$this->presenterName=$config->getAttribute('presenter');
 		$this->request=$request;
-		$this->dependencyInjection=$dependencyInjection;
+		$this->container=$container;
 		$this->enviorment=$enviorment;
-		$this->snippets=$snippets;
 	}
 
 
@@ -106,7 +105,7 @@ class HTTPDispatcher  implements Dispatcher {
 	 */
 	public function execute(){
 		$this->request->setConfig($this->config);
-		$eventManager=$this->dependencyInjection->get('ite.eventManager');
+		$eventManager=$this->container->getEventManager();
 		$presenter=new $this->presenterName();
 
 		$event=new ExecuteActionEvent($this->request);
@@ -121,10 +120,14 @@ class HTTPDispatcher  implements Dispatcher {
 		$this->prepareView($presenter , $response);
 	}
 
+	/**
+	 * 
+	 * @return Response
+	 */
 	private function invokeController(){
-		$eventManager=$this->dependencyInjection->get('ite.eventManager');
+		$eventManager=$this->container->getEventManager();
 
-		$controller=new $this->className($this->request,$this->dependencyInjection,$this->snippets);
+		$controller=new $this->className($this->request,$this->container);
 
 		if(!is_callable(array($controller,$this->methodName))){
 			throw new ActionNotFoundException($this->className,$this->methodName);
@@ -152,11 +155,11 @@ class HTTPDispatcher  implements Dispatcher {
 	/**
 	 * Render view
 	 *
-	 * @param \ItePHP\Core\Presenter $presenter
-	 * @param \ItePHP\Provider\Response $response
+	 * @param Presenter $presenter
+	 * @param Response $response
 	 */
 	protected function prepareView(Presenter $presenter , Response $response){
-		$eventManager=$this->dependencyInjection->get('ite.eventManager');
+		$eventManager=$this->container->getEventManager();
 		$event=new ExecutePresenterEvent($this->request,$response);
 		$eventManager->fire('executePresenter',$event);
 

@@ -13,36 +13,18 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace Asset\Root\Controller;
-use ItePHP\Core\Controller;
+namespace Asset\Root\Snippet;
+
+use ItePHP\Core\Container;
 
 /**
+ *
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
+ * @since 0.4.0
  */
-class TestController extends Controller{
+class TestSnippet {
 	
-	/**
-	 *
-	 * @return array
-	 */
-	public function index(){
-		return $this->invokeTest($this->getService('test'));
+	public function invokeTest(Container $container,$service){
+		return $service->getText();
 	}
-
-	/**
-	 *
-	 * @return array
-	 */
-	public function error(){
-		throw new \Exception('error');
-	}
-
-	/**
-	 *
-	 * @param string $arg
-	 * @return array
-	 */
-	public function argument($arg){
-		return $arg;
-	}
-
 }

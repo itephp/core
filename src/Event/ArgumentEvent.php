@@ -21,8 +21,9 @@ use ItePHP\Core\InvalidConfigValueException;
 use ItePHP\Core\RequiredArgumentException;
 use ItePHP\Core\InvalidArgumentException;
 use ItePHP\Core\RequestProvider;
-use ItePHP\Config\ConfigContainerNode;
+use ItePHP\Core\Config;
 use ItePHP\Service\Validator;
+use ItePHP\Core\Container;
 
 /**
  * Event to foward http param ($_POST[],$_GET[],url) to controllr method.
@@ -30,7 +31,13 @@ use ItePHP\Service\Validator;
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.1.0
  */
-class Argument{
+class ArgumentEvent{
+
+	/**
+	 *
+	 * @var Container
+	 */
+	private $container;
 
 	/**
 	 *
@@ -40,9 +47,11 @@ class Argument{
 
 	/**
 	 *
+	 * @param Container $container 
 	 * @param Validator $validator 
 	 */
-	public function __construct(Validator $validator){
+	public function __construct(Container $container,Validator $validator){
+		$this->container=$container;
 		$this->validator=$validator;
 	}
 
@@ -64,7 +73,7 @@ class Argument{
 	 * Validate argument.
 	 *
 	 * @param \ItePHP\Core\RequestProvider $request
-	 * @param ConfigContainerNode $config argument
+	 * @param Config $config argument
 	 * @param int $position
 	 * @throws \ItePHP\Exception\InvalidConfigValueException
 	 * @throws \ItePHP\Exception\InvalidArgumentException
@@ -98,7 +107,7 @@ class Argument{
 
 		$mapperName=$config->getAttribute('mapper');
 		if($mapperName!==''){
-			$mapper=new $mapperName();
+			$mapper=new $mapperName($this->container);
 			$value=$mapper->cast($value);
 		}
 		$request->setArgument($config->getAttribute('name'),$value);
@@ -109,7 +118,7 @@ class Argument{
 	 * Validate url.
 	 *
 	 * @param \ItePHP\Core\RequestProvider $request
-	 * @param ConfigContainerNode $config argument
+	 * @param Config $config argument
 	 * @param int $position
 	 * @return string
 	 * @throws \ItePHP\Exception\RequiredArgumentException
@@ -133,7 +142,7 @@ class Argument{
 	 * Validate GET.
 	 *
 	 * @param array $data http post/get data
-	 * @param ConfigContainerNode $config argument
+	 * @param Config $config argument
 	 * @param int $position
 	 * @return string
 	 * @throws \ItePHP\Exception\RequiredArgumentException

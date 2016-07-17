@@ -22,19 +22,27 @@ namespace ItePHP\Config;
  * @since 0.4.0
  */
 class ConfigContainer{
+	
+	/**
+	 *
+	 * @var array
+	 */
+	private $attributes=[];
 
 	/**
 	 *
 	 * @var array
-	 */	
+	 */
 	private $nodes=[];
 
 	/**
 	 *
 	 * @param array $nodes
-	 */	
-	public function __construct($nodes){
+	 * @param array $attributes
+	 */
+	public function __construct($nodes, $attributes){
 		$this->nodes=$nodes;
+		$this->attributes=$attributes;
 	}
 
 	/**
@@ -49,4 +57,18 @@ class ConfigContainer{
 		}
 		return $this->nodes[$name];
 	}
+
+	/**
+	 *
+	 * @param string $name
+	 * @return string
+	 * @throws ConfigException
+	 */	
+	public function getAttribute($name){
+		if(!isset($this->attributes[$name])){
+			throw new ConfigException('Argument '.$name.' not found.');
+		}
+		return $this->attributes[$name];
+	}
+
 }

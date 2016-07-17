@@ -62,7 +62,7 @@ class ConfigBuilder{
 			$nodes=$this->mergeNodes($nodes,$this->parseReader($reader));
 		}
 
-		return new ConfigContainer($nodes);
+		return new ConfigContainer($nodes,[]);
 	}
 
 	/**
@@ -131,7 +131,7 @@ class ConfigBuilder{
 			$nodes[$node->getName()]=$this->parseNodes($readerNode,$node);
 		}
 
-		return new ConfigContainerNode($nodes,$arguments);
+		return new ConfigContainer($nodes,$arguments);
 
 	}
 

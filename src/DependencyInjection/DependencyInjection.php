@@ -33,6 +33,15 @@ class DependencyInjection{
 		$this->metadataClasses[$metadaDataClass->getName()]=$metadaDataClass;
 	}
 
+	/**
+	 *
+	 * @param string $name
+	 * @param object $object
+	 */
+	public function addInstance($name, $object){
+		$this->instances[$name]=$object;
+	}
+
 	public function get($name){
 		if(!isset($this->instances[$name])){
 			$this->instances[$name]=$this->createInstance($name);

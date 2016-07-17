@@ -15,42 +15,41 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Exception\ServiceNotFoundException;
-use ItePHP\Exception\MethodNotFoundException;
+use ItePHP\Core\MethodNotFoundException;
 use ItePHP\Core\ExecuteResources;
 use ItePHP\Core\EventManager;
+use ItePHP\DependencyInjection\DependencyInjection;
 
 /**
- * Base class for Event, Command and Controller.
+ * Container for snippets and services.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
+ * @since 0.4.0
  */
-abstract class Container{
+class Container{
 
 	/**
-	 * Services.
 	 *
-	 * @var array $services
+	 * @var DependencyInjection
 	 */
-	private $services=array();
+	private $dependencyInjection;
 
 	/**
 	 * Snippets.
 	 *
-	 * @var array $snippets
+	 * @var array
 	 */
-	private $snippets=array();	
+	private $snippets=[];	
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \ItePHP\Core\ExecuteResources $executeResources
-	 * @since 0.1.0
+	 * @param DependencyInjection $executeResources
+	 * @param array $snippets
 	 */
-	public function __construct(ExecuteResources $executeResources,EventManager $eventManager){
-		$this->executeResources=$executeResources;
-		$this->eventManager=$eventManager;
+	public function __construct(DependencyInjection $dependencyInjection,array $snippets){
+		$this->dependencyInjection=$dependencyInjection;
+		$this->snippets=$snippets;
 	}
 
 	/**
@@ -59,17 +58,7 @@ abstract class Container{
 	 * @return \ItePHP\Core\EventManager
 	 */
 	public function getEventManager(){
-		return $this->eventManager;
-	}
-
-	/**
-	 * Get enviorment
-	 *
-	 * @return \ItePHP\Core\Enviorment
-	 * @since 0.1.0
-	 */
-	public function getEnviorment(){
-		return $this->executeResources->getEnviorment();
+		return $this->dependencyInjection->get('eventManager');
 	}
 
 	/**
@@ -81,33 +70,22 @@ abstract class Container{
 	 * @since 0.1.0
 	 */
 	public function getService($name){
-		$services=$this->executeResources->getServices();
-		if(!isset($services[$name]))
-			throw new ServiceNotFoundException($name);
-
-		return $services[$name];
+		//FIXME check exists service
+		return $this->dependencyInjection->get('service.'.$name);
 	}
 
 	/**
-	 * Execute snipper method.
 	 *
 	 * @param string $method
-	 * @param array $args
-	 * @return mixed
-	 * @throws \ItePHP\Exception\MethodNotFoundException
-	 * @since 0.1.0
+	 * @return object
+	 * @throws MethodNotFoundException
 	 */
-	public function __call($method, $args){
-		$snippets=$this->executeResources->getSnippets();
-		if(isset($snippets[$method])){
-	        return call_user_func_array(array($snippets[$method], $method),
-            array_merge(array($this),$args)
-			);
-
-		}
-		else{
+	public function getSnippet($method){
+		if(!isset($this->snippets[$method])){
 			throw new MethodNotFoundException(get_class($this),$method);
 		}
+
+		return $this->snippets[$method];
 
     }
 }

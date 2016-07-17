@@ -15,7 +15,7 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Config\ConfigContainerNode;
+use ItePHP\Core\Config;
 
 
 /**
@@ -168,16 +168,16 @@ interface RequestProvider{
 
 	/**
 	 *
-	 * @return ConfigContainerNode
+	 * @return Config
 	 * @since 0.4.0 
 	 */
 	public function getConfig();
 
 	/**
 	 *
-	 * @param ConfigContainerNode $config
+	 * @param Config $config
 	 * @since 0.4.0 
 	 */
-	public function setConfig(ConfigContainerNode $config);
+	public function setConfig(Config $config);
 
 }

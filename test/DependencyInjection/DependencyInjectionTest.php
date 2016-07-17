@@ -70,4 +70,14 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase{
 		$this->assertTrue($dependencyClass->isFlag());
 	}
 
+	public function testAddInstance(){
+		$di=new DependencyInjection();
+		$instance=new StandaloneClass('1','2');
+		$di->addInstance('class',$instance);
+
+		$dependencyClass=$di->get('class');
+
+		$this->assertEquals('1',$dependencyClass->getParam1());
+		$this->assertEquals('2',$dependencyClass->getParam2());
+	}
 }
