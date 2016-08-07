@@ -10,17 +10,17 @@ use ItePHP\Command\OutputStream;
 class TestCommand implements CommandInterface{
 
 	public function doConfig(CommandConfig $config){
-		$config->addArgument('--boolean',0,false);
+		$config->addArgument('--boolean',0,"0");
 		$config->addArgument('string');
 		$config->addArgument('array',2,[]);
 	}
 
 	public function execute(InputStream $in,OutputStream $out){
-		$out->write($in->getValue('--boolean'));
+		$out->write($in->getArgument('--boolean'));
 
-		$out->write($in->getValue('string'));
+		$out->write($in->getArgument('string'));
 
-		$out->write(implode("-",$in->getValue('array')));
+		$out->write(implode("-",$in->getArgument('array')));
 
 		$out->flush();
 	}

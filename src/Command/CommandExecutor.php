@@ -36,10 +36,21 @@ class CommandExecutor{
 
 	/**
 	 *
+	 * @var OutputStream
+	 */
+	private $outputStream;
+
+	/**
+	 *
 	 * @param CommandInterface $commandObject
 	 */
 	public function __construct(CommandInterface $commandObject){
 		$this->commandObject=$commandObject;
+		$this->setOutputStream(new OutputStreamConsole());
+	}
+
+	public function setOutputStream(OutputStream $outputStream){
+		$this->outputStream=$outputStream;
 	}
 
 	/**
@@ -52,9 +63,8 @@ class CommandExecutor{
 
 	public final function run(){
 		$inputStream=$this->getInputStream();
-		$outputStream=new OutputStream();
 
-		call_user_func_array([$this->commandObject,'execute'], [$inputStream,$outputStream]);
+		call_user_func_array([$this->commandObject,'execute'], [$inputStream,$this->outputStream]);
 	}
 
 	private function getInputStream(){
@@ -90,17 +100,23 @@ class CommandExecutor{
 
 	private function getValue(CommandArgument $argument,$index){
 		$length=$argument->getLength();
-		if($index==0){
+
+		if($length==0){
 			return true;
 		}
 		$value=[];
-		for($i=$index+1,$j=$length; $i<count($this->argument) && $j>0; $i++,$j--){
-			$value[]=$this->argument[$i];
+		for($i=$index+1,$j=$length; $i<count($this->arguments) && $j>0; $i++,$j--){
+			$value[]=$this->arguments[$i];
 		}
 
 		if($j!=0){
 			throw new CommandInvalidArgumentLengthException($argument->getName(),$argument->getLength(),$argument->getLength()-$j);
 		}
+
+		if(count($value)==1){
+			$value=$value[0];
+		}
+
 
 		return $value;
 	}

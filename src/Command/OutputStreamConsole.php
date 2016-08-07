@@ -20,17 +20,26 @@ namespace ItePHP\Command;
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  * @since 0.4.0
  */
-interface OutputStream{
+class OutputStreamConsole implements OutputStream{
 
 	/**
 	 *
-	 * @param string $data
-	 */ 
-	public function write($data);
+	 * @param string
+	 */
+	private $buffer="";
 
-	/**
-	 *
-	 */ 
-	public function flush();
+    /**
+     * {@inheritdoc}
+     */
+	public function write($data){
+		$this->buffer.=$data;
+	}
 
+    /**
+     * {@inheritdoc}
+     */
+	public function flush(){
+		echo $this->buffer;
+		$this->buffer="";
+	}
 }
