@@ -48,7 +48,16 @@ class Config{
 			return;
 		}
 
-		foreach($this->container->getNodes('variable') as $variable){
+		$variables=[];
+		try{
+			$variables=$this->container->getNodes('variable');
+		}
+		catch(ConfigException $e){
+			//variable not found. Break
+			return;
+		}
+
+		foreach($variables as $variable){
 			static::$variables[$variable->getAttribute('name')]=$variable->getAttribute('value');
 		}
 	}

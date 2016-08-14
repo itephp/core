@@ -59,7 +59,7 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 
 	}
 
-	public function testExecuteArgument(){
+	public function testExecuteRequestArgument(){
 		$_SERVER=[];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
 		$_GET=[];
@@ -74,6 +74,38 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 		ob_flush();
 
 		$this->assertEquals('testValue',$result);
+
+	}
+
+	public function testExecuteCommand(){
+		$envioroment=new Enviorment(true,true,'test');
+
+		$root=new Root($envioroment);
+
+		ob_start();
+		$sigint=$root->executeCommand(['hello','--name','Michal']);
+		$result=ob_get_clean();
+		ob_flush();
+
+		$this->assertEquals(0,$sigint);
+
+		$this->assertEquals('hello Michal',$result);
+
+	}
+
+	public function testExecuteCommandCommandNotFoundException(){
+		$envioroment=new Enviorment(true,true,'test');
+
+		$root=new Root($envioroment);
+
+		ob_start();
+		$sigint=$root->executeCommand(['not:found','--name','Michal']);
+		$result=ob_get_clean();
+		ob_flush();
+
+		$this->assertEquals(1,$sigint);
+
+		$this->assertEquals('Command not:found not found.',$result);
 
 	}
 

@@ -30,10 +30,20 @@ class CommandStructure implements Structure{
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
+		$argumentNode=new ConfigBuilderNode('argument');
+		$argumentNode->addAttribute('type');
+		$argumentNode->addAttribute('value');
+
+		$methodNode=new ConfigBuilderNode('method');
+		$methodNode->addAttribute('name');
+		$methodNode->addNode($argumentNode);
+
+
 		$commandNode=new ConfigBuilderNode('command');
 		$commandNode->addAttribute('class');
-		$commandNode->addAttribute('method');
 		$commandNode->addAttribute('name');
+
+		$commandNode->addNode($methodNode);
 
 		$configBuilder->addNode($commandNode);
 

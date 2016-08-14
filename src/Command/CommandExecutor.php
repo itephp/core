@@ -61,6 +61,22 @@ class CommandExecutor{
 		$this->arguments[]=$argument;
 	}
 
+	/**
+	 *
+	 * @param array $arguments
+	 */
+	public function setArguments($arguments){
+		$this->arguments=$arguments;
+	}
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getArguments(){
+		return $this->arguments;
+	}
+
 	public final function run(){
 		$inputStream=$this->getInputStream();
 

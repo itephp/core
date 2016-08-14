@@ -81,4 +81,10 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase{
 
 	}
 
+	public function testSetArguments(){
+		$args=['1','z'];
+		$this->commandExecutor->setArguments($args);
+		$this->assertEquals($args,$this->commandExecutor->getArguments());
+	}
+
 }

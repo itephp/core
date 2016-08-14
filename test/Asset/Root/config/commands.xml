@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<command class="Asset\Root\Command\TestCommand" name="hello">
+		<method name="__construct">
+			<argument type="reference" value="service.test" />
+		</method>
+	</command>
+
+
+</content>

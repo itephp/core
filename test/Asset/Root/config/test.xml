@@ -3,6 +3,7 @@
 <content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<import file="actions.xml" />
+	<import file="commands.xml" />
 	<import file="services.xml" />
 	<import file="events.xml" />
 	<import file="snippets.xml" />

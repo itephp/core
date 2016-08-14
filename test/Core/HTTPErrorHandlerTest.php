@@ -12,6 +12,7 @@ use ItePHP\Config\XmlFileReader;
 use ItePHP\Provider\Session;
 use ItePHP\Provider\Request;
 use ItePHP\Core\EventManager;
+use ItePHP\Core\Config;
 
 class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 	
@@ -27,7 +28,8 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 		$configBuilder->addNode($errorNode);
 		$xmlFileReader=new XmlFileReader(__DIR__.'/../Asset/Core/HTTPErrorHandler/error.xml');
 		$configBuilder->addReader($xmlFileReader);
-		return $configBuilder->parse();
+
+		return new Config($configBuilder->parse());
 	}
 
 	public function testExecuteHTML(){
