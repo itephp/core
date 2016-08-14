@@ -2,9 +2,10 @@
 
 <content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-	<command class="Migrate\MigrateCommand" name="migrate">
+	<command class="ItePHP\Migrate\MigrateCommand" name="migrate">
 		<method name="__construct">
 			<argument type="reference" value="container" />
+			<argument type="reference" value="enviorment" />
 		</method>
 		<method name="setSavePath">
 			<argument type="primitive" value="/migrate.txt" />
@@ -12,6 +13,10 @@
 
 		<method name="setStagePath">
 			<argument type="primitive" value="/Stage" />
+		</method>
+
+		<method name="setPatternPath">
+			<argument type="primitive" value="/pattern.txt" />
 		</method>
 
 	</command>

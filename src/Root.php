@@ -139,6 +139,7 @@ class Root{
 		$snippets=$this->getSnippets($dependencyInjection);
 		$this->container=new Container($dependencyInjection,$snippets);
 		$dependencyInjection->addInstance('container',$this->container);
+		$dependencyInjection->addInstance('enviorment',$this->enviorment);
 		$this->registerServices($dependencyInjection);
 		$this->registerEventManager($dependencyInjection);
 		$this->registerEvents($dependencyInjection);
@@ -177,6 +178,7 @@ class Root{
 		$snippets=$this->getSnippets($dependencyInjection);
 		$this->container=new Container($dependencyInjection,$snippets);
 		$dependencyInjection->addInstance('container',$this->container);
+		$dependencyInjection->addInstance('enviorment',$this->enviorment);
 		$this->registerServices($dependencyInjection);
 		$this->registerEventManager($dependencyInjection);
 		$this->registerEvents($dependencyInjection);

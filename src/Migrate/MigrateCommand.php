@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace Asset\Command;
+namespace ItePHP\Migrate;
 
 use ItePHP\Command\CommandInterface;
 use ItePHP\Command\CommandConfig;
@@ -21,6 +21,7 @@ use ItePHP\Command\InputStream;
 use ItePHP\Command\OutputStream;
 
 use ItePHP\Core\Container;
+use ItePHP\Core\Enviorment;
 
 class MigrateCommand implements CommandInterface{
 
@@ -42,12 +43,13 @@ class MigrateCommand implements CommandInterface{
 	/**
 	 *
 	 * @param Container $container
+	 * @param Enviorment $enviorment
 	 */
-	public function __construct(Container $container){
+	public function __construct(Container $container,Enviorment $enviorment){
 		$this->container=$container;
 		$this->setPatternPath('/vendor/itephp/framework/pattern/migrate.txt');
-		$this->setSavePath('/config/migrate.'.$container->getEnviorment()->getName().'.txt');
-		$this->setStagePath('/Migrate');
+		$this->setSavePath('/config/migrate.'.$enviorment->getName().'.txt');
+		$this->setStagePath('/src/Migrate');
 	}
 
 	/**
@@ -88,13 +90,13 @@ class MigrateCommand implements CommandInterface{
 		$operation=$in->getArgument('-o');
 		switch($in->getArgument('-o')){
 			case 'create':
-				$this->createOperation();
+				$this->createOperation($in,$out);
 			break;
 			case 'upgrade':
-				$this->upgradeOperation();
+				$this->upgradeOperation($in,$out);
 			break;
 			case 'downgrade':
-				$this->downgradeOperation();
+				$this->downgradeOperation($in,$out);
 			break;
 			default:
 				throw new OperationNotSupportedException($operation);
@@ -111,7 +113,7 @@ class MigrateCommand implements CommandInterface{
 
 		$template=file_get_contents(ITE_ROOT.$this->patternPath);
 		$template=str_replace('${date}', $now->format('YmdHis'), $template);
-		$path=ITE_SRC.'/Migrate/Version'.$now->format('YmdHis').'.php';
+		$path=ITE_ROOT.$this->stagePath.'/Version'.$now->format('YmdHis').'.php';
 		file_put_contents($path, $template);
 		$out->write('File created: '.$path);
 		$out->flush();
@@ -129,7 +131,7 @@ class MigrateCommand implements CommandInterface{
 		}
 
 		$migrateFiles=[];
-		$handleDir=opendir(ITE_SRC.'/Migrate');
+		$handleDir=opendir(ITE_ROOT.$this->stagePath);
 		while($file=readdir($handleDir)){
 			if($file!="." && $file!=".." && preg_match('/^Version([0-9]+)\.php$/',$file,$match)){
 				$migrateFiles[]=$match[1];
@@ -141,6 +143,7 @@ class MigrateCommand implements CommandInterface{
 		foreach($migrateFiles as $migrateFile){
 			try{
 				if($migrateFile>$currentVersion){
+					require_once(ITE_ROOT.$this->stagePath.'/Version'.$migrateFile.'.php');
 					$versionClassName='Migrate\Version'.$migrateFile;
 					$versionObject=new $versionClassName();
 
@@ -171,7 +174,7 @@ class MigrateCommand implements CommandInterface{
 		}
 
 		$migrateFiles=array();
-		$handleDir=opendir(ITE_SRC.'/Migrate');
+		$handleDir=opendir(ITE_ROOT.$this->stagePath);
 		while($file=readdir($handleDir)){
 			if($file!="." && $file!=".." && preg_match('/^Version([0-9]+)\.php$/',$file,$match)){
 				$migrateFiles[]=$match[1];
@@ -182,6 +185,7 @@ class MigrateCommand implements CommandInterface{
 		foreach($migrateFiles as $migrateFile){
 			try{
 				if($migrateFile<=$currentVersion){
+					require_once(ITE_ROOT.$this->stagePath.'/Version'.$migrateFile.'.php');
 					$versionClassName='Migrate\Version'.$migrateFile;
 					$versionObject=new $versionClassName();
 
@@ -200,7 +204,7 @@ class MigrateCommand implements CommandInterface{
 		$currentVersion=0;
 		file_put_contents($this->getSavePath(), $currentVersion);
 
-		$this->writeLn("Modified version ".$versionBefore." to ".$currentVersion);
+		$out->write("Modified version ".$versionBefore." to ".$currentVersion);
 
 	}
 
@@ -212,7 +216,7 @@ class MigrateCommand implements CommandInterface{
 	 * @return string
 	 */
 	private function getSavePath(){
-		return ITE_ROOT.$this->saveath;
+		return ITE_ROOT.$this->savePath;
 	}
 
 }
