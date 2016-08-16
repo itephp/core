@@ -18,7 +18,10 @@ namespace ItePHP\Core;
 use ItePHP\Core\MethodNotFoundException;
 use ItePHP\Core\ExecuteResources;
 use ItePHP\Core\EventManager;
+use ItePHP\Core\ServiceNotFoundException;
+
 use ItePHP\DependencyInjection\DependencyInjection;
+
 
 /**
  * Container for snippets and services.
@@ -62,16 +65,17 @@ class Container{
 	}
 
 	/**
-	 * Get service
 	 *
 	 * @param string $name service name
 	 * @return object
-	 * @throws \ItePHP\Exception\ServiceNotFoundException
-	 * @since 0.1.0
 	 */
 	public function getService($name){
-		//FIXME check exists service
-		return $this->dependencyInjection->get('service.'.$name);
+		try{
+			return $this->dependencyInjection->get('service.'.$name);
+		}
+		catch(InstanceNotFoundException $e){
+			throw new ServiceNotFoundException($name);
+		}
 	}
 
 	/**

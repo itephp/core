@@ -18,12 +18,7 @@ namespace ItePHP;
 use ItePHP\Core\RequestProvider;
 use ItePHP\Provider\Request;
 use ItePHP\Provider\Session;
-use ItePHP\Event\ExecuteActionEvent;
-use ItePHP\Event\ExecutedActionEvent;
-use ItePHP\Event\ExecutePresenterEvent;
-use ItePHP\Exception\ActionNotFoundException;
 use ItePHP\Core\Enviorment;
-use ItePHP\Test\Request as RequestTest;
 use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\DependencyInjection\MetadataClass;
 use ItePHP\DependencyInjection\MetadataMethod;
@@ -53,7 +48,6 @@ use ItePHP\Core\ConsoleDispatcher;
  * Main class of project
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  * @version 0.3.0
  */
 class Root{
@@ -82,11 +76,109 @@ class Root{
 	 */
 	private $errorManager;
 
+	/**
+	 *
+	 * @param Enviorment $enviorment
+	 */
 	public function __construct(Enviorment $enviorment){
 		$this->enviorment=$enviorment;
 	}
 	
+	/**
+	 *
+	 * @param array $command
+	 * @return int
+	 */
+	public function executeCommand($command){
+		//config
+		$this->errorManager=new ErrorManager();
+		$this->errorManager->addHandler(new ConsoleErrorHandler());
+		$dependencyInjection=new DependencyInjection();
 
+		$this->initConfig();
+
+		$snippets=$this->getSnippets($dependencyInjection);
+		$this->container=new Container($dependencyInjection,$snippets);
+		$dependencyInjection->addInstance('container',$this->container);
+		$dependencyInjection->addInstance('enviorment',$this->enviorment);
+		$this->registerServices($dependencyInjection);
+		$this->registerEventManager($dependencyInjection);
+		$this->registerEvents($dependencyInjection);
+		$this->registerCommands($dependencyInjection);
+
+		//command
+		$sigint=1;
+		$commandName=$command[0];
+		array_shift($command);
+		$arguments=$command;
+		try{
+			$dispatcher=$this->createConsoleRouter($dependencyInjection,$arguments)->createDispatcher($commandName);
+			$dispatcher->execute();
+			$sigint=0;
+		}
+		catch(RouteNotFoundException $e){
+			$this->errorManager->exception(new CommandNotFoundException($commandName));
+		}
+		catch(\Exception $e){
+			$this->errorManager->exception($e);
+		}
+
+		return $sigint;
+
+	}
+
+	/**
+	 *
+	 * @param string $url
+	 */
+	public function executeRequest($url){
+
+		//config
+		$this->errorManager=new ErrorManager();
+		$this->errorManager->addHandler(new CriticalErrorHandler($this->enviorment));
+		$dependencyInjection=new DependencyInjection();
+
+		$this->initConfig();
+
+		$snippets=$this->getSnippets($dependencyInjection);
+		$this->container=new Container($dependencyInjection,$snippets);
+		$dependencyInjection->addInstance('container',$this->container);
+		$dependencyInjection->addInstance('enviorment',$this->enviorment);
+		$this->registerServices($dependencyInjection);
+		$this->registerEventManager($dependencyInjection);
+		$this->registerEvents($dependencyInjection);
+
+		//request
+		$session=new Session($this->enviorment);
+		$request=new Request($url,$session);
+
+		$this->reconfigureErrorManager($request);
+
+		try{
+			$dispatcher=$this->createHttpRouter($request)->createDispatcher($url);
+			$dispatcher->execute();
+		}
+		catch(RouteNotFoundException $e){
+			$this->errorManager->exception(new HTTPException(404,$e->getMessage()));
+		}
+		catch(\Exception $e){
+			$this->errorManager->exception($e);
+		}
+
+	}
+
+	/**
+	 *
+	 * @param string $name
+	 * @return object
+	 */
+	public function getService($name){
+		return $this->$this->container->getService($name);
+	}
+
+	/**
+	 * Init framework config
+	 */
 	private function initConfig(){
 		//config structure
 		$structureConfig=new ConfigBuilder();
@@ -128,80 +220,10 @@ class Root{
 		$this->config=new Config($mainConfig->parse());
 	}
 
-	public function executeCommand($command){
-		//config
-		$this->errorManager=new ErrorManager();
-		$this->errorManager->addHandler(new ConsoleErrorHandler());
-		$dependencyInjection=new DependencyInjection();
-
-		$this->initConfig();
-
-		$snippets=$this->getSnippets($dependencyInjection);
-		$this->container=new Container($dependencyInjection,$snippets);
-		$dependencyInjection->addInstance('container',$this->container);
-		$dependencyInjection->addInstance('enviorment',$this->enviorment);
-		$this->registerServices($dependencyInjection);
-		$this->registerEventManager($dependencyInjection);
-		$this->registerEvents($dependencyInjection);
-		$this->registerCommands($dependencyInjection);
-
-		//command
-		$sigint=1;
-		$commandName=$command[0];
-		array_shift($command);
-		$arguments=$command;
-		try{
-			$dispatcher=$this->createConsoleRouter($dependencyInjection,$arguments)->createDispatcher($commandName);
-			$dispatcher->execute();
-			$sigint=0;
-		}
-		catch(RouteNotFoundException $e){
-			$this->errorManager->exception(new CommandNotFoundException($commandName));
-		}
-		catch(\Exception $e){
-			$this->errorManager->exception($e);
-		}
-
-		return $sigint;
-
-	}
-
-	public function executeRequest($url){
-
-		//config
-		$this->errorManager=new ErrorManager();
-		$this->errorManager->addHandler(new CriticalErrorHandler($this->enviorment));
-		$dependencyInjection=new DependencyInjection();
-
-		$this->initConfig();
-
-		$snippets=$this->getSnippets($dependencyInjection);
-		$this->container=new Container($dependencyInjection,$snippets);
-		$dependencyInjection->addInstance('container',$this->container);
-		$dependencyInjection->addInstance('enviorment',$this->enviorment);
-		$this->registerServices($dependencyInjection);
-		$this->registerEventManager($dependencyInjection);
-		$this->registerEvents($dependencyInjection);
-
-		//request
-		$session=new Session($this->enviorment);
-		$request=new Request($url,$session);
-
-		$this->reconfigureErrorManager($request);
-
-		try{
-			$dispatcher=$this->createHttpRouter($request)->createDispatcher($url);
-			$dispatcher->execute();
-		}
-		catch(RouteNotFoundException $e){
-			$this->errorManager->exception(new HTTPException(404,$e->getMessage()));
-		}
-		catch(\Exception $e){
-			$this->errorManager->exception($e);
-		}
-
-	}
-
+	/**
+	 *
+	 * @param Request $request
+	 */
 	private function reconfigureErrorManager(Request $request){
 		$removeHandlers=$this->errorManager->getHandlers();
 
@@ -217,6 +239,11 @@ class Root{
 
 	}
 
+	/**
+	 *
+	 * @param RequestProvider $request
+	 * @return Router
+	 */
 	private function createHttpRouter(RequestProvider $request){
 		$router=new Router();
 
@@ -254,36 +281,19 @@ class Root{
 		return $router;
 	}
 
-	public function executeRequestTest(RequestTest $request){
-		$url=$request->getUrl();
-		$this->executeResources->registerUrl($url);
-		ob_start();
-		try{
-			$dispatcher=$this->router->createHttpTestDispatcher($this->executeResources->getEnviorment(),$this->executeResources->getGlobalConfig(),$this->executeResources->getUrl());
-			$dispatcher->setRequest($request);
-			$dispatcher->execute($this->executeResources,$this->container->getEventManager());
-
-		}
-		catch(\Exception $e){
-			$this->errorManager->exception($e);
-		}
-		$content=ob_get_clean();
-		ob_flush();
-
-		$this->executeResources->getResponse()->setContent($content);
-		return $this->executeResources->getResponse();
-
-	}
-
-	public function getService($name){
-		return $this->$this->container->getService($name);
-	}
-
+	/**
+	 *
+	 * @param DependencyInjection $dependencyInjection
+	 */
 	private function registerEventManager(DependencyInjection $dependencyInjection){
 		$metadataClass=new MetadataClass('eventManager','ItePHP\Core\EventManager');
 		$dependencyInjection->register($metadataClass);
 	}
 
+	/**
+	 *
+	 * @param DependencyInjection $dependencyInjection
+	 */
 	private function registerEvents(DependencyInjection $dependencyInjection){
 		foreach($this->config->getNodes('event') as $eventNode){
 			$name=$eventNode->getAttribute('class');
@@ -292,25 +302,35 @@ class Root{
 
 			$this->eventManagerBind($eventNode,$dependencyInjection);
 		}
-
 	}
 
+	/**
+	 *
+	 * @param DependencyInjection $dependencyInjection
+	 */
 	private function registerServices(DependencyInjection $dependencyInjection){
-
 		foreach($this->config->getNodes('service') as $serviceNode){
 			$metadataClass=$this->getMetadataClass('service.'.$serviceNode->getAttribute('name'),$serviceNode);
 			$dependencyInjection->register($metadataClass);
 		}
 	}
 
+	/**
+	 *
+	 * @param DependencyInjection $dependencyInjection
+	 */
 	private function registerCommands(DependencyInjection $dependencyInjection){
-
 		foreach($this->config->getNodes('command') as $commandNode){
 			$metadataClass=$this->getMetadataClass('command.'.$commandNode->getAttribute('class'),$commandNode);
 			$dependencyInjection->register($metadataClass);
 		}
 	}
 
+	/**
+	 *
+	 * @param DependencyInjection $dependencyInjection
+	 * @return array
+	 */
 	private function getSnippets(DependencyInjection $dependencyInjection){
 		$snippets=[];
 		foreach($this->config->getNodes('snippet') as $snippetNode){
@@ -321,6 +341,11 @@ class Root{
 		return $snippets;
 	}
 
+	/**
+	 *
+	 * @param Config $eventNode
+	 * @param DependencyInjection $dependencyInjection
+	 */
 	private function eventManagerBind(Config $eventNode,DependencyInjection $dependencyInjection){
 		$eventManager=$this->container->getEventManager();
 		foreach($eventNode->getNodes('bind') as $bindNode){
@@ -333,6 +358,12 @@ class Root{
 
 	}
 
+	/**
+	 *
+	 * @param string $name
+	 * @param Config $classNode
+	 * @return MetadataClass
+	 */
 	private function getMetadataClass($name,Config $classNode){
 		$metadataClass=new MetadataClass($name,$classNode->getAttribute('class'));
 		foreach($classNode->getNodes('method') as $methodNode){
@@ -343,6 +374,11 @@ class Root{
 		return $metadataClass;
 	}
 
+	/**
+	 *
+	 * @param Config $methodNode
+	 * @return MetadataMethod
+	 */
 	private function getMetadataDependencyMethod(Config $methodNode){
 		$metadataMethod=new MetadataMethod($methodNode->getAttribute('name'));
 		foreach($methodNode->getNodes('argument') as $argumentNode){

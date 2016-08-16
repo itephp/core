@@ -52,7 +52,10 @@ class DependencyInjection{
 	}
 
 	private function createInstance($name){
-		//FIXME check if exists metadata
+		if(!isset($this->metadataClasses[$name])){
+			throw new InstanceNotFoundException($name);
+		}
+
 		$metadataClass=$this->metadataClasses[$name];
 
 		$className=$metadataClass->getClassName();

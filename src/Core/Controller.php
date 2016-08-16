@@ -19,7 +19,6 @@ use ItePHP\Core\ContenerServices;
 use ItePHP\Core\RequestProvider;
 use ItePHP\Provider\Response;
 use ItePHP\Provider\Session;
-use ItePHP\Core\ExecuteResources;
 use ItePHP\Core\EventManager;
 
 use ItePHP\DependencyInjection\DependencyInjection;

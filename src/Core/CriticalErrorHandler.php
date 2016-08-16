@@ -30,6 +30,7 @@ class CriticalErrorHandler implements ErrorHandler{
 	 *
 	 * @var Enviorment
 	 */ 
+	
 	private $enviorment;
 	/**
 	 *

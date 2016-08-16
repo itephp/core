@@ -22,9 +22,9 @@ use ItePHP\Component\Form\Designer;
 use ItePHP\Component\Form\Transformer;
 use ItePHP\Core\RequestProvider;
 use ItePHP\Core\ValidatorService;
-use ItePHP\Exception\FieldNotFoundException;
-use ItePHP\Exception\FileNotUploadedException;
-use ItePHP\Core\FileUploaded;
+use ItePHP\Component\Form\FieldNotFoundException;
+use ItePHP\Component\Form\FileNotUploadedException;
+use ItePHP\Component\Form\FileUploaded;
 use ItePHP\Component\Form\FormField;
 
 /**

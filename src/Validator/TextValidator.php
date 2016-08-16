@@ -15,7 +15,7 @@
 
 namespace ItePHP\Validator;
 use ItePHP\Core\Validator;
-use ItePHP\Exception\ValueNotFoundException;
+use ItePHP\Action\ValueNotFoundException;
 
 /**
  * Validator for text

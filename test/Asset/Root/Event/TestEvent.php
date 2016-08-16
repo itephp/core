@@ -15,8 +15,8 @@
 namespace Asset\Root\Event;
 
 use Asset\Root\Service\TestService;
-use ItePHP\Event\ExecuteActionEvent;
-use ItePHP\Event\ExecutedActionEvent;
+use ItePHP\Core\ExecuteActionEvent;
+use ItePHP\Core\ExecutedActionEvent;
 
 class TestEvent{
 	

@@ -16,7 +16,7 @@
 namespace ItePHP\Provider;
 
 use ItePHP\Core\SessionProvider;
-use ItePHP\Exception\ValueNotFoundException;
+use ItePHP\Action\ValueNotFoundException;
 use ItePHP\Core\Enviorment;
 
 /**

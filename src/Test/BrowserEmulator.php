@@ -15,9 +15,9 @@
 
 namespace ItePHP\Test;
 
-use ItePHP\Exception\EmptyDataException;
+use ItePHP\Test\EmptyDataException;
 use ItePHP\Exception\InvalidQuerySelectorException;
-use ItePHP\Exception\ElementNotFoundException;
+use ItePHP\Test\ElementNotFoundException;
 use ItePHP\Core\Enviorment;
 use ItePHP\Provider\Session;
 

@@ -21,7 +21,7 @@ use \Exception;
 use ItePHP\Core\HTTPException;
 use ItePHP\Core\EventManager;
 use ItePHP\Presenter\HTML as HTMLPresenter;
-use ItePHP\Event\ExecutePresenterEvent;
+use ItePHP\Core\ExecutePresenterEvent;
 use ItePHP\Core\RequestProvider;
 use ItePHP\Core\Config;
 

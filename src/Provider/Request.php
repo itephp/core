@@ -18,7 +18,7 @@ namespace ItePHP\Provider;
 use ItePHP\Provider\Session;
 use ItePHP\Core\RequestProvider;
 use ItePHP\Core\HeaderNotFoundException;
-use ItePHP\Core\FileUploaded;
+use ItePHP\Component\Form\FileUploaded;
 use ItePHP\Core\FileNotUploadedException;
 use ItePHP\Core\Config;
 
@@ -55,7 +55,7 @@ class Request implements RequestProvider{
 	/**
 	 * Get uploaded file
 	 * @param string $name - field name
-	 * @return ItePHP\Core\FileUploaded|array[ItePHP\Core\FileUploaded]
+	 * @return mixed
 	 * @since 0.12.0
 	 */
 	public function getFile($name){

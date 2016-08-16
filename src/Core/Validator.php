@@ -15,7 +15,7 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Exception\ValueNotFoundException;
+use ItePHP\Action\ValueNotFoundException;
 
 /**
  * Main class for validators. Check correct values.

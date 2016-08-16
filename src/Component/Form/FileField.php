@@ -20,7 +20,7 @@ use ItePHP\Component\Form\BasicFormFormatter;
 use ItePHP\Provider\Request;
 use ItePHP\Core\ValidatorService;
 use ItePHP\Validator\FileValidator;
-use ItePHP\Exception\FileMaxSizeException;
+use ItePHP\Component\Form\FileMaxSizeException;
 
 /**
  * FormBuilder field

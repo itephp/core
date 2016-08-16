@@ -10,7 +10,7 @@
 		<bind name="executedAction" method="doExecutedAction" />
 	</event>
 
-	<event class="ItePHP\Event\ArgumentEvent">
+	<event class="ItePHP\Action\ArgumentEvent">
 		<method name="__construct">
 			<argument type="reference" value="container" />
 			<argument type="reference" value="service.validator" />

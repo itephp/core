@@ -30,7 +30,6 @@ class ActionNotFoundException extends Exception{
 	 *
 	 * @param string $controller
 	 * @param string $method
-	 * @since 0.1.0
 	 */	
 	public function __construct($controller , $method){
 		parent::__construct(4,'Action "'.$controller.'" for action "'.$method.'" not found.','Internal server error.');

@@ -16,13 +16,13 @@
 namespace ItePHP\Test;
 
 use ItePHP\Test\BrowserEmulator;
-use ItePHP\Exception\InvalidQuerySelectorException;
+use ItePHP\Test\InvalidQuerySelectorException;
 use ItePHP\Test\AnchorElement;
 use ItePHP\Test\FormElement;
 use ItePHP\Test\InputElement;
 use ItePHP\Test\TextareaElement;
 use ItePHP\Test\SelectElement;
-use ItePHP\Exception\ElementNotFoundException;
+use ItePHP\Test\ElementNotFoundException;
 
 /**
  * Html Element for BrowserEmulator
