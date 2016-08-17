@@ -44,7 +44,6 @@ class ExecutedActionEvent{
 	 *
 	 * @param RequestProvider $request
 	 * @param Response $response
-	 * @since 0.1.0
 	 */
 	public function __construct(RequestProvider $request , Response $response){
 		$this->request=$request;
@@ -55,7 +54,6 @@ class ExecutedActionEvent{
 	 * Get response.
 	 *
 	 * @return Response
-	 * @since 0.1.0
 	 */
 	public function getResponse(){
 		return $this->response;
@@ -65,7 +63,6 @@ class ExecutedActionEvent{
 	 * Get request
 	 *
 	 * @return RequestProvider
-	 * @since 0.1.0
 	 */
 	public function getRequest(){
 		return $this->request;

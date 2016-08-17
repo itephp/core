@@ -17,14 +17,12 @@ namespace ItePHP\Core;
 
 use ItePHP\Core\ContenerServices;
 use ItePHP\Core\RequestProvider;
-use ItePHP\Provider\Response;
-use ItePHP\Provider\Session;
 use ItePHP\Core\EventManager;
+use ItePHP\Core\MethodNotFoundException;
+use ItePHP\Core\Container;
 
 use ItePHP\DependencyInjection\DependencyInjection;
 
-use ItePHP\Core\MethodNotFoundException;
-use ItePHP\Core\Container;
 
 /**
  * Main class for project controllers

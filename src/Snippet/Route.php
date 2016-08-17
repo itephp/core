@@ -22,9 +22,9 @@ class Route {
 	/**
 	 * create response with configure redirect action
 	 *
-	 * @param \ItePHP\Core\Container $container
+	 * @param Container $container
 	 * @param string $url - destiny http address
-	 * @return \ItePHP\Provider\Response
+	 * @return Response
 	 */
 	public function redirect(Container $container,$url){
 		$response=new Response();

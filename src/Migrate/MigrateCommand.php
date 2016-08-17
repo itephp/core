@@ -23,6 +23,11 @@ use ItePHP\Command\OutputStream;
 use ItePHP\Core\Container;
 use ItePHP\Core\Enviorment;
 
+/**
+ * Migrate command.
+ *
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
+ */
 class MigrateCommand implements CommandInterface{
 
 	/**
@@ -129,6 +134,7 @@ class MigrateCommand implements CommandInterface{
 	 *
 	 * @param InputStream $in
 	 * @param OutputStream $out
+	 * @throws Exception
 	 */
 	public function upgradeOperation(InputStream $in,OutputStream $out){
 		$currentVersion=0;
@@ -166,12 +172,14 @@ class MigrateCommand implements CommandInterface{
 		}
 
 		$out->write("Modified version ".$versionBefore." to ".$currentVersion);
+		$out->flush();
 	}
 
 	/**
 	 *
 	 * @param InputStream $in
 	 * @param OutputStream $out
+	 * @throws Exception
 	 */
 	public function downgradeOperation(InputStream $in,OutputStream $out){
 		$currentVersion=0;
@@ -211,7 +219,7 @@ class MigrateCommand implements CommandInterface{
 		file_put_contents($this->getSavePath(), $currentVersion);
 
 		$out->write("Modified version ".$versionBefore." to ".$currentVersion);
-
+		$out->flush();
 	}
 
 

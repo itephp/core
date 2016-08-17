@@ -21,7 +21,6 @@ use ItePHP\Core\Container;
  * Snippet for validator
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.24.0
  */
 class Validator {
 	
@@ -31,6 +30,7 @@ class Validator {
 	 * @param Container $container
 	 * @param strint $validatorName
 	 * @param mixed $value
+	 * @return string
 	 */
 	public function validate(Container $container,$validatorName,$value){
 		$validator=new $validatorName();

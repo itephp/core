@@ -14,4 +14,16 @@
 		<argument storage="url" name="id" pattern="\/test\/([0-9]+)" default="1" />
 	</action>
 
+	<action class="Asset\Root\Controller\TestController" method="argument" route="\/argument" presenter="ItePHP\Presenter\HTML">
+		<argument storage="get" name="var" default="123321222" validator="ItePHP\Validator\TelephoneValidator" />
+		<argument storage="post" name="data2" validator="ItePHP\Validator\TelephoneValidator" />
+		<argument storage="url" name="id" pattern="\/test\/([0-9]+)"  validator="ItePHP\Validator\TelephoneValidator" />
+	</action>
+
+	<action class="Asset\Root\Controller\TestController" method="argument" route="\/argument" presenter="ItePHP\Presenter\HTML">
+		<argument storage="get" name="var" mapper="Asset\Action\ArgumentEvent\NumberMapper" />
+		<argument storage="post" name="data2" mapper="Asset\Action\ArgumentEvent\NumberMapper" />
+		<argument storage="url" name="id" pattern="\/test\/(.+)" mapper="Asset\Action\ArgumentEvent\NumberMapper" />
+	</action>
+
 </content>

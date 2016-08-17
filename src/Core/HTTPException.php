@@ -15,22 +15,18 @@
 
 namespace ItePHP\Core;
 
-use \Exception;
-
 /**
  * Throw when in php file is synax error.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
-class HTTPException extends Exception{
+class HTTPException extends \Exception{
 	
 	/**
 	 * Constructor.
 	 *
 	 * @param int $statusCode
 	 * @param string $message
-	 * @since 0.1.0
 	 */
 	public function __construct($statusCode,$message){
 		$this->statusCode=$statusCode;

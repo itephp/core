@@ -48,7 +48,7 @@ use ItePHP\Core\ConsoleDispatcher;
  * Main class of project
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @version 0.3.0
+ * @version 0.4.0
  */
 class Root{
 	
@@ -101,6 +101,8 @@ class Root{
 		$this->container=new Container($dependencyInjection,$snippets);
 		$dependencyInjection->addInstance('container',$this->container);
 		$dependencyInjection->addInstance('enviorment',$this->enviorment);
+		$dependencyInjection->addInstance('config',$this->config);
+
 		$this->registerServices($dependencyInjection);
 		$this->registerEventManager($dependencyInjection);
 		$this->registerEvents($dependencyInjection);
@@ -144,6 +146,8 @@ class Root{
 		$this->container=new Container($dependencyInjection,$snippets);
 		$dependencyInjection->addInstance('container',$this->container);
 		$dependencyInjection->addInstance('enviorment',$this->enviorment);
+		$dependencyInjection->addInstance('config',$this->config);
+
 		$this->registerServices($dependencyInjection);
 		$this->registerEventManager($dependencyInjection);
 		$this->registerEvents($dependencyInjection);
@@ -355,7 +359,6 @@ class Root{
 				$bindNode->getAttribute('method')
 			);
 		}
-
 	}
 
 	/**
@@ -386,7 +389,6 @@ class Root{
 		}
 
 		return $metadataMethod;
-
 	}
 
 }

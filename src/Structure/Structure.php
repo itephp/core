@@ -21,7 +21,6 @@ use ItePHP\Config\ConfigBuilder;
  * Structure interface.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 interface Structure{
 	

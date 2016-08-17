@@ -21,7 +21,6 @@ use ItePHP\Action\ValueNotFoundException;
  * Main class for validators. Check correct values.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 abstract class Validator{
 
@@ -36,7 +35,7 @@ abstract class Validator{
 	 * Implement method to validate value.
 	 *
 	 * @param mixed $value - value to parse
-	 * @return string|null - error message
+	 * @return string - error message
 	 */
 	abstract public function validate($value);
 
@@ -45,8 +44,6 @@ abstract class Validator{
 	 *
 	 * @param string $name
 	 * @param mixed $value
-	 * @return string|null error message
-	 * @since 0.18.0
 	 */
 	final public function setOption($name,$value){
 		$this->options[$name]=$value;
@@ -57,8 +54,7 @@ abstract class Validator{
 	 *
 	 * @param string $name - name of option
 	 * @return mixed - option
-	 * @throws ItePHP\Exception\ValueNotFoundException
-	 * @since 0.18.0
+	 * @throws ValueNotFoundException
 	 */
 	protected function getOption($name){
 		if(!isset($this->options[$name])){

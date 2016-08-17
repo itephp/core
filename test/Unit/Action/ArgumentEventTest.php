@@ -18,6 +18,7 @@ use ItePHP\Structure\ActionArgumentStructure;
 use ItePHP\Config\ConfigBuilder;
 use ItePHP\Config\XmlFileReader;
 use ItePHP\Core\Config;
+use ItePHP\Action\InvalidArgumentException;
 
 class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 	
@@ -45,7 +46,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 
 	}
 
-	public function testOnExecuteDefaultAction(){
+	public function testOnExecuteActionDefault(){
 
 		$container=new Container(new DependencyInjection(),[]);
 		$validator=new Validator();
@@ -65,6 +66,60 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 		$this->assertEquals('2',$arguments['data2']);
 		$this->assertEquals('1',$arguments['id']);
 
+	}
+
+	public function testOnExecuteActionValidator(){
+
+		$container=new Container(new DependencyInjection(),[]);
+		$validator=new Validator();
+
+		$enviorment=new Enviorment(true,true,'test',__DIR__);
+
+		$request=new RequestTest('/test/1','POST');
+		$request->setData(['data2'=>'123321123']);
+
+		$config=$this->getConfig();
+		$request->setConfig($config->getNodes('action')[2]);
+
+		$event=new ArgumentEvent($container,$validator);
+		$executeActionEvent=new ExecuteActionEvent($request);
+		$responseMessage='';
+		try{
+			$event->onExecuteAction($executeActionEvent);
+
+		}
+		catch(InvalidArgumentException $e){
+			$responseMessage=$e->getMessage();
+		}
+
+		$this->assertEquals('Invalid argument "id": Invalid telephone format.',$responseMessage);
+	}
+
+	public function testOnExecuteActionMapper(){
+
+		$container=new Container(new DependencyInjection(),[]);
+		$validator=new Validator();
+
+		$enviorment=new Enviorment(true,true,'test',__DIR__);
+
+		$request=new RequestTest('/test/s','POST');
+		$request->setQuery(['var'=>'3']);
+		$request->setData(['data2'=>'2']);
+
+		$config=$this->getConfig();
+		$request->setConfig($config->getNodes('action')[3]);
+
+		$event=new ArgumentEvent($container,$validator);
+		$executeActionEvent=new ExecuteActionEvent($request);
+		$responseMessage='';
+		try{
+			$event->onExecuteAction($executeActionEvent);
+		}
+		catch(\Exception $e){
+			$responseMessage=$e->getMessage();
+		}
+
+		$this->assertEquals('Invalid value s.',$responseMessage);
 	}
 
 	private function getConfig(){

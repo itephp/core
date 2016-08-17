@@ -20,7 +20,6 @@ use ItePHP\Core\Exception;
  * Throw when Global config can not parse node value.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class InvalidConfigValueException extends Exception{
 	
@@ -29,7 +28,6 @@ class InvalidConfigValueException extends Exception{
 	 *
 	 * @param string $key
 	 * @param string $value
-	 * @since 0.1.0
 	 */
 	public function __construct($key,$value){
 		parent::__construct(8,'Invalid config value \''.$value.'\' for key \''.$key.'\'.','Invalid configuration.');

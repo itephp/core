@@ -16,35 +16,33 @@
 namespace ItePHP\Core;
 
 use ItePHP\Core\RequestProvider;
-use ItePHP\Provider\Response;
+use ItePHP\Core\Response;
 
 /**
  * Contener with data for event "executeAction"
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class ExecuteActionEvent{
 
 	/**
 	 * Request provider.
 	 *
-	 * @var \ItePHP\Core\RequestProvider $request
+	 * @var RequestProvider $request
 	 */
 	private $request;
 
 	/**
 	 * Response.
 	 *
-	 * @var \ItePHP\Provider\Response $response
+	 * @var Response $response
 	 */
 	private $response;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param \ItePHP\Core\RequestProvider $request
-	 * @since 0.1.0
+	 * @param RequestProvider $request
 	 */
 	public function __construct(RequestProvider $request){
 		$this->request=$request;
@@ -53,8 +51,7 @@ class ExecuteActionEvent{
 	/**
 	 * Get request.
 	 *
-	 * @return \ItePHP\Core\RequestProvider
-	 * @since 0.1.0
+	 * @return RequestProvider
 	 */
 	public function getRequest(){
 		return $this->request;
@@ -63,8 +60,7 @@ class ExecuteActionEvent{
 	/**
 	 * Set response.
 	 *
-	 * @param \ItePHP\Provider\Response $response
-	 * @since 0.1.0
+	 * @param Response $response
 	 */
 	public function setResponse(Response $response){
 		$this->response=$response;
@@ -73,8 +69,7 @@ class ExecuteActionEvent{
 	/**
 	 * Get response.
 	 *
-	 * @return \ItePHP\Provider\Response
-	 * @since 0.1.0
+	 * @return Response
 	 */
 	public function getResponse(){
 		return $this->response;

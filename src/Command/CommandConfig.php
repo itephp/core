@@ -18,7 +18,6 @@ namespace ItePHP\Command;
 /**
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class CommandConfig{
 
@@ -28,6 +27,12 @@ class CommandConfig{
 	 */
 	private $arguments=[];
 
+	/**
+	 *
+	 * @param string $name
+	 * @param int $length
+	 * @param mixed $default
+	 */
 	public function addArgument($name,$length=1,$default=null){
 		//TODO check unique name
 		$argument=new CommandArgument($name,$length);
@@ -37,6 +42,10 @@ class CommandConfig{
 		$this->arguments[]=$argument;
 	}
 
+	/**
+	 *
+	 * @return array
+	 */
 	public function getArguments(){
 		return $this->arguments;
 	}

@@ -13,14 +13,14 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Exception;
+namespace ItePHP\Action;
+
 use ItePHP\Core\Exception;
 
 /**
  * Throw when value not found in SessionProvider,ArrayList,Map.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class ValueNotFoundException extends Exception{
 	
@@ -28,7 +28,6 @@ class ValueNotFoundException extends Exception{
 	 * Constructor.
 	 *
 	 * @param string $name
-	 * @since 0.1.0
 	 */
 	public function __construct($name){
 		parent::__construct(6,'Value "'.$name.'" not found.','Internal server error.');

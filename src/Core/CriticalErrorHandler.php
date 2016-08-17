@@ -16,22 +16,21 @@
 namespace ItePHP\Core;
 
 use ItePHP\Error\ErrorHandler;
+
 use ItePHP\Core\Enviorment;
-use \Exception;
 
 /**
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class CriticalErrorHandler implements ErrorHandler{
 	
 	/**
 	 *
 	 * @var Enviorment
-	 */ 
-	
+	 */ 	
 	private $enviorment;
+
 	/**
 	 *
 	 * @param Enviorment $enviorment
@@ -43,7 +42,7 @@ class CriticalErrorHandler implements ErrorHandler{
     /**
      * {@inheritdoc}
      */
-	public function execute(Exception $exception){
+	public function execute(\Exception $exception){
 		error_log($exception->getMessage()." ".$exception->getFile()."(".$exception->getLine().")");
 
 		if(!$exception->isDebug()){

@@ -22,7 +22,6 @@ use ItePHP\Config\ConfigBuilderNode;
  * Structure for snippets.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class VariableStructure implements Structure{
 
@@ -35,7 +34,5 @@ class VariableStructure implements Structure{
 		$variableNode->addAttribute('value');
 
 		$configBuilder->addNode($variableNode);
-
-	}	
-
+	}
 }

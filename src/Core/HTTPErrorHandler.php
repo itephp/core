@@ -17,7 +17,6 @@ namespace ItePHP\Core;
 
 use ItePHP\Error\ErrorHandler;
 use ItePHP\Core\Enviorment;
-use \Exception;
 use ItePHP\Core\HTTPException;
 use ItePHP\Core\EventManager;
 use ItePHP\Presenter\HTML as HTMLPresenter;
@@ -28,7 +27,6 @@ use ItePHP\Core\Config;
 /**
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class HTTPErrorHandler implements ErrorHandler{
 	
@@ -73,7 +71,7 @@ class HTTPErrorHandler implements ErrorHandler{
     /**
      * {@inheritdoc}
      */
-	public function execute(Exception $exception){
+	public function execute(\Exception $exception){
 		if(!$this->enviorment->isSilent()){
 			error_log($exception->getMessage()." ".$exception->getFile()."(".$exception->getLine().")");
 		}

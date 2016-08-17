@@ -22,7 +22,6 @@ use ItePHP\Config\ConfigBuilderNode;
  * Structure for import.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class ImportStructure implements Structure{
 
@@ -34,7 +33,5 @@ class ImportStructure implements Structure{
 		$importNode->addAttribute('file');
 
 		$configBuilder->addNode($importNode);
-
-	}	
-
+	}
 }

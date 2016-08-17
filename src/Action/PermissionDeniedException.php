@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Exception;
+namespace ItePHP\Action;
 
 use ItePHP\Core\Exception;
 
@@ -21,14 +21,11 @@ use ItePHP\Core\Exception;
  * Throw when event authorization can not allow access.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class PermissionDeniedException extends Exception{
 	
 	/**
 	 * Constructor.
-	 *
-	 * @since 0.1.0
 	 */
 	public function __construct(){
 		parent::__construct(311,'Permission denied');

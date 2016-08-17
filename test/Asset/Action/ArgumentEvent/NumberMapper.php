@@ -13,20 +13,28 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Validator;
-use ItePHP\Core\Validator;
-use ItePHP\Validator\Date;
+namespace Asset\Action\ArgumentEvent;
+
+use ItePHP\Core\Container;
+use ItePHP\Mapper\MapperAbstract;
 
 /**
- * @deprecated 0.18.0
- */		
-class DateOrEmpty extends Date{
-	
-	public function validate($date){
-		if($date==null || $date=='');
-		else{
-			return parent::validate($date);
+ * Base class for mapper. Cast value to another value.
+ *
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
+ */
+class NumberMapper extends MapperAbstract{
+
+    /**
+     * {@inheritdoc}
+     */
+	public function cast($value){
+		if(!is_numeric($value)){
+			throw new \Exception('Invalid value '.$value.'.');
 		}
+
+		return $value;
+
 	}
 
 }

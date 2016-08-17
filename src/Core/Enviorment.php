@@ -73,7 +73,11 @@ class Enviorment{
 	 * @param boolean $debug
 	 * @param boolean $silent
 	 * @param string $name
-	 * @since 0.1.0
+	 * @param string $rootPath
+	 * @param string $configPath
+	 * @param string $srcPath
+	 * @param string $webPath
+	 * @param string $cachePath
 	 */
 	public function __construct($debug,$silent,$name,$rootPath,$configPath=null,$srcPath=null,$webPath=null
 		,$cachePath=null){
@@ -103,14 +107,12 @@ class Enviorment{
 		$this->configPath=$configPath;
 		$this->cachePath=$cachePath;
 		$this->webPath=$webPath;
-
 	}
 
 	/**
 	 * Check is debug mode.
 	 *
 	 * @return boolean
-	 * @since 0.1.0
 	 */
 	public function isDebug(){
 		return $this->debug;
@@ -120,7 +122,6 @@ class Enviorment{
 	 * Check is silent mode.
 	 *
 	 * @return boolean
-	 * @since 0.1.0
 	 */
 	public function isSilent(){
 		return $this->silent;
@@ -130,7 +131,6 @@ class Enviorment{
 	 * Get enviorment name.
 	 *
 	 * @return string
-	 * @since 0.1.0
 	 */
 	public function getName(){
 		return $this->name;

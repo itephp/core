@@ -21,11 +21,17 @@ use ItePHP\Core\Container;
  * Snippet for mapper
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.13.0
  */
-class Mapper {
+class MapperSnippet {
 	
+	/**
+	 *
+	 * @param Container $container
+	 * @param string $mapperName
+	 * @param mixed $value
+	 * @return mixed
+	 */
 	public function cast(Container $container,$mapperName,$value){
-		return $container->getService('mapper')->cast($container,$mapperName,$value);
+		return $container->getService('mapper')->cast($mapperName,$value);
 	}
 }

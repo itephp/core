@@ -23,16 +23,25 @@ use ItePHP\Core\Enviorment;
  * Presenter for json.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class JSON implements Presenter{
 
+	/**
+	 *
+	 * @param Enviorment $config
+	 * @param Response $response
+	 */
 	public function render(Enviorment $config , Response $response){
 		$this->setHeaders($config,$response);
 		echo json_encode($response->getContent());
 	}
 
-	private function setHeaders($requestConfig,$response){
+	/**
+	 *
+	 * @param Enviorment $requestConfig
+	 * @param Response $response
+	 */
+	private function setHeaders(Enviorment $requestConfig,Response $response){
 		if(!$requestConfig->isSilent()){
 			header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());
 			header('Content-type: application/json');

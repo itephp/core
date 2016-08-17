@@ -41,9 +41,9 @@ class MapperService{
 	/**
 	 * Cast value
 	 *
-	 * @param Container $container
 	 * @param string $mapperName - class with implements mapped code eg: "ItePHP\Mapper\Text"
 	 * @param mixed $value - value to cast
+	 * @return mixed
 	 * @throws MapperNotFoundException
 	 */
 	public function cast($mapperName,$value){

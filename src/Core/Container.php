@@ -28,7 +28,6 @@ use ItePHP\DependencyInjection\DependencyInjection;
  * Container for snippets and services.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class Container{
 

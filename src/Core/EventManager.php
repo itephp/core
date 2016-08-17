@@ -15,13 +15,10 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\ExecuteResources;
-
 /**
  * Manager for events.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class EventManager{
 	
@@ -38,7 +35,6 @@ class EventManager{
 	 * @param string $event event name
 	 * @param object $obj
 	 * @param string $methodName
-	 * @since 0.1.0
 	 */
 	public function register($event,$obj,$methodName){
 		$this->events+=[
@@ -55,8 +51,7 @@ class EventManager{
 	 * Execute event.
 	 *
 	 * @param string $event event name
-	 * @param object $infoClass contener with event info eg.: \ItePHP\Event\ExecutePresenterEvent
-	 * @since 0.1.0
+	 * @param object $infoClass contener with event info eg.: \ItePHP\Core\ExecutePresenterEvent
 	 */
 	public function fire($eventName,$infoClass=null){
 		if(isset($this->events[$eventName])){

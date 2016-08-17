@@ -17,18 +17,22 @@ namespace ItePHP\Presenter;
 
 use ItePHP\Core\Presenter;
 use ItePHP\Provider\Response;
-use ItePHP\Contener\RequestConfig;
 use ItePHP\Exception\HeaderNotFoundException;
+use ItePHP\Core\Enviorment;
 
 /**
  * Presenter for files.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class File implements Presenter{
 
-	public function render(RequestConfig $config , Response $response){
+	/**
+	 *
+	 * @param Enviorment $config
+	 * @param Response $response
+	 */
+	public function render(Enviorment $config , Response $response){
 
 		header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());		
 		foreach($response->getHeaders() as $name=>$value){

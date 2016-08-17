@@ -19,7 +19,6 @@ namespace ItePHP\Test;
  * Throw when BrowserEmulator get invalid query selector in methods getElement or findElements.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class InvalidQuerySelectorException extends \Exception{
 	

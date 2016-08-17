@@ -21,7 +21,6 @@ use ItePHP\Action\ValueNotFoundException;
  * Validator for text
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.18.0
  */
 class TextValidator extends Validator{
 	
@@ -53,6 +52,5 @@ class TextValidator extends Validator{
 		catch(ValueNotFoundException $e){
 			//ignore
 		}
-
 	}
 }

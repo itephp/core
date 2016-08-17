@@ -19,7 +19,6 @@ namespace ItePHP\Route;
  * Factory for dispatcher. 
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class Router{
 	
@@ -44,10 +43,8 @@ class Router{
 	 * @param string $url
 	 * @return Dispatcher
 	 * @throws RouteNotFoundException
-	 * @since 0.1.0
 	 */
 	public function createDispatcher($url){
-
 		$dispatcher=$this->findAction($url);
 
 		if($dispatcher){
@@ -55,15 +52,13 @@ class Router{
 		}
 
 		throw new RouteNotFoundException($url);
-
 	}
 
 	/**
 	 * Find action routing
 	 *
 	 * @param string $url
-	 * @return \ItePHP\Contener\RequestConfig
-	 * @since 0.1.0
+	 * @return Dispatcher
 	 */
 	private function findAction($url){
 		foreach($this->actions as $pattern=>$metadata){

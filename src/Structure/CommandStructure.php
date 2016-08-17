@@ -22,7 +22,6 @@ use ItePHP\Config\ConfigBuilderNode;
  * Structure for commands.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class CommandStructure implements Structure{
 
@@ -38,7 +37,6 @@ class CommandStructure implements Structure{
 		$methodNode->addAttribute('name');
 		$methodNode->addNode($argumentNode);
 
-
 		$commandNode=new ConfigBuilderNode('command');
 		$commandNode->addAttribute('class');
 		$commandNode->addAttribute('name');
@@ -46,7 +44,5 @@ class CommandStructure implements Structure{
 		$commandNode->addNode($methodNode);
 
 		$configBuilder->addNode($commandNode);
-
-	}	
-
+	}
 }

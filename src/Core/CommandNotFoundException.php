@@ -19,7 +19,6 @@ namespace ItePHP\Core;
  * Throw when executed url not configured in config/actions.xml
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class CommandNotFoundException extends \Exception{
 	
@@ -27,7 +26,6 @@ class CommandNotFoundException extends \Exception{
 	 * Constructor.
 	 *
 	 * @param string $commandName
-	 * @since 0.4.0
 	 */
 	public function __construct($commandName){
 		parent::__construct('Command '.$commandName.' not found.');

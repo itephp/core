@@ -18,7 +18,6 @@ namespace ItePHP\Command;
 /**
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class CommandExecutor{
 
@@ -49,6 +48,10 @@ class CommandExecutor{
 		$this->setOutputStream(new OutputStreamConsole());
 	}
 
+	/**
+	 *
+	 * @param OutputStream $outputStream
+	 */
 	public function setOutputStream(OutputStream $outputStream){
 		$this->outputStream=$outputStream;
 	}
@@ -77,12 +80,19 @@ class CommandExecutor{
 		return $this->arguments;
 	}
 
+	/**
+	 *
+	 */
 	public final function run(){
 		$inputStream=$this->getInputStream();
 
 		call_user_func_array([$this->commandObject,'execute'], [$inputStream,$this->outputStream]);
 	}
 
+	/**
+	 *
+	 * @return InputStream
+	 */
 	private function getInputStream(){
 		$config=new CommandConfig();
 		$this->commandObject->doConfig($config);
@@ -95,6 +105,12 @@ class CommandExecutor{
 		return new InputStream($commandArguments);
 	}
 
+	/**
+	 *
+	 * @param CommandArgument $argument
+	 * @param array $commandArguments
+	 * @throws CommandArgumentRequiredException
+	 */
 	private function parseArgument(CommandArgument $argument,&$commandArguments){
 		$name=$argument->getName();
 		$index=array_search($name,$this->arguments,true);
@@ -114,6 +130,12 @@ class CommandExecutor{
 
 	}
 
+	/**
+	 *
+	 * @param CommandArgument $argument
+	 * @param int $index
+	 * @throws CommandInvalidArgumentLengthException
+	 */
 	private function getValue(CommandArgument $argument,$index){
 		$length=$argument->getLength();
 
@@ -133,9 +155,6 @@ class CommandExecutor{
 			$value=$value[0];
 		}
 
-
 		return $value;
 	}
 }
-
-?>

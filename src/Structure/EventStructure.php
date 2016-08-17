@@ -22,7 +22,6 @@ use ItePHP\Config\ConfigBuilderNode;
  * Structure for events.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class EventStructure implements Structure{
 
@@ -30,7 +29,6 @@ class EventStructure implements Structure{
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-
 		$argumentNode=new ConfigBuilderNode('argument');
 		$argumentNode->addAttribute('type');
 		$argumentNode->addAttribute('value');
@@ -49,7 +47,5 @@ class EventStructure implements Structure{
 		$eventNode->addNode($bindNode);
 
 		$configBuilder->addNode($eventNode);
-
-	}	
-
+	}
 }

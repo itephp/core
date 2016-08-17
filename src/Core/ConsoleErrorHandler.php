@@ -17,19 +17,17 @@ namespace ItePHP\Core;
 
 use ItePHP\Error\ErrorHandler;
 use ItePHP\Core\Enviorment;
-use \Exception;
 
 /**
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class ConsoleErrorHandler implements ErrorHandler{
 	
     /**
      * {@inheritdoc}
      */
-	public function execute(Exception $exception){
+	public function execute(\Exception $exception){
 		echo $exception->getMessage();
 	}
 

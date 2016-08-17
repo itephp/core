@@ -21,7 +21,6 @@ use ItePHP\Action\ValueNotFoundException;
  * Validator for date
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.18.0
  */
 class DateValidator extends Validator{
 	

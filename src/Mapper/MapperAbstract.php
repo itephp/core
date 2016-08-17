@@ -20,7 +20,6 @@ use ItePHP\Core\Container;
  * Base class for mapper. Cast value to another value
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 abstract class MapperAbstract{
 
@@ -47,5 +46,4 @@ abstract class MapperAbstract{
 	 * @return mixed
 	 */
 	abstract public function cast($value);
-
 }

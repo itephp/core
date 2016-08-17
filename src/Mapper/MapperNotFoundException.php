@@ -20,7 +20,6 @@ use ItePHP\Core\Exception;
  * Throw when mapper service or mapper snipper can not find cast rule.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class MapperNotFoundException extends Exception{
 	
@@ -28,7 +27,6 @@ class MapperNotFoundException extends Exception{
 	 * Constructor.
 	 *
 	 * @param string $mapperName
-	 * @since 0.1.0
 	 */
 	public function __construct($mapperName){
 		parent::__construct(4,'Mapper "'.$mapperName.'" not found.','Internal server error.');

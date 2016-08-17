@@ -20,7 +20,6 @@ use ItePHP\Exception\InvalidFieldNameException;
  * Html Element for BrowserEmulator
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class FormElement extends HTMLElement{
 	

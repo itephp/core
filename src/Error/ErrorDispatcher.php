@@ -21,7 +21,6 @@ use \Exception;
  * Error dispatcher.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class ErrorDispatcher{
 
@@ -71,8 +70,6 @@ class ErrorDispatcher{
 
 	/**
 	 * Shutdown callback
-	 *
-	 * @since 0.1.0
 	 */	
 	public function shutdown(){
 		if($this->stopPropagation)
@@ -96,7 +93,6 @@ class ErrorDispatcher{
 	 *
 	 * @param Exception $exception
 	 * @return boolean
-	 * @since 0.1.0
 	 */	
 	public function exception(Exception $exception){
 		if($this->stopPropagation)
@@ -116,7 +112,6 @@ class ErrorDispatcher{
 	 * @param string $errfile
 	 * @param int $errline
 	 * @throws SyntaxException
-	 * @since 0.1.0
 	 */	
 	public function error($errno, $errstr, $errfile, $errline){
 		throw new SyntaxException($errfile,$errline,$errstr);

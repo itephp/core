@@ -21,7 +21,6 @@ use ItePHP\Core\Exception;
  * Throw when event argument can not required http param.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class RequiredArgumentException extends Exception{
 	
@@ -30,7 +29,6 @@ class RequiredArgumentException extends Exception{
 	 *
 	 * @param int $position
 	 * @param string $name
-	 * @since 0.1.0
 	 */
 	public function __construct($position,$name){
 		parent::__construct(100+$position,'Required argument "'.$name.'".');

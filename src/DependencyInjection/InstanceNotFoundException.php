@@ -18,7 +18,6 @@ namespace ItePHP\Route;
 /**
  * Throw when dependency injection not found instance.
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class InstanceNotFoundException extends \Exception{
 	

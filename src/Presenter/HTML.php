@@ -23,10 +23,14 @@ use ItePHP\Core\Enviorment;
  * Presenter for html.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class HTML implements Presenter{
 
+	/**
+	 *
+	 * @param Enviorment $config
+	 * @param Response $response
+	 */
 	public function render(Enviorment $config , Response $response){
 
 		if(!$config->isSilent()){

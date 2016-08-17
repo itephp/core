@@ -40,6 +40,7 @@ class Config{
 	/**
 	 *
 	 * @param ConfigContainer $configContainer
+	 * @param boolean $root
 	 */	
 	public function __construct(ConfigContainer $configContainer,$root=true){
 		$this->container=$configContainer;

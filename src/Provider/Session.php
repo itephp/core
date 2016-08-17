@@ -23,12 +23,19 @@ use ItePHP\Core\Enviorment;
  * Provider for session.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class Session implements SessionProvider{
 
+	/**
+     *
+     * @var int
+     */
 	private $id;
 
+	/**
+     *
+     * @param Enviorment $enviorment
+     */
 	public function __construct(Enviorment $enviorment){
 		if(!$enviorment->isSilent()){
 			session_start();			
@@ -39,20 +46,41 @@ class Session implements SessionProvider{
 		}
 	}
 
+	/**
+     *
+     * @param int
+     */
 	public function getId(){
 		return $this->id;
 	}
 
+	/**
+     *
+     * @param string $key
+     * @return mixed
+     * @throws ValueNotFoundException
+     */
 	public function get($key){
-		if(!isset($_SESSION[$key]))
-			throw new ValueNotFoundException($key);
+		if(!isset($_SESSION[$key])){
+			throw new ValueNotFoundException($key);			
+		}
 		return $_SESSION[$key];
 	}
 
+	/**
+     *
+     * @param string $key
+     * @param mixed $value
+     */
 	public function set($key,$value){
 		$_SESSION[$key]=$value;
 	}
 
+	/**
+     *
+     * @param string $key
+     * @throws ValueNotFoundException
+     */
 	public function remove($key){
 		if(isset($_SESSION[$key])){
 			unset($_SESSION[$key]);			
@@ -63,8 +91,11 @@ class Session implements SessionProvider{
 
 	}
 
+	/**
+     *
+     */
 	public function clear(){
-		$_SESSION=array();
+		$_SESSION=[];
 	}
 
 }

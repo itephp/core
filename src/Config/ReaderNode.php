@@ -19,7 +19,6 @@ namespace ItePHP\Config;
  * File reader.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 interface ReaderNode extends Reader{
 

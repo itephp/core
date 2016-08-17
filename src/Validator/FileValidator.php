@@ -21,7 +21,6 @@ use ItePHP\Action\ValueNotFoundException;
  * Validator for file
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.18.0
  */
 class FileValidator extends Validator{
 	
@@ -50,7 +49,6 @@ class FileValidator extends Validator{
 		if($value->isError()){
 			return $value->getError();
 		}
-
 
 		try{
 			$accept=$this->getOption('accept');

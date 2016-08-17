@@ -19,7 +19,6 @@ namespace ItePHP\Route;
  * Throw when executed url not configured in config/actions.xml
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class RouteNotFoundException extends \Exception{
 	
@@ -27,7 +26,6 @@ class RouteNotFoundException extends \Exception{
 	 * Constructor.
 	 *
 	 * @param string $url
-	 * @since 0.4.0
 	 */
 	public function __construct($url){
 		parent::__construct('Route not found for url: '.$url.".");

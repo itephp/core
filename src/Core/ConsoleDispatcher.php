@@ -20,8 +20,8 @@ use ItePHP\Route\Dispatcher;
 use ItePHP\DependencyInjection\DependencyInjection;
 
 use ItePHP\Core\Config;
-use ItePHP\Command\OutputStreamConsole;
 
+use ItePHP\Command\OutputStreamConsole;
 use ItePHP\Command\CommandExecutor;
 
 /**
@@ -74,8 +74,6 @@ class ConsoleDispatcher  implements Dispatcher {
 	 * {@inheritDoc}
 	 */
 	public function execute(){
-
-
 		$command=$this->dependencyInjection->get('command.'.$this->className);
 
 		$commandExecutor=new CommandExecutor($command);

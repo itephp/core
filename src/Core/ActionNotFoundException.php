@@ -21,7 +21,6 @@ use ItePHP\Core\Exception;
  * Throw when action in config/actions.xml not found
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class ActionNotFoundException extends Exception{
 	

@@ -21,14 +21,11 @@ use ItePHP\Core\Exception;
  * Throw when BrowserEmulator has empty response.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class EmptyDataException extends Exception{
 	
 	/**
 	 * Constructor
-	 *
-	 * @since 0.1.0
 	 */	
 	public function __construct(){
 		parent::__construct(19,'Empty data.');

@@ -39,8 +39,5 @@ class ActionArgumentStructure implements Structure{
 
 		$actionNode=$configBuilder->getNode('action');		
 		$actionNode->addNode($argumentNode);
-
-
-	}	
-
+	}
 }

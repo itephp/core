@@ -15,80 +15,91 @@
 
 namespace ItePHP\Action;
 
-use ItePHP\Core\Event;
-use ItePHP\Provider\Response;
+use ItePHP\Core\Response;
 use ItePHP\Core\ExecuteActionEvent;
 use ItePHP\Action\ValueNotFoundException;
 use ItePHP\Action\PermissionDeniedException;
 use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Config;
 
 /**
  * Event for support authenticate user
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
-class Authenticate extends Event{
+class AuthenticateEvent{
 	
 	/**
-	 * Detect config authenticate.
 	 *
-	 * @param \ItePHP\Event\ExecuteActionEvent $event
-	 * @param array $eventConfig
-	 * @since 0.1.0
+	 * @var Config
 	 */
-	public function onExecuteAction(ExecuteActionEvent $event,$eventConfig){
-		$request=$event->getRequest();
-		foreach($request->getExtra() as $extra){
-			foreach($extra as $parameter=>$config){
-				if($parameter=='authenticate'){
-					$this->execute($event,$config,$eventConfig);
-				}
-			}
+	private $config;
+
+	/**
+	 *
+	 * @var int
+	 */
+	private $maxTime=0;
+
+	public function __construct(Config $config){
+		$config=$config->getNodes('authenticate');
+		if($config){
+			$this->maxTime=$config[0]->getAttribute('max-time');
 		}
 
 	}
 
 	/**
+	 * Detect config authenticate.
+	 *
+	 * @param ExecuteActionEvent $event
+	 * @param array $eventConfig
+	 */
+	public function onExecuteAction(ExecuteActionEvent $event){
+		$request=$event->getRequest();
+		$authenticates=$request->getConfig()->getNodes('authenticate');
+		if($authenticates){
+			$this->execute($event,$authenticates[0]);
+		}
+	}
+
+	/**
 	 * Check authenticate.
 	 *
-	 * @param \ItePHP\Event\ExecuteActionEvent $event
+	 * @param ExecuteActionEvent $event
 	 * @param array $config
 	 * @param array $eventConfig
-	 * @throws \ItePHP\Exception\ValueNotFoundException
+	 * @throws ValueNotFoundException
 	 * @throws PermissionDeniedException
-	 * @since 0.1.0
 	 */
-	private function execute(ExecuteActionEvent $event,$config,$eventConfig){
+	private function execute(ExecuteActionEvent $event,$config){
 		$request=$event->getRequest();
 		$session=$request->getSession();
-		$maxTime=(isset($eventConfig['maxTime'])?$eventConfig['maxTime']:0);
 
 		try{
-			$session->get('user.id');
-			if($maxTime>0){
+			$session->get('authenticate.user_id');
+			if($this->maxTime>0){
 				
-				if($session->get('session.epoch')<time()){ //deprecated session
+				if($session->get('authenticate.epoch')<time()){ //deprecated session
 					$session->clear();
-					throw new ValueNotFoundException('session.epoch');
+					throw new ValueNotFoundException('authenticate.epoch');
 				}
-
-				$session->set('session.epoch',time()+$maxTime);
+				$session->set('authenticate.epoch',time()+$this->maxTime);
 			}
 
-			if(isset($config['session-redirect'])){
-				$response=$this->createResponseRedirect($config['session-redirect'],$request);
-				$event->setResponse($response);					
+			if($config->getAttribute('auth-redirect')!==false){
+				$response=$this->createResponseRedirect($config->getAttribute('auth-redirect'),$request);
+				$event->setResponse($response);
 
 			}
 		}
 		catch(ValueNotFoundException $e){
-			if(isset($config['incognito']) && $config['incognito']=='true'){
-				//IGNORED
-			}
-			else if(isset($config['redirect'])){
-				$response=$this->createResponseRedirect($config['redirect'],$request);
+			if($config->getAttribute('unauth-redirect')!==false){
+				$response=$this->createResponseRedirect($config->getAttribute('unauth-redirect'),$request);
 				$event->setResponse($response);					
+			}
+			else if($config->getAttribute('auth-redirect')!==false){
+				//ignore
 			}
 			else{
 				throw new PermissionDeniedException();
@@ -102,9 +113,8 @@ class Authenticate extends Event{
 	 * Check authenticate.
 	 *
 	 * @param string $redirect
-	 * @param \ItePHP\Core\RequestProvider $request
-	 * @return \ItePHP\Provider\Response
-	 * @since 0.1.0
+	 * @param RequestProvider $request
+	 * @return Response
 	 */
 	private function createResponseRedirect($redirect,RequestProvider $request){
 		$response=new Response();

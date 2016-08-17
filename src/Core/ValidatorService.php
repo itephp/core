@@ -25,9 +25,9 @@ interface ValidatorService{
 	/**
 	 * Validate once value.
 	 *
-	 * @param \ItePHP\Core\Validator $validator - class validator rule
-	 * @param mixed $value - valut to validation
-	 * @return null if success or message error if fail
+	 * @param Validator $validator class validator rule
+	 * @param mixed $value valut to validation
+	 * @return string
 	 */
 	public function validate($validator,$value);
 
@@ -43,7 +43,7 @@ interface ValidatorService{
 	 *		'validator rule class'
 	 *		,'value')
 	 *	)
-	 * @return array with errors. If success then empty array.
+	 * @return array
 	 */
 	public function multiValidate($validators);
 
@@ -52,7 +52,7 @@ interface ValidatorService{
 	 *
 	 * @param array $validators array with rules validation example: array('nameField'=>'Validator\ExampleClassValidator')
 	 * @param array $storage array with values, example array('nameField1'=>'value1','nameField2'=>'value2')
-	 * @return array with errors. If success then empty array.
+	 * @return array
 	 */
 	public function storageValidate($validators,$storage);
 

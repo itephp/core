@@ -19,20 +19,26 @@ use ItePHP\Config\ConfigBuilder;
 use ItePHP\Config\ConfigBuilderNode;
 
 /**
- * Structure for errors.
+ * Structure for session actions.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class ErrorStructure implements Structure{
+class ActionAuthenticateStructure implements Structure{
 
     /**
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-		$errorNode=new ConfigBuilderNode('error');
-		$errorNode->addAttribute('pattern');
-		$errorNode->addAttribute('presenter');
+		$actionSessionNode=new ConfigBuilderNode('authenticate');
+		$actionSessionNode->addAttribute('unauth-redirect',false);
+		$actionSessionNode->addAttribute('auth-redirect',false);
 
-		$configBuilder->addNode($errorNode);
+		$actionNode=$configBuilder->getNode('action');		
+		$actionNode->addNode($actionSessionNode);
+
+		$sessionNode=new ConfigBuilderNode('authenticate');
+		$sessionNode->addAttribute('max-time',0);
+
+		$configBuilder->addNode($sessionNode);
 	}
 }

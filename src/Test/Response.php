@@ -19,7 +19,6 @@ namespace ItePHP\Test;
  * Response provider for functionalit test
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class Response{
 	private $response;

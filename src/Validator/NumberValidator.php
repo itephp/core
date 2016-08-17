@@ -21,7 +21,6 @@ use ItePHP\Action\ValueNotFoundException;
  * Validator for number
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.18.0
  */
 class NumberValidator extends Validator{
 	
@@ -64,6 +63,5 @@ class NumberValidator extends Validator{
 		catch(ValueNotFoundException $e){
 			//ignore
 		}
-
 	}
 }

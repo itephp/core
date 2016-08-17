@@ -22,7 +22,6 @@ use ItePHP\Core\Config;
  * Interface for request
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 interface RequestProvider{
 
@@ -30,8 +29,7 @@ interface RequestProvider{
 	 * Get uploaded file.
 	 *
 	 * @param string $name field name
-	 * @return \ItePHP\Core\FileUploaded
-	 * @since 0.12.0
+	 * @return FileUploaded
 	 */
 	public function getFile($name);
 	
@@ -39,7 +37,6 @@ interface RequestProvider{
 	 * Get http url.
 	 *
 	 * @return string
-	 * @since 0.1.0
 	 */
 	public function getUrl();
 
@@ -47,7 +44,6 @@ interface RequestProvider{
 	 * Get http method (POST,PUT,GET,DELETE).
 	 *
 	 * @return string
-	 * @since 0.1.0
 	 */
 	public function getType();
 
@@ -56,8 +52,7 @@ interface RequestProvider{
 	 *
 	 * @param string $name header name
 	 * @return string
-	 * @throws \ItePHP\Exception\HeaderNotFoundException
-	 * @since 0.1.0
+	 * @throws HeaderNotFoundException
 	 */
 	public function getHeader($name);
 
@@ -65,7 +60,6 @@ interface RequestProvider{
 	 * Get request body.
 	 *
 	 * @return string
-	 * @since 0.1.0
 	 */
 	public function getBody();
 
@@ -74,7 +68,6 @@ interface RequestProvider{
 	 *
 	 * @param string $name
 	 * @param mixed $value
-	 * @since 0.1.0
 	 */
 	public function setArgument($name,$value);
 
@@ -82,7 +75,6 @@ interface RequestProvider{
 	 * Get method of controller arguments.
 	 *
 	 * @param array
-	 * @since 0.1.0
 	 */
 	public function getArguments();
 
@@ -90,7 +82,6 @@ interface RequestProvider{
 	 * Remove method of controller argument.
 	 *
 	 * @param string $name
-	 * @since 0.1.0
 	 */
 	public function removeArgument($name);
 
@@ -98,7 +89,6 @@ interface RequestProvider{
 	 * Get session provider.
 	 *
 	 * @return \ItePHP\Core\SessionProvider
-	 * @since 0.1.0
 	 */
 	public function getSession();
 
@@ -106,7 +96,6 @@ interface RequestProvider{
 	 * Get request POST data.
 	 *
 	 * @return array
-	 * @since 0.1.0
 	 */
 	public function getData();
 
@@ -114,7 +103,6 @@ interface RequestProvider{
 	 * Get request GET data.
 	 *
 	 * @return array
-	 * @since 0.1.0
 	 */
 	public function getQuery();
 
@@ -122,7 +110,6 @@ interface RequestProvider{
 	 * Get host name.
 	 *
 	 * @return string
-	 * @since 0.1.0
 	 */
 	public function getHost();
 
@@ -130,7 +117,6 @@ interface RequestProvider{
 	 * Get server protocol (HTTP/1.1).
 	 *
 	 * @return string
-	 * @since 0.1.0
 	 */
 	public function getProtocol();
 
@@ -138,7 +124,6 @@ interface RequestProvider{
 	 * Check is security connect to server.
 	 *
 	 * @return boolean
-	 * @since 0.1.0
 	 */
 	public function isSSL();
 
@@ -146,7 +131,6 @@ interface RequestProvider{
 	 * Check is ajax request (xml http request)
 	 *
 	 * @return boolean
-	 * @since 0.1.0
 	 */
 	public function isAjax();
 
@@ -154,7 +138,6 @@ interface RequestProvider{
 	 * Get client ip.
 	 *
 	 * @return string
-	 * @since 0.1.0
 	 */
 	public function getClientIp();
 
@@ -162,21 +145,18 @@ interface RequestProvider{
 	 * Detect for uploaded big post data on server. If return false then propably file and other post data not uploaded.
 	 *
 	 * @return boolean
-	 * @since 0.18.0 
 	 */
 	public function isFullUploadedData();
 
 	/**
 	 *
 	 * @return Config
-	 * @since 0.4.0 
 	 */
 	public function getConfig();
 
 	/**
 	 *
 	 * @param Config $config
-	 * @since 0.4.0 
 	 */
 	public function setConfig(Config $config);
 

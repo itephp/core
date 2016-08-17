@@ -20,7 +20,6 @@ use ItePHP\Core\Exception;
  * Throw when FileUploaded can not get file data from php.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class FileNotUploadedException extends Exception{
 	
@@ -28,7 +27,6 @@ class FileNotUploadedException extends Exception{
 	 * Constructor.
 	 *
 	 * @param string $name
-	 * @since 0.1.0
 	 */	
 	public function __construct($name){
 		parent::__construct(17,'File '.$name.' not uploaded.');

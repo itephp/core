@@ -21,7 +21,6 @@ use ItePHP\Test\FormFieldElement;
  * Html Element for BrowserEmulator
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class InputElement extends FormFieldElement{
 	private $data;
@@ -42,5 +41,4 @@ class InputElement extends FormFieldElement{
 		$this->data=$data;
 		return $this;
 	}
-
 }

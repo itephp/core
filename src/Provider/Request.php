@@ -26,18 +26,56 @@ use ItePHP\Core\Config;
  * Provider for request.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class Request implements RequestProvider{
 
-	private $data=array();
-	private $query=array();
+	/**
+	 *
+	 * @var array
+	 */
+	private $data=[];
+
+	/**
+	 *
+	 * @var array
+	 */
+	private $query=[];
+
+	/**
+	 *
+	 * @var Session
+	 */
 	private $session;
-	private $arguments=array();
+
+	/**
+	 *
+	 * @var array
+	 */
+	private $arguments=[];
+
+	/**
+	 *
+	 * @var string
+	 */
 	private $url;
-	private $headers=array();
+
+	/**
+	 *
+	 * @var array
+	 */
+	private $headers=[];
+
+	/**
+	 *
+	 * @var string
+	 */
 	private $clientIp;
-	private $files=array();
+
+	/**
+	 *
+	 * @var array
+	 */
+	private $files=[];
 
 	/**
 	 *
@@ -45,6 +83,11 @@ class Request implements RequestProvider{
 	 */
 	private $config;
 
+	/**
+	 *
+	 * @param string $url
+	 * @param Session $session
+	 */
 	public function __construct($url,Session $session){
 		$this->url=$url;
 		$this->session=$session;
@@ -52,12 +95,9 @@ class Request implements RequestProvider{
 
 	}
 
-	/**
-	 * Get uploaded file
-	 * @param string $name - field name
-	 * @return mixed
-	 * @since 0.12.0
-	 */
+    /**
+     * {@inheritdoc}
+     */
 	public function getFile($name){
 		if(!isset($this->files[$name])){
 			throw new FileNotUploadedException($name);
@@ -66,37 +106,62 @@ class Request implements RequestProvider{
 		return $this->files[$name];
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getUrl(){
 		return $this->url;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getType(){
 		return $_SERVER['REQUEST_METHOD'];
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getHeader($name){
-		if(!isset($this->headers[strtolower($name)]))
-			throw new HeaderNotFoundException($name);
+		if(!isset($this->headers[strtolower($name)])){
+			throw new HeaderNotFoundException($name);			
+		}
 			
 		return $this->headers[strtolower($name)]; 
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getBody(){
 		return file_get_contents('php://input');
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function setArgument($name,$value){
 		$this->arguments[$name]=$value;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getArguments(){
 		return $this->arguments;
 	}
 
-	public function removeArgument($index){
-		unset($this->arguments[$index]);
+    /**
+     * {@inheritdoc}
+     */
+	public function removeArgument($name){
+		unset($this->arguments[$name]);
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getSession(){
 		return $this->session;
 	}
@@ -115,28 +180,46 @@ class Request implements RequestProvider{
 		$this->config=$config;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getData(){
 		return $this->data;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getQuery(){
 		return $this->query;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getHost(){
 		return $_SERVER['HTTP_HOST'];
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getProtocol(){
 		return $_SERVER['SERVER_PROTOCOL'];
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function isSSL(){
 		return ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) 
 			&& $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) 
 			&& $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') || (isset($_SERVER['HTTP_X_SSL_CIPHER'])));
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function isAjax(){
 		try{
 			return strtolower($this->getHeader('x-requested-with'))=='xmlhttprequest';
@@ -147,20 +230,25 @@ class Request implements RequestProvider{
 
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function getClientIp(){
 		return $this->clientIp;
 	}
 
-	/**
-	 * Detect for uploaded big post data on server. If return false then propably file and other post data not uploaded.
-	 * @return boolean
-	 * @since 0.18.0 
-	 */
+    /**
+     * {@inheritdoc}
+     */
 	public function isFullUploadedData(){
 		return !(isset($_SERVER['CONTENT_LENGTH']) 
 			&& (int) $_SERVER['CONTENT_LENGTH'] > $this->phpSizeToBytes(ini_get('post_max_size')));
 	}
 
+    /**
+     *
+     * @param length $size
+     */
 	private function phpSizeToBytes($size){  
 		if (is_numeric( $size)){
 			return $size;
@@ -183,6 +271,9 @@ class Request implements RequestProvider{
 		return $value;  
 	}
 
+    /**
+     *
+     */
 	private function prepare(){
 		$this->data=$_POST;
 		$this->query=$_GET;

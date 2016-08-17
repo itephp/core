@@ -19,31 +19,65 @@ namespace ItePHP\DependencyInjection;
  * Metadata class container
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.3.0
  */
 class MetadataClass{
 	
+	/**
+	 *
+	 * @var string
+	 */
 	private $name;
+
+	/**
+	 *
+	 * @var string
+	 */
 	private $className;
+
+	/**
+	 *
+	 * @var array
+	 */
 	private $methods=[];
 
+	/**
+	 *
+	 * @param string $name
+	 * @param string $className
+	 */
 	public function __construct($name,$className){
 		$this->name=$name;
 		$this->className=$className;
 	}
 
+	/**
+	 *
+	 * @return string
+	 */
 	public function getName(){
 		return $this->name;
 	}
 
+	/**
+	 *
+	 * @return string
+	 */
 	public function getClassName(){
 		return $this->className;
 	}
 
+	/**
+	 *
+	 * @param MetadataMethod $method
+	 */
 	public function registerInvoke(MetadataMethod $method){
 		$this->methods[]=$method;
 	}
 
+	/**
+	 *
+	 * @return array
+	 */
 	public function getMethods(){
 		return $this->methods;
 	}

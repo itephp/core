@@ -21,13 +21,25 @@ use \ReflectionClass;
  * Manager for dependency injeciton
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.3.0
  */
 class DependencyInjection{
 
+	/**
+	 *
+	 * @var array
+	 */
 	private $metadataClasses=[];
+
+	/**
+	 *
+	 * @var array
+	 */
 	private $instances=[];
 
+	/**
+	 *
+	 * @param MetadataClass $metadaDataClass
+	 */
 	public function register(MetadataClass $metadaDataClass){
 		//TODO exception already registered
 		$this->metadataClasses[$metadaDataClass->getName()]=$metadaDataClass;
@@ -42,6 +54,10 @@ class DependencyInjection{
 		$this->instances[$name]=$object;
 	}
 
+	/**
+	 *
+	 * @param string $name
+	 */
 	public function get($name){
 		if(!isset($this->instances[$name])){
 			$this->instances[$name]=$this->createInstance($name);
@@ -51,6 +67,12 @@ class DependencyInjection{
 
 	}
 
+	/**
+	 *
+	 * @param string $name
+	 * @return object
+	 * @throws InstanceNotFoundException
+	 */
 	private function createInstance($name){
 		if(!isset($this->metadataClasses[$name])){
 			throw new InstanceNotFoundException($name);
@@ -72,6 +94,11 @@ class DependencyInjection{
 		return $instance;
 	}
 
+	/**
+	 *
+	 * @param MetadataClass $metadataClass
+	 * @return MetadataMethod
+	 */
 	private function getMetadataConstructor(MetadataClass $metadataClass){
 		foreach($metadataClass->getMethods() as $method){
 			if($method->getName()==='__construct'){
@@ -82,7 +109,12 @@ class DependencyInjection{
 		return null;
 	}
 
-	private function invokeOtherMethods($instance,$metadataClass){
+	/**
+	 *
+	 * @param object $instance
+	 * @param MetadataClass $metadataClass
+	 */
+	private function invokeOtherMethods($instance,MetadataClass $metadataClass){
 		foreach($metadataClass->getMethods() as $method){
 			if($method->getName()==='__construct'){
 				continue;
@@ -93,6 +125,11 @@ class DependencyInjection{
 
 	}
 
+	/**
+	 *
+	 * @param MetadataMethod $metadata
+	 * @return array
+	 */
 	private function getMethodArguments(MetadataMethod $metadata){
 		$arguments=[];
 		foreach ($metadata->getArguments() as $argument) {
@@ -108,7 +145,6 @@ class DependencyInjection{
 				case MetadataMethod::REFERENCE_TYPE:
 					$value=$this->get($argument['value']);
 				break;
-
 				default:
 					//TODO throw exception type invalid
 			}

@@ -21,7 +21,6 @@ use ItePHP\Action\ValueNotFoundException;
  * Validator for telephone
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.24.0
  */
 class TelephoneValidator extends Validator{
 
@@ -45,6 +44,5 @@ class TelephoneValidator extends Validator{
 
 		if(!preg_match("/^[1-9][0-9]{8}$/",$value))
 			return "Invalid telephone format.";
-	}
-	
+	}	
 }

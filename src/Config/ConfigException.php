@@ -19,7 +19,6 @@ namespace ItePHP\Config;
  * Config exception.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class ConfigException extends \Exception{
 

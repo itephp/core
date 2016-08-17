@@ -20,7 +20,6 @@ use \SimpleXMLElement;
  * Xml reader.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class XmlFileNode implements ReaderNode{
 	

@@ -21,7 +21,6 @@ use \Exception;
  * Error manager.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class ErrorManager{
 
@@ -33,8 +32,6 @@ class ErrorManager{
 
 	/**
 	 * Constructor.
-	 *
-	 * @since 0.1.0
 	 */	
 	public function __construct(){
 		$this->stopPropagation=false;
@@ -75,10 +72,8 @@ class ErrorManager{
 	 * Exception callback.
 	 *
 	 * @param Exception $exception
-	 * @since 0.1.0
 	 */	
 	public function exception(Exception $exception){
 		$this->dispatcher->exception($exception);
 	}
-
 }

@@ -19,7 +19,6 @@ namespace ItePHP\Core;
  * Throw when response get not supported status code.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class InvalidStatusCodeException extends \Exception{
 	

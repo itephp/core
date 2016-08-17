@@ -23,7 +23,6 @@ use ItePHP\Core\Response;
  * Presenter for http error.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class HTTPErrorPresenter implements Presenter{
 

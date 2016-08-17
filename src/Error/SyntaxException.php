@@ -19,7 +19,6 @@ namespace ItePHP\Error;
  * Throw when in php file is synax error.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class SyntaxException extends \Exception{
 	
@@ -29,12 +28,10 @@ class SyntaxException extends \Exception{
 	 * @param string $errfile
 	 * @param int $errline
 	 * @param string $errstr
-	 * @since 0.1.0
 	 */
 	public function __construct($errfile,$errline,$errstr){
 		parent::__construct($errstr);
 		$this->file=$errfile;
 		$this->line=$errline;
-
 	}
 }

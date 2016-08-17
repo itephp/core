@@ -20,7 +20,6 @@ use ItePHP\Core\Exception;
  * Throw when controller doesn't have executed method.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class MethodNotFoundException extends Exception{
 	
@@ -29,7 +28,6 @@ class MethodNotFoundException extends Exception{
 	 *
 	 * @param string $className
 	 * @param string $methodName
-	 * @since 0.1.0
 	 */
 	public function __construct($className,$methodName){
 		parent::__construct(9,"Method '".$className."::".$methodName."' not found.","Internal server error.");

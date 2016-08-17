@@ -19,7 +19,6 @@ namespace ItePHP\Test;
  * Throw when BorwserEmulator detect invalid field name in form.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.18.0
  */
 class InvalidFieldNameException extends \Exception{
 

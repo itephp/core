@@ -18,7 +18,6 @@ namespace ItePHP\Command;
 /**
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class CommandInvalidArgumentLengthException extends \Exception{
 
@@ -33,5 +32,3 @@ class CommandInvalidArgumentLengthException extends \Exception{
 	}
 
 }
-
-?>

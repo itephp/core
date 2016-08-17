@@ -22,7 +22,6 @@ use ItePHP\Config\ConfigBuilderNode;
  * Structure for services.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class ServiceStructure implements Structure{
 
@@ -47,7 +46,5 @@ class ServiceStructure implements Structure{
 		$serviceNode->addNode($methodNode);
 
 		$configBuilder->addNode($serviceNode);
-
-	}	
-
+	}
 }

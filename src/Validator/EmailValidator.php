@@ -21,7 +21,6 @@ use ItePHP\Action\ValueNotFoundException;
  * Validator for email
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.18.0
  */
 class EmailValidator extends Validator{
 
@@ -46,5 +45,4 @@ class EmailValidator extends Validator{
 		if(!preg_match("/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+$/",$value))
 			return "Invalid email format.";
 	}
-	
 }

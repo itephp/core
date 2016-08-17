@@ -21,7 +21,6 @@ use ItePHP\Core\Exception;
  * Throw when service not found.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class ServiceNotFoundException extends Exception{
 	

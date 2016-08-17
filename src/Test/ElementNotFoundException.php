@@ -21,14 +21,11 @@ use ItePHP\Core\Exception;
  * Throw when BrowserEmulator can not find html element in response.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class ElementNotFoundException extends Exception{
 	
 	/**
 	 * Constructor
-	 *
-	 * @since 0.1.0
 	 */	
 	public function __construct(){
 		parent::__construct(20,'Element not found.');

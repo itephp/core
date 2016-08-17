@@ -19,7 +19,6 @@ namespace ItePHP\Core;
  * Main class for project exception.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class Exception extends \Exception{
 	
@@ -31,7 +30,6 @@ class Exception extends \Exception{
 	 * @param string $safeMessage message show in production mode
 	 * @param string $file file when throwed exception
 	 * @param int $line line when throwed exception
-	 * @since 0.1.0
 	 */	
 	public function __construct($code,$message , $safeMessage=null,$file=null,$line=null){
 		$this->code=$code;
@@ -47,7 +45,6 @@ class Exception extends \Exception{
 	 * Get message for production mode.
 	 *
 	 * @return string
-	 * @since 0.1.0
 	 */	
 	public function getSafeMessage(){
 		if($this->safeMessage)

@@ -25,7 +25,6 @@ use ItePHP\Provider\Session;
  * Emulator for functionality test
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class BrowserEmulator{
 	private $request;
