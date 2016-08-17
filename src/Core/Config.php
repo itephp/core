@@ -22,7 +22,6 @@ use ItePHP\Config\ConfigException;
  * Framework config.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
 class Config{
 

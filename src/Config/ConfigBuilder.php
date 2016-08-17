@@ -48,7 +48,20 @@ class ConfigBuilder{
 	 * @param ConfigBuilderNode $node
 	 */
 	public function addNode(ConfigBuilderNode $node){
-		$this->nodes[]=$node;
+		$this->nodes[$node->getName()]=$node;
+	}
+
+	/**
+	 *
+	 * @param string $name
+	 * @return ConfigBuilderNode
+	 * @throws ConfigException
+	 */	
+	public function getNode($name){
+		if(!isset($this->nodes[$name])){
+			throw new ConfigException('Node '.$name.' not found.');
+		}
+		return $this->nodes[$name];
 	}
 
 	/**

@@ -11,7 +11,7 @@ class ErrorManagerTest extends \PHPUnit_Framework_TestCase{
 	
 	private $errorManager;
 
-	protected function  setUp(){
+	protected function setUp(){
 		$this->errorManager=new ErrorManager();
 	}
 

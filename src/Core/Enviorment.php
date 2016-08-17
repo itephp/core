@@ -19,7 +19,6 @@ namespace ItePHP\Core;
  * Enviorment settings.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.1.0
  */
 class Enviorment{
 
@@ -45,6 +44,30 @@ class Enviorment{
 	private $name;
 
 	/**
+	 *
+	 * @var string
+	 */
+	private $rootPath;
+
+	/**
+	 *
+	 * @var string
+	 */
+	private $srcPath;
+
+	/**
+	 *
+	 * @var string
+	 */
+	private $cachePath;
+
+	/**
+	 *
+	 * @var string
+	 */
+	private $webPath;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param boolean $debug
@@ -52,10 +75,35 @@ class Enviorment{
 	 * @param string $name
 	 * @since 0.1.0
 	 */
-	public function __construct($debug,$silent,$name){
+	public function __construct($debug,$silent,$name,$rootPath,$configPath=null,$srcPath=null,$webPath=null
+		,$cachePath=null){
+
 		$this->debug=$debug;
 		$this->silent=$silent;
 		$this->name=$name;
+
+		$this->rootPath=$rootPath;
+		if($srcPath===null){
+			$srcPath=$this->rootPath.'/src';
+		}
+
+		if($configPath===null){
+			$configPath=$this->rootPath.'/config';
+		}
+
+		if($cachePath===null){
+			$cachePath=$this->rootPath.'/cache';
+		}
+
+		if($webPath===null){
+			$webPath=$this->rootPath.'/web';
+		}
+
+		$this->srcPath=$srcPath;
+		$this->configPath=$configPath;
+		$this->cachePath=$cachePath;
+		$this->webPath=$webPath;
+
 	}
 
 	/**
@@ -87,4 +135,53 @@ class Enviorment{
 	public function getName(){
 		return $this->name;
 	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getRootPath(){
+		return $this->rootPath;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getSrcPath(){
+		return $this->srcPath;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getVendorPath(){
+		return $this->vendorPath;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getWebPath(){
+		return $this->webPath;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getCachePath(){
+		return $this->cachePath;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getConfigPath(){
+		return $this->configPath;
+	}
+
 }

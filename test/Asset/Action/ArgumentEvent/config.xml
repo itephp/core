@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+
+<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<action class="Asset\Root\Controller\TestController" method="argument" route="\/argument" presenter="ItePHP\Presenter\HTML">
+		<argument storage="get" name="var" />
+		<argument storage="post" name="data2" />
+		<argument storage="url" name="id" pattern="\/test\/([0-9]+)" />
+	</action>
+
+	<action class="Asset\Root\Controller\TestController" method="argument" route="\/argument" presenter="ItePHP\Presenter\HTML">
+		<argument storage="get" name="var" default="3" />
+		<argument storage="post" name="data2" default="2" />
+		<argument storage="url" name="id" pattern="\/test\/([0-9]+)" default="1" />
+	</action>
+
+</content>

@@ -19,6 +19,7 @@ use ItePHP\Core\MethodNotFoundException;
 use ItePHP\Core\ExecuteResources;
 use ItePHP\Core\EventManager;
 use ItePHP\Core\ServiceNotFoundException;
+use ItePHP\Core\Enviorment;
 
 use ItePHP\DependencyInjection\DependencyInjection;
 
@@ -51,14 +52,24 @@ class Container{
 	 * @param array $snippets
 	 */
 	public function __construct(DependencyInjection $dependencyInjection,array $snippets){
+
 		$this->dependencyInjection=$dependencyInjection;
 		$this->snippets=$snippets;
 	}
 
 	/**
+	 * Get Enviorment
+	 *
+	 * @return Enviorment
+	 */
+	public function getEnviorment(){
+		return $this->dependencyInjection->get('enviorment');
+	}
+
+	/**
 	 * Get Event manager
 	 *
-	 * @return \ItePHP\Core\EventManager
+	 * @return EventManager
 	 */
 	public function getEventManager(){
 		return $this->dependencyInjection->get('eventManager');

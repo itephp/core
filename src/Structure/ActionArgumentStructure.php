@@ -22,22 +22,24 @@ use ItePHP\Config\ConfigBuilderNode;
  * Structure for actions.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.4.0
  */
-class ActionStructure implements Structure{
+class ActionArgumentStructure implements Structure{
 
     /**
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-		
-		$actionNode=new ConfigBuilderNode('action');
-		$actionNode->addAttribute('class');
-		$actionNode->addAttribute('method');
-		$actionNode->addAttribute('route');
-		$actionNode->addAttribute('presenter');
+		$argumentNode=new ConfigBuilderNode('argument');
+		$argumentNode->addAttribute('storage');
+		$argumentNode->addAttribute('name');
+		$argumentNode->addAttribute('pattern','');
+		$argumentNode->addAttribute('validator','');
+		$argumentNode->addAttribute('mapper','');
+		$argumentNode->addAttribute('default',false);
 
-		$configBuilder->addNode($actionNode);
+		$actionNode=$configBuilder->getNode('action');		
+		$actionNode->addNode($argumentNode);
+
 
 	}	
 

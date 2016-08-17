@@ -18,8 +18,8 @@ namespace ItePHP\Action;
 use ItePHP\Provider\Response;
 use ItePHP\Core\ExecuteActionEvent;
 use ItePHP\Core\InvalidConfigValueException;
-use ItePHP\Core\RequiredArgumentException;
-use ItePHP\Core\InvalidArgumentException;
+use ItePHP\Action\RequiredArgumentException;
+use ItePHP\Action\InvalidArgumentException;
 use ItePHP\Core\RequestProvider;
 use ItePHP\Core\Config;
 use ItePHP\Service\Validator;
@@ -83,7 +83,7 @@ class ArgumentEvent{
 				$value=$this->validateUrl($request , $config , $position);
 			break;
 			case 'post':
-				$value=$this->validatePost($request->getData() , $config , $position);
+				$value=$this->validateGetPost($request->getData() , $config , $position);
 			break;
 			case 'get':
 				$value=$this->validateGetPost($request->getQuery() , $config , $position);
@@ -127,7 +127,7 @@ class ArgumentEvent{
 			return $matches[1];			
 		}
 		else if($default!==false){
-			return $config['default'];			
+			return $config->getAttribute('default');;			
 		}
 		else{
 			throw new RequiredArgumentException($position,$config->getAttribute('name'));			

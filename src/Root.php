@@ -183,7 +183,7 @@ class Root{
 		//config structure
 		$structureConfig=new ConfigBuilder();
 
-		$xmlReader=new XmlFileReader(ITE_ROOT.'/config/structure.xml');
+		$xmlReader=new XmlFileReader($this->enviorment->getConfigPath().'/structure.xml');
 		$structureConfig->addReader($xmlReader);
 
 		$structureNode=new ConfigBuilderNode('structure');
@@ -192,7 +192,7 @@ class Root{
 
 		$structureContainer=$structureConfig->parse();
 
-		$xmlReader=new XmlFileReader(ITE_ROOT.'/config/'.$this->enviorment->getName().'.xml');
+		$xmlReader=new XmlFileReader($this->enviorment->getConfigPath().'/'.$this->enviorment->getName().'.xml');
 		$importConfig=new ConfigBuilder();
 		$importConfig->addReader($xmlReader);
 
@@ -207,7 +207,7 @@ class Root{
 		$mainConfig=new ConfigBuilder();
 
 		foreach($importContainer->getNodes('import') as $importNode){
-			$xmlReader=new XmlFileReader(ITE_ROOT.'/config/'.$importNode->getAttribute('file'));
+			$xmlReader=new XmlFileReader($this->enviorment->getConfigPath().'/'.$importNode->getAttribute('file'));
 			$mainConfig->addReader($xmlReader);
 		}
 

@@ -26,7 +26,7 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 		$errorNode->addAttribute('presenter');
 
 		$configBuilder->addNode($errorNode);
-		$xmlFileReader=new XmlFileReader(__DIR__.'/../Asset/Core/HTTPErrorHandler/error.xml');
+		$xmlFileReader=new XmlFileReader(__DIR__.'/../../Asset/Core/HTTPErrorHandler/error.xml');
 		$configBuilder->addReader($xmlFileReader);
 
 		return new Config($configBuilder->parse());
@@ -55,7 +55,7 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	private function createHandler($url){
-		$enviorment=new Enviorment(true,true,'test');
+		$enviorment=new Enviorment(true,true,'test',__DIR__);
 
 		$_SERVER=[];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
