@@ -14,15 +14,13 @@
  */
 
 namespace ItePHP\Validator;
-use ItePHP\Core\Validator;
-use ItePHP\Action\ValueNotFoundException;
 
 /**
  * Validator for number
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class BooleanValidator extends Validator{
+class BooleanValidator extends ValidatorAbstract{
 	
 	/**
 	 * {@inheritdoc}

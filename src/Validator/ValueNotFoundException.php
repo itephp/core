@@ -16,31 +16,18 @@
 namespace ItePHP\Validator;
 
 /**
- * Validator for email
+ * Throw when value not found in SessionProvider,ArrayList,Map.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class EmailValidator extends ValidatorAbstract{
-
+class ValueNotFoundException extends \Exception{
+	
 	/**
-	 * {@inheritdoc}
+	 * Constructor.
+	 *
+	 * @param string $name
 	 */
-	public function validate($value){
-
-		$empty=false;
-
-		try{
-			$empty=$this->getOption('empty');
-		}
-		catch(ValueNotFoundException $e){
-			//ignore
-		}
-
-		if(!$value && $empty){
-			return;
-		}
-
-		if(!preg_match("/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+$/",$value))
-			return "Invalid email format.";
+	public function __construct($name){
+		parent::__construct('Value "'.$name.'" not found.');
 	}
 }

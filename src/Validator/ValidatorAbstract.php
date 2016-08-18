@@ -13,23 +13,21 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core;
-
-use ItePHP\Action\ValueNotFoundException;
+namespace ItePHP\Validator;
 
 /**
  * Main class for validators. Check correct values.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-abstract class Validator{
+abstract class ValidatorAbstract{
 
 	/**
 	 * Array with config options.
 	 *
 	 * @var array $options
 	 */
-	private $options=array();
+	private $options=[];
 	
 	/**
 	 * Implement method to validate value.

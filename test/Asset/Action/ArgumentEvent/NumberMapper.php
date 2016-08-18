@@ -33,7 +33,7 @@ class NumberMapper extends MapperAbstract{
 			throw new \Exception('Invalid value '.$value.'.');
 		}
 
-		return $value;
+		return $value+1;
 
 	}
 

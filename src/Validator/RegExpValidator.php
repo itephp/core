@@ -16,50 +16,19 @@
 namespace ItePHP\Validator;
 
 /**
- * Validator for number
+ * Validator for reg exp
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class NumberValidator extends ValidatorAbstract{
+class RegExpValidator extends ValidatorAbstract{
 	
 	/**
 	 * {@inheritdoc}
 	 */
 	public function validate($value){
-		$empty=false;
-
-		try{
-			$empty=$this->getOption('empty');
-		}
-		catch(ValueNotFoundException $e){
-			//ignore
-		}
-
-		if(!$value && $empty){
-			return;
-		}
-
-		if(!is_numeric($value))
-			return 'Value is not number.';
-
-		try{
-			$min=$this->getOption('min');
-			if($value<$min){
-				return 'Value is too small.';
-			}
-		}
-		catch(ValueNotFoundException $e){
-			//ignore
-		}
-
-		try{
-			$max=$this->getOption('max');
-			if($value>$max){
-				return 'Value is too height.';
-			}
-		}
-		catch(ValueNotFoundException $e){
-			//ignore
+		$pattern=$this->getOption('pattern');
+		if(!preg_match('/'.$pattern.'/',$value)){
+			return 'Invalid pattern format.';
 		}
 	}
 }

@@ -22,7 +22,7 @@ use ItePHP\Action\RequiredArgumentException;
 use ItePHP\Action\InvalidArgumentException;
 use ItePHP\Core\RequestProvider;
 use ItePHP\Core\Config;
-use ItePHP\Service\Validator;
+use ItePHP\Core\ValidatorService;
 use ItePHP\Core\Container;
 
 /**
@@ -40,18 +40,10 @@ class ArgumentEvent{
 
 	/**
 	 *
-	 * @var Validator
-	 */
-	private $validator;
-
-	/**
-	 *
 	 * @param Container $container 
-	 * @param Validator $validator 
 	 */
-	public function __construct(Container $container,Validator $validator){
+	public function __construct(Container $container){
 		$this->container=$container;
-		$this->validator=$validator;
 	}
 
 	/**
@@ -95,8 +87,8 @@ class ArgumentEvent{
 
 		$validatorName=$config->getAttribute('validator');
 		if($validatorName!==''){
-
-			$error=$this->validator->validate(new $validatorName(),$value);
+			$validatorObject=new $validatorName();
+			$error=$validatorObject->validate($value);
 			if($error){
 				throw new InvalidArgumentException($position,$config->getAttribute('name'),$error);				
 			}

@@ -16,45 +16,69 @@
 namespace ItePHP\Core;
 
 /**
- * Interface for validtor service.
+ * Service to validate
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-interface ValidatorService{
-
+class ValidatorService{
+	
 	/**
-	 * Validate once value.
 	 *
-	 * @param Validator $validator class validator rule
-	 * @param mixed $value valut to validation
-	 * @return string
+	 * @param string $validator
+	 * @param mixed $value
 	 */
-	public function validate($validator,$value);
+	public function validate($validator,$value){
+		$validator=new $validator();
+		return $validator->validate($value);
+	}
 
 	/**
-	 * Validate multiple values
+	 *
 	 * @param array $validators - array with value and validators: 
-	 * array(
-	 * 'field name'=>array(
+	 * [
+	 * 'field name'=>[
 	 *		'validator rule class'
 	 *		,'value'
-	 *	)
-	 *	,'another field name'=>array(
+	 *		]
+	 *	,'another field name'=>[
 	 *		'validator rule class'
-	 *		,'value')
-	 *	)
-	 * @return array
+	 *		,'value'
+	 *		]
+	 *	]
+	 * @return array with errors. If success then empty array.
 	 */
-	public function multiValidate($validators);
+	public function multiValidate($validators){
+		$errors=[];
+		foreach($validators as $kValidate=>$validate){
+			$error=$this->validate($validate[0],$validate[1]);
+			if($error)
+				$errors[]=['field'=>$kValidate,'message'=>$error];
+		}
+
+		return $errors;
+	}
 
 	/**
 	 * Validate data from storage array.
 	 *
-	 * @param array $validators array with rules validation example: array('nameField'=>'Validator\ExampleClassValidator')
-	 * @param array $storage array with values, example array('nameField1'=>'value1','nameField2'=>'value2')
-	 * @return array
+	 * @param array $validators - array with rules validation example: ['nameField'=>'Validator\ExampleClassValidator']
+	 * @param array $storage - array with values, example ['nameField1'=>'value1','nameField2'=>'value2']
+	 * @return array with errors. If success then empty array.
 	 */
-	public function storageValidate($validators,$storage);
+	public function storageValidate($validators,$storage){
+		$errors=[];
+		foreach($validators as $kValidate=>$validate){
+			if(!isset($storage[$kValidate])){
+				$errors[]=['field'=>$kValidate,'message'=>'Value '.$kValidate.' not found.'];
+				continue;
+			}
 
+			$error=$this->validate($validate,$storage[$kValidate]);
+			if($error)
+				$errors[]=['field'=>$kValidate,'message'=>$error];
+		}
+
+		return $errors;
+
+	}
 }
-

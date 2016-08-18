@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Mapper;
+namespace ItePHP\Core;
 
 use ItePHP\Core\Container;
 use ItePHP\Mapper\MapperNotFoundException;

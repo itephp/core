@@ -14,15 +14,13 @@
  */
 
 namespace ItePHP\Validator;
-use ItePHP\Core\Validator;
-use ItePHP\Action\ValueNotFoundException;
 
 /**
  * Validator for telephone
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class TelephoneValidator extends Validator{
+class TelephoneValidator extends ValidatorAbstract{
 
 	/**
 	 * {@inheritdoc}

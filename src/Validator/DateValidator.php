@@ -14,15 +14,13 @@
  */
 
 namespace ItePHP\Validator;
-use ItePHP\Core\Validator;
-use ItePHP\Action\ValueNotFoundException;
 
 /**
  * Validator for date
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class DateValidator extends Validator{
+class DateValidator extends ValidatorAbstract{
 	
 	/**
 	 * {@inheritdoc}

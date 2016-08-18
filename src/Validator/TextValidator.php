@@ -14,15 +14,13 @@
  */
 
 namespace ItePHP\Validator;
-use ItePHP\Core\Validator;
-use ItePHP\Action\ValueNotFoundException;
 
 /**
  * Validator for text
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class TextValidator extends Validator{
+class TextValidator extends ValidatorAbstract{
 	
 	/**
 	 * {@inheritdoc}
@@ -40,17 +38,6 @@ class TextValidator extends Validator{
 
 		if(!$value && !$empty){
 			return 'Value can not empty';
-		}
-
-		try{
-			$pattern=$this->getOption('pattern');
-			if(!preg_match('/'.$pattern.'/',$value)){
-				return 'Invalid pattern format.';
-			}
-
-		}
-		catch(ValueNotFoundException $e){
-			//ignore
 		}
 	}
 }

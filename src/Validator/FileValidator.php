@@ -14,15 +14,13 @@
  */
 
 namespace ItePHP\Validator;
-use ItePHP\Core\Validator;
-use ItePHP\Action\ValueNotFoundException;
 
 /**
  * Validator for file
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class FileValidator extends Validator{
+class FileValidator extends ValidatorAbstract{
 	
 	/**
 	 * {@inheritdoc}

@@ -25,7 +25,6 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 	public function testOnExecuteAction(){
 
 		$container=new Container(new DependencyInjection(),[]);
-		$validator=new Validator();
 
 		$enviorment=new Enviorment(true,true,'test',__DIR__);
 
@@ -36,7 +35,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 		$config=$this->getConfig();
 		$request->setConfig($config->getNodes('action')[0]);
 
-		$event=new ArgumentEvent($container,$validator);
+		$event=new ArgumentEvent($container);
 		$executeActionEvent=new ExecuteActionEvent($request);
 		$event->onExecuteAction($executeActionEvent);
 		$arguments=$request->getArguments();
@@ -49,7 +48,6 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 	public function testOnExecuteActionDefault(){
 
 		$container=new Container(new DependencyInjection(),[]);
-		$validator=new Validator();
 
 		$enviorment=new Enviorment(true,true,'test',__DIR__);
 
@@ -58,7 +56,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 		$config=$this->getConfig();
 		$request->setConfig($config->getNodes('action')[1]);
 
-		$event=new ArgumentEvent($container,$validator);
+		$event=new ArgumentEvent($container);
 		$executeActionEvent=new ExecuteActionEvent($request);
 		$event->onExecuteAction($executeActionEvent);
 		$arguments=$request->getArguments();
@@ -71,7 +69,28 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 	public function testOnExecuteActionValidator(){
 
 		$container=new Container(new DependencyInjection(),[]);
-		$validator=new Validator();
+
+		$enviorment=new Enviorment(true,true,'test',__DIR__);
+
+		$request=new RequestTest('/test/999999999','POST');
+		$request->setData(['data2'=>'123321123']);
+
+		$config=$this->getConfig();
+		$request->setConfig($config->getNodes('action')[2]);
+
+		$event=new ArgumentEvent($container);
+		$executeActionEvent=new ExecuteActionEvent($request);
+		$responseMessage='';
+		$event->onExecuteAction($executeActionEvent);
+		$arguments=$request->getArguments();
+		$this->assertEquals('123321123',$arguments['data2']);
+		$this->assertEquals('999999999',$arguments['id']);
+
+	}
+
+	public function testOnExecuteActionValidatorInvalidArgumentException(){
+
+		$container=new Container(new DependencyInjection(),[]);
 
 		$enviorment=new Enviorment(true,true,'test',__DIR__);
 
@@ -81,7 +100,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 		$config=$this->getConfig();
 		$request->setConfig($config->getNodes('action')[2]);
 
-		$event=new ArgumentEvent($container,$validator);
+		$event=new ArgumentEvent($container);
 		$executeActionEvent=new ExecuteActionEvent($request);
 		$responseMessage='';
 		try{
@@ -98,7 +117,31 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 	public function testOnExecuteActionMapper(){
 
 		$container=new Container(new DependencyInjection(),[]);
-		$validator=new Validator();
+
+		$enviorment=new Enviorment(true,true,'test',__DIR__);
+
+		$request=new RequestTest('/test/1','POST');
+		$request->setQuery(['var'=>'3']);
+		$request->setData(['data2'=>'2']);
+
+		$config=$this->getConfig();
+		$request->setConfig($config->getNodes('action')[3]);
+
+		$event=new ArgumentEvent($container);
+		$executeActionEvent=new ExecuteActionEvent($request);
+
+		$event->onExecuteAction($executeActionEvent);
+
+		$arguments=$request->getArguments();
+		$this->assertEquals(4,$arguments['var']);
+		$this->assertEquals(3,$arguments['data2']);
+		$this->assertEquals(2,$arguments['id']);
+
+	}
+
+	public function testOnExecuteActionMapperException(){
+
+		$container=new Container(new DependencyInjection(),[]);
 
 		$enviorment=new Enviorment(true,true,'test',__DIR__);
 
@@ -109,7 +152,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 		$config=$this->getConfig();
 		$request->setConfig($config->getNodes('action')[3]);
 
-		$event=new ArgumentEvent($container,$validator);
+		$event=new ArgumentEvent($container);
 		$executeActionEvent=new ExecuteActionEvent($request);
 		$responseMessage='';
 		try{
