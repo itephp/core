@@ -20,7 +20,7 @@ use ItePHP\Component\Form\BasicFormFormatter;
 use ItePHP\Component\Form\BasicFormTransformer;
 use ItePHP\Component\Form\Designer;
 use ItePHP\Component\Form\Transformer;
-use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Request;
 use ItePHP\Core\ValidatorService;
 use ItePHP\Component\Form\FieldNotFoundException;
 use ItePHP\Component\Form\FileNotUploadedException;
@@ -391,10 +391,10 @@ class FormBuilder{
 	/**
 	 * Submit form. Check http confirm and validate fields
 	 *
-	 * @param \ItePHP\Core\RequestProvider $request
+	 * @param Request $request
 	 * @since 0.17.0
 	 */
-	public function submit(RequestProvider $request){
+	public function submit(Request $request){
 		$this->isConfirmed=false;
 
 		if($this->formTags['method']=='post' && $request->getType()=='POST'){

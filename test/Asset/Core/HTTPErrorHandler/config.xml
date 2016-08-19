@@ -1,0 +1,18 @@
+<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<presenter name="json" class="ItePHP\Presenter\JSON">
+		<method name="__construct">
+			<argument type="reference" value="enviorment" />
+		</method>
+	</presenter>
+
+	<presenter name="html" class="ItePHP\Presenter\HTML">
+		<method name="__construct">
+			<argument type="reference" value="enviorment" />
+		</method>
+	</presenter>
+
+	<error pattern=".*\.json" presenter="json" />
+	<error pattern=".*" presenter="html" />
+
+</content>

@@ -16,7 +16,7 @@
 namespace ItePHP\Core;
 
 use ItePHP\Core\Response;
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Request;
 
 /**
  * Interface for generator view
@@ -28,9 +28,9 @@ interface Presenter{
 	/**
 	 * Method with render rules.
 	 *
-	 * @param Enviorment $enviorment
+	 * @param Request $request
 	 * @param Response $response
 	 */
-	public function render(Enviorment $enviorment , Response $response);
+	public function render(Request $request,Response $response);
 
 }

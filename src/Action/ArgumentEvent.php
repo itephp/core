@@ -20,7 +20,7 @@ use ItePHP\Core\ExecuteActionEvent;
 use ItePHP\Core\InvalidConfigValueException;
 use ItePHP\Action\RequiredArgumentException;
 use ItePHP\Action\InvalidArgumentException;
-use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Request;
 use ItePHP\Core\Config;
 use ItePHP\Core\ValidatorService;
 use ItePHP\Core\Container;
@@ -62,13 +62,13 @@ class ArgumentEvent{
 	/**
 	 * Validate argument.
 	 *
-	 * @param RequestProvider $request
+	 * @param Request $request
 	 * @param Config $config argument
 	 * @param int $position
 	 * @throws InvalidConfigValueException
 	 * @throws InvalidArgumentException
 	 */
-	private function validateArgument(RequestProvider $request , $config , $position){
+	private function validateArgument(Request $request , $config , $position){
 		$value=null;
 		switch($config->getAttribute('storage')){
 			case 'url':
@@ -106,13 +106,13 @@ class ArgumentEvent{
 	/**
 	 * Validate url.
 	 *
-	 * @param RequestProvider $request
+	 * @param Request $request
 	 * @param Config $config argument
 	 * @param int $position
 	 * @return string
 	 * @throws RequiredArgumentException
 	 */
-	private function validateUrl(RequestProvider $request , $config , $position){
+	private function validateUrl(Request $request , $config , $position){
 		$url=$request->getUrl();
 		$default=$config->getAttribute('default');
 		if(preg_match('/^'.$config->getAttribute('pattern').'$/',$url,$matches) && isset($matches[1])){

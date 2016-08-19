@@ -19,7 +19,7 @@ use ItePHP\Core\Response;
 use ItePHP\Core\ExecuteActionEvent;
 use ItePHP\Action\ValueNotFoundException;
 use ItePHP\Action\PermissionDeniedException;
-use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Request;
 use ItePHP\Core\Config;
 
 /**
@@ -113,10 +113,10 @@ class AuthenticateEvent{
 	 * Check authenticate.
 	 *
 	 * @param string $redirect
-	 * @param RequestProvider $request
+	 * @param Request $request
 	 * @return Response
 	 */
-	private function createResponseRedirect($redirect,RequestProvider $request){
+	private function createResponseRedirect($redirect,Request $request){
 		$response=new Response();
 		if($request->isAjax()){
 			$response->setStatusCode(401);

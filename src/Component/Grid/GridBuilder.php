@@ -18,7 +18,7 @@ namespace ItePHP\Component\Grid;
 use ItePHP\Component\Grid\GridFormatter;
 use ItePHP\Component\Grid\GridDataManager;
 use ItePHP\Component\Grid\Column;
-use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Request;
 
 /**
  * Generator grid. Support for mapping data, pagination and generate html code.
@@ -34,17 +34,17 @@ class GridBuilder{
 	private $columns=array();
 
 	/**
-	 * @var RequestProvider $request
+	 * @var Request $request
 	 */
 	private $request;
 
 	/**
 	 * Constructor
 	 *
-	 * @param RequestProvider $request
+	 * @param Request $request
 	 * @since 0.20.0
 	 */
-	public function __construct(RequestProvider $request){
+	public function __construct(Request $request){
 		$this->request=$request;
 	}
 

@@ -17,7 +17,6 @@ namespace ItePHP\Component\Form;
 
 use ItePHP\Component\Form\FormFormatter;
 use ItePHP\Component\Form\BasicFormFormatter;
-use ItePHP\Provider\Request;
 use ItePHP\Core\ValidatorService;
 use ItePHP\Validator\BooleanValidator;
 

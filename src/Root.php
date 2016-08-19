@@ -15,8 +15,8 @@
 
 namespace ItePHP;
 
-use ItePHP\Core\RequestProvider;
-use ItePHP\Provider\Request;
+use ItePHP\Core\Request;
+use ItePHP\Core\HTTPRequest;
 use ItePHP\Provider\Session;
 use ItePHP\Core\Enviorment;
 use ItePHP\DependencyInjection\DependencyInjection;
@@ -155,9 +155,9 @@ class Root{
 
 		//request
 		$session=new Session($this->enviorment);
-		$request=new Request($url,$session);
+		$request=new HTTPRequest($url,$session);
 
-		$this->reconfigureErrorManager($request);
+		$this->reconfigureErrorManager($dependencyInjection,$request);
 
 		try{
 			$dispatcher=$this->createHttpRouter($dependencyInjection,$request)->createDispatcher($url);
@@ -227,14 +227,15 @@ class Root{
 
 	/**
 	 *
+	 * @param DependencyInjection $dependencyInjection
 	 * @param Request $request
 	 */
-	private function reconfigureErrorManager(Request $request){
+	private function reconfigureErrorManager(DependencyInjection $dependencyInjection,Request $request){
 		$removeHandlers=$this->errorManager->getHandlers();
 
 		$this->errorManager->addHandler(
 			new HTTPErrorHandler(
-				$this->enviorment,$this->config,$this->container->getEventManager(),$request
+				$dependencyInjection,$request
 			)
 		);
 
@@ -247,10 +248,10 @@ class Root{
 	/**
 	 *
 	 * @param DependencyInjection $dependencyInjection
-	 * @param RequestProvider $request
+	 * @param Request $request
 	 * @return Router
 	 */
-	private function createHttpRouter(DependencyInjection $dependencyInjection,RequestProvider $request){
+	private function createHttpRouter(DependencyInjection $dependencyInjection,Request $request){
 		$router=new Router();
 		$presenters=$this->getPresenters($dependencyInjection);
 		foreach($this->config->getNodes('action') as $actionNode){

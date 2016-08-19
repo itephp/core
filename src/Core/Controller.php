@@ -16,7 +16,7 @@
 namespace ItePHP\Core;
 
 use ItePHP\Core\ContenerServices;
-use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Request;
 use ItePHP\Core\EventManager;
 use ItePHP\Core\MethodNotFoundException;
 use ItePHP\Core\Container;
@@ -32,9 +32,9 @@ use ItePHP\DependencyInjection\DependencyInjection;
 abstract class Controller{
 
 	/**
-	 * RequestProvider
+	 * Request
 	 *
-	 * @var RequestProvider $request
+	 * @var Request $request
 	 */
 	private $request;
 
@@ -54,10 +54,10 @@ abstract class Controller{
 	/**
 	 * Constructor.
 	 *
-	 * @param RequestProvider $request
+	 * @param Request $request
 	 * @param Container $container
 	 */
-	public function __construct(RequestProvider $request,Container $container){
+	public function __construct(Request $request,Container $container){
 		$this->request=$request;
 		$this->session=$request->getSession();
 		$this->container=$container;
@@ -65,7 +65,7 @@ abstract class Controller{
 
 	/**
 	 *
-	 * @return RequestProvider
+	 * @return Request
 	 */
 	public function getRequest(){
 		return $this->request;

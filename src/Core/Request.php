@@ -23,7 +23,7 @@ use ItePHP\Core\Config;
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-interface RequestProvider{
+interface Request{
 
 	/**
 	 * Get uploaded file.

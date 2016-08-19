@@ -16,6 +16,7 @@
 namespace ItePHP\Presenter;
 
 use ItePHP\Core\Presenter;
+use ItePHP\Core\Request;
 use ItePHP\Core\Response;
 use ItePHP\Core\Enviorment;
 
@@ -28,26 +29,41 @@ class JSON implements Presenter{
 
 	/**
 	 *
-	 * @param Enviorment $config
+	 * @var Enviorment
+	 */
+	private $enviorment;
+
+	/**
+	 *
+	 * @param Enviorment $enviorment
+	 */
+	public function __construct(Enviorment $enviorment){
+		$this->enviorment=$enviorment;
+	}
+
+	/**
+	 *
+	 * @param Request $request
 	 * @param Response $response
 	 */
-	public function render(Enviorment $config , Response $response){
-		$this->setHeaders($config,$response);
+	public function render(Request $request , Response $response){
+		$this->setHeaders($response);
 		echo json_encode($response->getContent());
 	}
 
 	/**
 	 *
-	 * @param Enviorment $requestConfig
 	 * @param Response $response
 	 */
-	private function setHeaders(Enviorment $requestConfig,Response $response){
-		if(!$requestConfig->isSilent()){
-			header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());
-			header('Content-type: application/json');
-			foreach($response->getHeaders() as $name=>$value){
-				if($name!='content-type')
-					header($name.': '.$value);
+	private function setHeaders(Response $response){
+		if($this->enviorment->getName()==='test'){
+			return;
+		}
+		header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());
+		header('Content-type: application/json');
+		foreach($response->getHeaders() as $name=>$value){
+			if($name!='content-type'){
+				header($name.': '.$value);				
 			}
 		}
 

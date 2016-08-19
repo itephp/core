@@ -13,10 +13,10 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Provider;
+namespace ItePHP\Core;
 
 use ItePHP\Provider\Session;
-use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Request;
 use ItePHP\Core\HeaderNotFoundException;
 use ItePHP\Component\Form\FileUploaded;
 use ItePHP\Core\FileNotUploadedException;
@@ -27,7 +27,7 @@ use ItePHP\Core\Config;
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class Request implements RequestProvider{
+class HTTPRequest implements Request{
 
 	/**
 	 *

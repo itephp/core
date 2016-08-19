@@ -7,7 +7,7 @@ require_once(__DIR__.'/../../autoload.php');
 use ItePHP\Core\Container;
 use ItePHP\Service\Validator;
 use ItePHP\Core\ExecuteActionEvent;
-use ItePHP\Provider\Request;
+use ItePHP\Core\HTTPRequest;
 use ItePHP\Action\ArgumentEvent;
 use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\Provider\Session;

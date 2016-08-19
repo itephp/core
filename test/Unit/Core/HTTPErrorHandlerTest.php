@@ -10,9 +10,14 @@ use ItePHP\Config\ConfigBuilder;
 use ItePHP\Config\ConfigBuilderNode;
 use ItePHP\Config\XmlFileReader;
 use ItePHP\Provider\Session;
-use ItePHP\Provider\Request;
+use ItePHP\Core\HTTPRequest;
 use ItePHP\Core\EventManager;
 use ItePHP\Core\Config;
+use ItePHP\DependencyInjection\DependencyInjection;
+use ItePHP\Structure\ErrorStructure;
+use ItePHP\Structure\PresenterStructure;
+use ItePHP\Presenter\HTML;
+use ItePHP\Presenter\JSON;
 
 class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 	
@@ -21,12 +26,13 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 	private function createConfigContainer(){
 		$configBuilder=new ConfigBuilder();
 
-		$errorNode=new ConfigBuilderNode('error');
-		$errorNode->addAttribute('pattern');
-		$errorNode->addAttribute('presenter');
+		$structure=new ErrorStructure();
+		$structure->doConfig($configBuilder);
 
-		$configBuilder->addNode($errorNode);
-		$xmlFileReader=new XmlFileReader(__DIR__.'/../../Asset/Core/HTTPErrorHandler/error.xml');
+		$structure=new PresenterStructure();
+		$structure->doConfig($configBuilder);
+
+		$xmlFileReader=new XmlFileReader(__DIR__.'/../../Asset/Core/HTTPErrorHandler/config.xml');
 		$configBuilder->addReader($xmlFileReader);
 
 		return new Config($configBuilder->parse());
@@ -61,8 +67,15 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
 
 		$session=new Session($enviorment);
-		$request=new Request($url,$session);
+		$request=new HTTPRequest($url,$session);
 
-		return new HTTPErrorHandler($enviorment,$this->createConfigContainer(),new EventManager(),$request);
+		$dependencyInjection=new DependencyInjection();
+		$dependencyInjection->addInstance('enviorment',$enviorment);
+		$dependencyInjection->addInstance('config',$this->createConfigContainer());
+		$dependencyInjection->addInstance('eventManager',new EventManager());
+		$dependencyInjection->addInstance('presenter.html',new HTML($enviorment));
+		$dependencyInjection->addInstance('presenter.json',new JSON($enviorment));
+
+		return new HTTPErrorHandler($dependencyInjection,$request);
 	}
 }

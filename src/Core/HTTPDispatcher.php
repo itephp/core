@@ -21,7 +21,7 @@ use ItePHP\DependencyInjection\DependencyInjection;
 
 use ItePHP\Core\Response;
 use ItePHP\Core\ActionNotFoundException;
-use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Request;
 use ItePHP\Core\Enviorment;
 use ItePHP\Core\Container;
 
@@ -41,7 +41,7 @@ class HTTPDispatcher  implements Dispatcher {
 	/**
 	 * Request
 	 *
-	 * @var RequestProvider
+	 * @var Request
 	 */
 	protected $request;
 
@@ -92,11 +92,11 @@ class HTTPDispatcher  implements Dispatcher {
 	 *
 	 * @param Config $config
 	 * @param Container $container
-	 * @param RequestProvider $request
+	 * @param Request $request
 	 * @param Enviorment $enviorment
 	 * @param array $presenters
 	 */
-	public function __construct(Config $config,Container $container,RequestProvider $request,Enviorment $enviorment,array $presenters){
+	public function __construct(Config $config,Container $container,Request $request,Enviorment $enviorment,array $presenters){
 		$this->config=$config;
 		$this->className=$config->getAttribute('class');
 		$this->methodName=$config->getAttribute('method');
@@ -183,7 +183,7 @@ class HTTPDispatcher  implements Dispatcher {
 		$event=new ExecutePresenterEvent($this->request,$response);
 		$eventManager->fire('executePresenter',$event);
 
-		$presenter->render($this->enviorment , $response);
+		$presenter->render($this->request,$response);
 	}
 
 

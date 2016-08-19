@@ -16,13 +16,11 @@
 namespace ItePHP\Core;
 
 use ItePHP\Error\ErrorHandler;
-use ItePHP\Core\Enviorment;
 use ItePHP\Core\HTTPException;
-use ItePHP\Core\EventManager;
 use ItePHP\Presenter\HTML as HTMLPresenter;
 use ItePHP\Core\ExecutePresenterEvent;
-use ItePHP\Core\RequestProvider;
-use ItePHP\Core\Config;
+use ItePHP\Core\Request;
+use ItePHP\DependencyInjection\DependencyInjection;
 
 /**
  *
@@ -32,39 +30,23 @@ class HTTPErrorHandler implements ErrorHandler{
 	
 	/**
 	 *
-	 * @var Enviorment
+	 * @var DependencyInjection
 	 */ 
-	private $enviorment;
+	private $dependencyInjection;
 
 	/**
 	 *
-	 * @var Config
-	 */ 
-	private $config;
-
-	/**
-	 *
-	 * @var EventManager
-	 */ 
-	private $eventManager;
-
-	/**
-	 *
-	 * @var RequestProvider
+	 * @var Request
 	 */ 
 	private $request;
 
 	/**
 	 *
-	 * @param Enviorment $enviorment
-	 * @param Config $config
-	 * @param EventManager $eventManager
-	 * @param RequestProvider $request
+	 * @param DependencyInjection $dependencyInjection
+	 * @param Request $request
 	 */
-	public function __construct(Enviorment $enviorment,Config $config,EventManager $eventManager,RequestProvider $request){
-		$this->enviorment=$enviorment;
-		$this->config=$config;
-		$this->eventManager=$eventManager;
+	public function __construct(DependencyInjection $dependencyInjection,Request $request){
+		$this->dependencyInjection=$dependencyInjection;
 		$this->request=$request;
 	}
 
@@ -72,7 +54,7 @@ class HTTPErrorHandler implements ErrorHandler{
      * {@inheritdoc}
      */
 	public function execute(\Exception $exception){
-		if(!$this->enviorment->isSilent()){
+		if(!$this->dependencyInjection->get('enviorment')->isSilent()){
 			error_log($exception->getMessage()." ".$exception->getFile()."(".$exception->getLine().")");
 		}
 
@@ -86,9 +68,9 @@ class HTTPErrorHandler implements ErrorHandler{
 		}
 
 		$event=new ExecutePresenterEvent($this->request,$response);
-		$this->eventManager->fire('executePresenter',$event);
+		$this->dependencyInjection->get('eventManager')->fire('executePresenter',$event);
 
-		$presenter->render($this->enviorment,$response);
+		$presenter->render($this->request,$response);
 
 	}
 
@@ -98,15 +80,15 @@ class HTTPErrorHandler implements ErrorHandler{
 	 * @return string
 	 */
 	private function getPresenter($url){
-		foreach($this->config->getNodes('error') as $error){
+		foreach($this->dependencyInjection->get('config')->getNodes('error') as $error){
 			if(!preg_match('/^'.$error->getAttribute('pattern').'$/',$url)){
 				continue;
 			}
 			$presenterName=$error->getAttribute('presenter');
-			return new $presenterName();
+			return $this->dependencyInjection->get('presenter.'.$presenterName);
 		}
 
-		return new HTMLPresenter();
+		return new HTMLPresenter($this->dependencyInjection->get('enviorment'));
 
 	}
 

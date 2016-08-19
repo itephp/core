@@ -15,7 +15,7 @@
 
 namespace Asset;
 
-use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Request;
 use ItePHP\Core\HeaderNotFoundException;
 use ItePHP\Component\Form\FileUploaded;
 use ItePHP\Core\FileNotUploadedException;
@@ -26,7 +26,7 @@ use ItePHP\Core\Config;
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class RequestTest implements RequestProvider{
+class RequestTest implements Request{
 
 	private $data=[];
 	private $query=[];

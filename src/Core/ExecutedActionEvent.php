@@ -15,7 +15,7 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Request;
 use ItePHP\Core\Response;
 
 /**
@@ -28,7 +28,7 @@ class ExecutedActionEvent{
 	/**
 	 * Request provider.
 	 *
-	 * @var RequestProvider $request
+	 * @var Request $request
 	 */
 	private $request;
 
@@ -42,10 +42,10 @@ class ExecutedActionEvent{
 	/**
 	 * Constructor.
 	 *
-	 * @param RequestProvider $request
+	 * @param Request $request
 	 * @param Response $response
 	 */
-	public function __construct(RequestProvider $request , Response $response){
+	public function __construct(Request $request , Response $response){
 		$this->request=$request;
 		$this->response=$response;
 	}
@@ -62,7 +62,7 @@ class ExecutedActionEvent{
 	/**
 	 * Get request
 	 *
-	 * @return RequestProvider
+	 * @return Request
 	 */
 	public function getRequest(){
 		return $this->request;

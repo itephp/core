@@ -16,7 +16,7 @@
 namespace ItePHP\Test;
 
 use ItePHP\Provider\Session;
-use ItePHP\Core\RequestProvider;
+use ItePHP\Core\Request;
 use ItePHP\Exception\HeaderNotFoundException;
 use ItePHP\Core\Enviorment;
 use ItePHP\Root;
@@ -29,7 +29,7 @@ use ItePHP\Exception\FileNotUploadedException;
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class Request implements RequestProvider{
+class TestRequest implements Request{
 
 	private $url;
 	private $data=array();
