@@ -16,7 +16,6 @@
 namespace ItePHP\Core;
 
 use ItePHP\Core\Presenter;
-use \Exception;
 use ItePHP\Core\Response;
 
 /**
@@ -31,9 +30,7 @@ class HTTPErrorPresenter implements Presenter{
      */
 	public function render(Enviorment $enviorment , Response $response){
 
-		if(!$config->isSilent()){
-			header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());			
-		}
+		header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());			
 
 		foreach($response->getHeaders() as $name=>$value){
 			header($name.': '.$value);
@@ -50,7 +47,7 @@ class HTTPErrorPresenter implements Presenter{
 	private function createTemplate($response){
 		$content=$response->getContent();
 		$templateContent='';
-		if($content instanceof Exception){
+		if($content instanceof \Exception){
 			$templateContent=$this->createExceptionContent($content);
 		}
 		else{
@@ -67,13 +64,15 @@ class HTTPErrorPresenter implements Presenter{
 			</HEAD>
 			';
 
+		return $template;
+
 	}
 
 	/**
 	 *
 	 * @param Exception $exception
 	 */
-	private function createExceptionContent(Exception $exception){
+	private function createExceptionContent(\Exception $exception){
 		$template='
 			<div>'.get_class($exception).'</div>
 			<div>'.$exception->getMessage().'</div>

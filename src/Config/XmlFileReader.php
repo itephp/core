@@ -48,7 +48,7 @@ class XmlFileReader implements Reader{
 				continue;
 			}
 
-			$nodes[]=new XmlFileNode($node);
+			$nodes[]=new XmlFileNode([$kNode],$node);
 		}
 
 		return $nodes;

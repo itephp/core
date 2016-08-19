@@ -32,13 +32,6 @@ class ErrorDispatcher{
 	private $stopPropagation;
 
 	/**
-	 * Runtime path
-	 *
-	 * @var string $runtimePath
-	 */	
-	private $runtimePath;
-
-	/**
 	 *
 	 * @var array
 	 */
@@ -76,7 +69,6 @@ class ErrorDispatcher{
 			return;
 		$error = error_get_last();
 		if( $error !== NULL) {
-			chdir($this->runtimePath);
 			$errno   = $error["type"];
 			$errfile = $error["file"];
 			$errline = $error["line"];

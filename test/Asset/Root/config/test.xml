@@ -7,6 +7,7 @@
 	<import file="services.xml" />
 	<import file="events.xml" />
 	<import file="snippets.xml" />
+	<import file="presenters.xml" />
 	<import file="variables.xml" />
 
 </content>

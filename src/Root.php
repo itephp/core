@@ -103,8 +103,8 @@ class Root{
 		$dependencyInjection->addInstance('enviorment',$this->enviorment);
 		$dependencyInjection->addInstance('config',$this->config);
 
-		$this->registerServices($dependencyInjection);
 		$this->registerEventManager($dependencyInjection);
+		$this->registerServices($dependencyInjection);
 		$this->registerEvents($dependencyInjection);
 		$this->registerCommands($dependencyInjection);
 
@@ -151,6 +151,7 @@ class Root{
 		$this->registerServices($dependencyInjection);
 		$this->registerEventManager($dependencyInjection);
 		$this->registerEvents($dependencyInjection);
+		$this->registerPresenters($dependencyInjection);
 
 		//request
 		$session=new Session($this->enviorment);
@@ -159,7 +160,7 @@ class Root{
 		$this->reconfigureErrorManager($request);
 
 		try{
-			$dispatcher=$this->createHttpRouter($request)->createDispatcher($url);
+			$dispatcher=$this->createHttpRouter($dependencyInjection,$request)->createDispatcher($url);
 			$dispatcher->execute();
 		}
 		catch(RouteNotFoundException $e){
@@ -245,23 +246,39 @@ class Root{
 
 	/**
 	 *
+	 * @param DependencyInjection $dependencyInjection
 	 * @param RequestProvider $request
 	 * @return Router
 	 */
-	private function createHttpRouter(RequestProvider $request){
+	private function createHttpRouter(DependencyInjection $dependencyInjection,RequestProvider $request){
 		$router=new Router();
-
+		$presenters=$this->getPresenters($dependencyInjection);
 		foreach($this->config->getNodes('action') as $actionNode){
 			$router->addAction($actionNode->getAttribute('route'),
-				new HttpDispatcher($actionNode,
+				new HTTPDispatcher($actionNode,
 					$this->container,
 					$request,
-					$this->enviorment
+					$this->enviorment,
+					$presenters
 				)
 			);
 		}
 
 		return $router;
+	}
+
+	/**
+	 *
+	 * @param DependencyInjection $dependencyInjection
+	 * @return array
+	 */
+	private function getPresenters(DependencyInjection $dependencyInjection){
+		$presenters=[];
+		foreach($this->config->getNodes('presenter') as $presenterNode){
+			$presenters[$presenterNode->getAttribute('name')]=$dependencyInjection->get('presenter.'.$presenterNode->getAttribute('name'));
+		}
+
+		return $presenters;
 	}
 
 	/**
@@ -315,6 +332,17 @@ class Root{
 	private function registerServices(DependencyInjection $dependencyInjection){
 		foreach($this->config->getNodes('service') as $serviceNode){
 			$metadataClass=$this->getMetadataClass('service.'.$serviceNode->getAttribute('name'),$serviceNode);
+			$dependencyInjection->register($metadataClass);
+		}
+	}
+
+	/**
+	 *
+	 * @param DependencyInjection $dependencyInjection
+	 */
+	private function registerPresenters(DependencyInjection $dependencyInjection){
+		foreach($this->config->getNodes('presenter') as $presenterNode){
+			$metadataClass=$this->getMetadataClass('presenter.'.$presenterNode->getAttribute('name'),$presenterNode);
 			$dependencyInjection->register($metadataClass);
 		}
 	}

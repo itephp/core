@@ -82,18 +82,26 @@ class HTTPDispatcher  implements Dispatcher {
 	protected $config;
 
 	/**
+	 *
+	 * @var array
+	 */
+	protected $presenters;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Config $config
 	 * @param Container $container
 	 * @param RequestProvider $request
 	 * @param Enviorment $enviorment
+	 * @param array $presenters
 	 */
-	public function __construct(Config $config,Container $container,RequestProvider $request,Enviorment $enviorment){
+	public function __construct(Config $config,Container $container,RequestProvider $request,Enviorment $enviorment,array $presenters){
 		$this->config=$config;
 		$this->className=$config->getAttribute('class');
 		$this->methodName=$config->getAttribute('method');
 		$this->presenterName=$config->getAttribute('presenter');
+		$this->presenters=$presenters;
 		$this->request=$request;
 		$this->container=$container;
 		$this->enviorment=$enviorment;
@@ -106,7 +114,7 @@ class HTTPDispatcher  implements Dispatcher {
 	public function execute(){
 		$this->request->setConfig($this->config);
 		$eventManager=$this->container->getEventManager();
-		$presenter=new $this->presenterName();
+		$presenter=$this->getPresenter();
 
 		$event=new ExecuteActionEvent($this->request);
 		$eventManager->fire('executeAction',$event);
@@ -118,6 +126,18 @@ class HTTPDispatcher  implements Dispatcher {
 		}
 
 		$this->prepareView($presenter , $response);
+	}
+
+	/**
+	 *
+	 * @return Presenter
+	 * @throws PresenterNotFoundException
+	 */
+	private function getPresenter(){
+		if(!isset($this->presenters[$this->presenterName])){
+			throw new PresenterNotFoundException($this->presenterName);
+		}
+		return $this->presenters[$this->presenterName];
 	}
 
 	/**
@@ -143,7 +163,7 @@ class HTTPDispatcher  implements Dispatcher {
 		}
 
 		if(!$response->getPresenter()){
-			$response->setPresenter(new $this->presenterName());				
+			$response->setPresenter($this->getPresenter());				
 		}
 
 		$event=new ExecutedActionEvent($this->request,$response);

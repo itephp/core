@@ -13,27 +13,20 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Snippet;
-
-use ItePHP\Core\Container;
+namespace ItePHP\Core;
 
 /**
- * Snippet for validator
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class Validator {
-	
+class PresenterNotFoundException extends \Exception{
+
 	/**
-	 * Execute validator
 	 *
-	 * @param Container $container
-	 * @param strint $validatorName
-	 * @param mixed $value
-	 * @return string
-	 */
-	public function validate(Container $container,$validatorName,$value){
-		$validator=new $validatorName();
-		return $container->getService('validator')->validate($validator,$value);
+	 * @param string $presenterName
+	 */	
+	public function __construct($presenterName){
+		parent::__construct('Presenter '.$presenterName.' not found.');
 	}
+
 }

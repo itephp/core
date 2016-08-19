@@ -8,6 +8,7 @@
 	<structure class="ItePHP\Structure\CommandStructure" />
 	<structure class="ItePHP\Structure\ErrorStructure" />
 	<structure class="ItePHP\Structure\EventStructure" />
+	<structure class="ItePHP\Structure\PresenterStructure" />
 	<structure class="ItePHP\Structure\ServiceStructure" />
 	<structure class="ItePHP\Structure\SnippetStructure" />
 	<structure class="ItePHP\Structure\VariableStructure" />

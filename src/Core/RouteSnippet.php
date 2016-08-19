@@ -13,20 +13,23 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\DependencyInjection;
+namespace ItePHP\Core;
+use ItePHP\Provider\Response;
+use ItePHP\Core\Container;
 
-/**
- * Throw when dependency injection not found instance.
- * @author Michal Tomczak (michal.tomczak@itephp.com)
- */
-class InstanceNotFoundException extends \Exception{
+class RouteSnippet {
 	
 	/**
-	 * Constructor.
+	 * create response with configure redirect action
 	 *
-	 * @param string $name
+	 * @param Container $container
+	 * @param string $url - destiny http address
+	 * @return Response
 	 */
-	public function __construct($name){
-		parent::__construct('Instance '.$name.' not found.');
+	public function redirect(Container $container,$url){
+		$response=new Response();
+		$response->redirect($url);
+		return $response;
 	}
+
 }

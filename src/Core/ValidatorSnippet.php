@@ -13,23 +13,27 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Snippet;
-use ItePHP\Provider\Response;
+namespace ItePHP\Core;
+
 use ItePHP\Core\Container;
 
-class Route {
+/**
+ * Snippet for validator
+ *
+ * @author Michal Tomczak (michal.tomczak@itephp.com)
+ */
+class ValidatorSnippet {
 	
 	/**
-	 * create response with configure redirect action
+	 * Execute validator
 	 *
 	 * @param Container $container
-	 * @param string $url - destiny http address
-	 * @return Response
+	 * @param strint $validatorName
+	 * @param mixed $value
+	 * @return string
 	 */
-	public function redirect(Container $container,$url){
-		$response=new Response();
-		$response->redirect($url);
-		return $response;
+	public function validate(Container $container,$validatorName,$value){
+		$validator=new $validatorName();
+		return $container->getService('validator')->validate($validator,$value);
 	}
-
 }

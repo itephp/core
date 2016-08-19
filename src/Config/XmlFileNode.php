@@ -31,9 +31,11 @@ class XmlFileNode implements ReaderNode{
 
 	/**
 	 *
+	 * @param string $path
 	 * @param SimpleXMLElement $node
 	 */
-	public function __construct(SimpleXMLElement $node){
+	public function __construct($path,SimpleXMLElement $node){
+		$this->path=$path;
 		$this->data=$node;
 	}
 
@@ -47,7 +49,7 @@ class XmlFileNode implements ReaderNode{
 				continue;
 			}
 
-			$nodes[]=new XmlFileNode($node);
+			$nodes[]=new XmlFileNode($this->path+[$kNode],$node);
 		}
 
 		return $nodes;
@@ -59,7 +61,7 @@ class XmlFileNode implements ReaderNode{
 	public function getAttribute($name){
 		$attributes=$this->data->attributes();
 		if(!isset($attributes[$name])){
-			throw new ConfigException('Argument '.$name.' not found.');
+			throw new ConfigException('Argument '.$name.' not found ('.implode('->',$this->path).').');
 		}
 		return (string)$attributes[$name];
 	}

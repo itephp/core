@@ -19,6 +19,8 @@ use ItePHP\Error\ErrorHandler;
 
 use ItePHP\Core\Enviorment;
 
+use ItePHP\Core\HTTPErrorPresenter;
+
 /**
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
@@ -45,11 +47,11 @@ class CriticalErrorHandler implements ErrorHandler{
 	public function execute(\Exception $exception){
 		error_log($exception->getMessage()." ".$exception->getFile()."(".$exception->getLine().")");
 
-		if(!$exception->isDebug()){
+		if(!$this->enviorment->isDebug()){
 			return;
 		}
 
-		$presenter=new HttpErrorPresenter();
+		$presenter=new HTTPErrorPresenter();
 		$response=new Response();
 		$response->setContent($exception);
 
