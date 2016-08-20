@@ -17,10 +17,6 @@ namespace ItePHP\Core;
 
 use ItePHP\Error\ErrorHandler;
 
-use ItePHP\Core\Enviorment;
-
-use ItePHP\Core\HTTPErrorPresenter;
-
 /**
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
@@ -54,8 +50,9 @@ class CriticalErrorHandler implements ErrorHandler{
 		$presenter=new HTTPErrorPresenter();
 		$response=new Response();
 		$response->setContent($exception);
+		$request=new EmptyRequest('',null);
 
-		$presenter->render($this->enviorment,$response);
+		$presenter->render($request,$response);
 
 	}
 

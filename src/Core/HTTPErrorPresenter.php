@@ -28,7 +28,7 @@ class HTTPErrorPresenter implements Presenter{
     /**
      * {@inheritdoc}
      */
-	public function render(Enviorment $enviorment , Response $response){
+	public function render(Request $request , Response $response){
 
 		header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());			
 
