@@ -15,10 +15,11 @@
 
 namespace ItePHP\Presenter;
 
-use ItePHP\Core\Presenter;
-use ItePHP\Provider\Response;
-use ItePHP\Exception\HeaderNotFoundException;
 use ItePHP\Core\Enviorment;
+use ItePHP\Core\HeaderNotFoundException;
+use ItePHP\Core\Presenter;
+use ItePHP\Core\Request;
+use ItePHP\Core\Response;
 
 /**
  * Presenter for files.
@@ -27,17 +28,32 @@ use ItePHP\Core\Enviorment;
  */
 class File implements Presenter{
 
-	/**
-	 *
-	 * @param Enviorment $config
-	 * @param Response $response
-	 */
-	public function render(Enviorment $config , Response $response){
+    /**
+     * @var Enviorment
+     */
+    private $enviorment;
 
-		header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());		
-		foreach($response->getHeaders() as $name=>$value){
-			header($name.': '.$value);
-		}
+    /**
+     * File constructor.
+     * @param Enviorment $enviorment
+     */
+    public function __construct(Enviorment $enviorment)
+    {
+        $this->enviorment=$enviorment;
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     */
+	public function render(Request $request, Response $response){
+
+	    if(!$this->enviorment->isSilent()){
+            header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());
+            foreach($response->getHeaders() as $name=>$value){
+                header($name.': '.$value);
+            }
+        }
 
 
 		if($response->getStatusCode()<299){
@@ -75,3 +91,4 @@ class File implements Presenter{
 		}
 	}
 }
+

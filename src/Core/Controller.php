@@ -15,15 +15,6 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\ContenerServices;
-use ItePHP\Core\Request;
-use ItePHP\Core\EventManager;
-use ItePHP\Core\MethodNotFoundException;
-use ItePHP\Core\Container;
-
-use ItePHP\DependencyInjection\DependencyInjection;
-
-
 /**
  * Main class for project controllers
  *
@@ -71,7 +62,14 @@ abstract class Controller{
 		return $this->request;
 	}
 
-	/**
+    /**
+     * @return Enviorment
+     */
+    public function getEnviorment(){
+        return $this->container->getEnviorment();
+    }
+
+    /**
 	 *
 	 * @return SessionProvider
 	 */

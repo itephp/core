@@ -15,10 +15,6 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Exception\InvalidStatusCodeException;
-use ItePHP\Exception\HeaderNotFoundException;
-use ItePHP\Core\Presenter;
-
 /**
  * Provider for response.
  *
@@ -158,10 +154,9 @@ class Response{
 		return $this->headers;
 	}
 
-	/**
-	 *
-	 * @return string $url
-	 */
+    /**
+     * @param $url
+     */
 	public function redirect($url){
 		$this->setStatusCode(302);
 		$this->setHeader('Location',$url);
@@ -199,10 +194,9 @@ class Response{
 		return $this->presenter;
 	}
 
-	/**
-	 *
-	 * @param long $seconds
-	 */
+    /**
+     * @param int $seconds
+     */
 	public function setExpire($seconds){
 		$time=gmdate("D, d M Y H:i:s", time()+$seconds)." GMT";
 

@@ -15,9 +15,6 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\Response;
-use ItePHP\Core\Request;
-
 /**
  * Interface for generator view
  *

@@ -157,6 +157,8 @@ class Root{
 		$session=new Session($this->enviorment);
 		$request=new HTTPRequest($url,$session);
 
+	        $dependencyInjection->addInstance('request',$request);
+
 		$this->reconfigureErrorManager($dependencyInjection,$request);
 
 		try{

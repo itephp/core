@@ -15,32 +15,55 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\FormFormatter;
-use ItePHP\Component\Form\BasicFormFormatter;
-use ItePHP\Component\Form\BasicFormTransformer;
-use ItePHP\Component\Form\Designer;
-use ItePHP\Component\Form\Transformer;
+use ItePHP\Core\FileNotUploadedException;
 use ItePHP\Core\Request;
 use ItePHP\Core\ValidatorService;
-use ItePHP\Component\Form\FieldNotFoundException;
-use ItePHP\Component\Form\FileNotUploadedException;
-use ItePHP\Component\Form\FileUploaded;
-use ItePHP\Component\Form\FormField;
 
 /**
  * Generator form. Support for mapping data, validation and generate html code.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.13.0
  */
 class FormBuilder{
+
+    /**
+     * @var FormFormatter
+     */
 	private $formatter;
-	private $fields=array();
-	private $formTags=array();
-	private $submitTags=array();
+
+    /**
+     * @var array
+     */
+	private $fields=[];
+
+    /**
+     * @var array
+     */
+	private $formTags=[];
+
+    /**
+     * @var array
+     */
+	private $submitTags=[];
+
+    /**
+     * @var ValidatorService
+     */
 	private $validatorService;
+
+    /**
+     * @var bool
+     */
 	private $isConfirmed=false;
+
+    /**
+     * @var Designer
+     */
 	private $designer;
+
+    /**
+     * @var FormFormatter
+     */
 	private $transformer;
 
 	public function __construct(){
@@ -62,8 +85,7 @@ class FormBuilder{
 	/**
 	 * Set service to validate field data
 	 *
-	 * @param \ItePHP\Core\ValidatorService $validatorService
-	 * @since 0.13.0
+	 * @param ValidatorService $validatorService
 	 */
 	public function setValidatorService(ValidatorService $validatorService){
 		$this->validatorService=$validatorService;
@@ -72,8 +94,7 @@ class FormBuilder{
 	/**
 	 * Set formatter with html rule pattern
 	 *
-	 * @param \ItePHP\Component\Form\FormFormatter $formatter
-	 * @since 0.13.0
+	 * @param FormFormatter $formatter
 	 */
 	public function setFormatter(FormFormatter $formatter){
 		$this->formatter=$formatter;
@@ -82,8 +103,7 @@ class FormBuilder{
 	/**
 	 * Set designer with rule to generate fields
 	 *
-	 * @param \ItePHP\Component\Form\Designer $designer
-	 * @since 0.18.0
+	 * @param Designer $designer
 	 */
 	public function setDesigner(Designer $designer){
 		$this->designer=$designer;
@@ -93,8 +113,7 @@ class FormBuilder{
 	/**
 	 * Set transformer with rule to encode/decode data
 	 *
-	 * @param \ItePHP\Component\Form\Transformer $transformer
-	 * @since 0.22.0
+	 * @param Transformer $transformer
 	 */
 	public function setTransformer(Transformer $transformer){
 		$this->transformer=$transformer;
@@ -103,9 +122,7 @@ class FormBuilder{
 	/**
 	 * Get transformer with rule to encode/decode data
 	 *
-	 * @param \ItePHP\Component\Form\Transformer $transformer
 	 * @return Transformer
-	 * @since 0.22.0
 	 */
 	public function getTransformer(){
 		return $this->transformer;
@@ -121,7 +138,6 @@ class FormBuilder{
 	 *	,'class'=>'class1' //html tag class
 	 *	,'enctype'=>'multipart/form-data' //html tag enctype eg. "text/plain", "multipart/form-data" or "application/x-www-form-urlencoded" 
 	 *	)
-	 * @since 0.13.0
 	 */
 	public function setFormTags($tags){
 		$this->formTags=array_merge($this->formTags,$tags);
@@ -130,13 +146,12 @@ class FormBuilder{
 	/**
 	 * Set submit button tags
 	 *
-	 * @param array $tags - arrawy with data:
+	 * @param array $tags - array with data:
 	 * array(
 	 * 	'value'=> 'Apply' //label button, default: Apply
 	 * 	,'id'=>'id1' //html tag id
 	 * 	,'class'=>'class1' //html tag class
 	 * )
-	 * @since 0.13.0
 	 */
 	public function setSubmitTags($tags){
 		$this->submitTags=array_merge($this->submitTags,$tags);
@@ -145,8 +160,7 @@ class FormBuilder{
 	/**
 	 * Add form field
 	 *
-	 * @param \ItePHP\Component\Form\FormField $field
-	 * @since 0.15.0
+	 * @param FormField $field
 	 */
 	public function addField(FormField $field){
 
@@ -170,7 +184,6 @@ class FormBuilder{
 	 * Remove field from generator
 	 *
 	 * @param string $name - field name
-	 * @since 0.18.0
 	 */
 	public function removeField($name){
 		for($i=0; $i<count($this->fields); $i++){
@@ -185,7 +198,6 @@ class FormBuilder{
 	 * Generate html form string
 	 *
 	 * @return string - with html form
-	 * @since 0.13.0
 	 */
 	public function render(){
 		$html=$this->formatter->renderFormBegin($this->formTags);
@@ -202,7 +214,6 @@ class FormBuilder{
 	 * Generate html string for fields
 	 *
 	 * @return string with html fields
-	 * @since 0.22.0
 	 */
 	public function renderFields(){
 		$html='';
@@ -219,7 +230,6 @@ class FormBuilder{
 	 *
 	 * @param string $name - field name
 	 * @return string with html field
-	 * @since 0.16.0
 	 */
 	public function renderField($name){
 		$html='';
@@ -234,7 +244,6 @@ class FormBuilder{
 	 * Generate html string for open form tag
 	 *
 	 * @return string - with html open form tag
-	 * @since 0.16.0
 	 */
 	public function renderBegin(){
 		return $this->formatter->renderFormBegin($this->formTags);
@@ -244,7 +253,6 @@ class FormBuilder{
 	 * Generate html string for close form tag
 	 *
 	 * @return string - with html close form tag
-	 * @since 0.16.0
 	 */
 	public function renderEnd(){
 		return $this->formatter->renderFormEnd();
@@ -254,7 +262,6 @@ class FormBuilder{
 	 * Generate html string for open form submit
 	 *
 	 * @return string - with html open form submit
-	 * @since 0.16.0
 	 */
 	public function renderSubmit(){
 		return $this->formatter->renderSubmit($this->submitTags);
@@ -262,20 +269,18 @@ class FormBuilder{
 
 	/**
 	 * @return string - with html form
-	 * @since 0.16.0
 	 */
 	public function __toString(){
 		return $this->render();
 	}
 
-	/**
-	 * Get field object
-	 *
-	 * @param string $name - field name (html name tag)
-	 * @return \ItePHP\Component\Form\FormField
-	 * @throws \ItePHP\Exception\FieldNotFoundException - invalid param name
-	 * @since 0.13.0
-	 */
+    /**
+     * Get field object
+     *
+     * @param string $name - field name (html name tag)
+     * @return FormField
+     * @throws FieldNotFoundException
+     */
 	public function getField($name){
 		foreach($this->fields as $field){
 			if($field->getName()==$name)
@@ -289,7 +294,6 @@ class FormBuilder{
 	 * Get all fields object
 	 *
 	 * @return array
-	 * @since 0.2.0
 	 */
 	public function getFields(){
 		return $this->fields;
@@ -340,12 +344,11 @@ class FormBuilder{
 		}
 	}
 
-	/**
-	 * Get data from fields
-	 *
-	 * @return array
-	 * @since 0.17.0
-	 */
+    /**
+     * Get data from fields
+     * @return array
+     * @throws \Exception
+     */
 	public function getData(){
 		$data=array();
 		foreach($this->fields as $field){
@@ -378,22 +381,19 @@ class FormBuilder{
 
 	/**
 	 * Remove all field data
-	 *
-	 * @since 0.17.0
 	 */
 	public function clearData(){
-		$data=array();
 		foreach($this->fields as $field){
 			$field->clearData();
 		}
 	}
 
-	/**
-	 * Submit form. Check http confirm and validate fields
-	 *
-	 * @param Request $request
-	 * @since 0.17.0
-	 */
+    /**
+     * Submit form. Check http confirm and validate fields
+     *
+     * @param Request $request
+     * @throws \Exception
+     */
 	public function submit(Request $request){
 		$this->isConfirmed=false;
 
@@ -409,7 +409,6 @@ class FormBuilder{
 		if(!$this->isConfirmed)
 			return;
 
-		$storage=array();
 		if($this->formTags['method']=='post'){
 			$storage=$request->getData();
 		}
@@ -481,7 +480,6 @@ class FormBuilder{
 	 * Validate fields and get errors
 	 *
 	 * @return array - with errors if success then empty array
-	 * @since 0.13.0
 	 */
 	public function getErrors(){
 		$errors=array();
