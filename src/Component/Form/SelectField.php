@@ -15,19 +15,23 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\FormFormatter;
-use ItePHP\Component\Form\BasicFormFormatter;
-use ItePHP\Core\ValidatorService;
 use ItePHP\Validator\TextValidator;
 
 /**
  * FormBuilder field
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.15.0
  */
 class SelectField extends FormField{
-	private $collection=array();
+
+    /**
+     * @var mixed[]
+     */
+	private $collection=[];
+
+    /**
+     * @var int
+     */
 	private $data=null;
 
     /**
@@ -50,15 +54,14 @@ class SelectField extends FormField{
 	/**
 	 * Get collection data (options value)
 	 *
-	 * @return array - eg:
-	 * array(
-	 * 	array(
+	 * @return mixed[] - eg:
+	 * [
+	 * 	[
 	 * 		'value'=>'{string}'
 	 * 		,'label'=>'{string}'
-	 * 	)
+	 * 	]
 	 * 	,...
-	 * )
-	 * @since 0.15.0
+	 * ]
 	 */
 	public function getCollection(){
 		return $this->collection;
@@ -67,15 +70,14 @@ class SelectField extends FormField{
 	/**
 	 * Set collection data (options value)
 	 *
-	 * @param array $collection - eg:
-	 * array(
-	 * 	array(
+	 * @param mixed[] $collection - eg:
+	 * [
+	 * 	[
 	 * 		'value'=>'{string}'
 	 * 		,'label'=>'{string}'
-	 * 	)
+	 * 	]
 	 * 	,...
-	 * )
-	 * @since 0.15.0
+	 * ]
 	 */
 	public function setCollection($collection){
 		$this->collection=$collection;
@@ -84,8 +86,7 @@ class SelectField extends FormField{
 	/**
 	 * Set html tag multiple
 	 *
-	 * @param boolean $flag - value of tag multiple
-	 * @since 0.15.0
+	 * @param bool $flag - value of tag multiple
 	 */
 	public function setMultiple($flag){
 		$this->setTag('multiple',$flag);
@@ -94,8 +95,7 @@ class SelectField extends FormField{
 	/**
 	 * Get html tag multiple
 	 *
-	 * @return boolean
-	 * @since 0.15.0
+	 * @return bool
 	 */
 	public function isMultiple(){
 		$tags=$this->getTags();
@@ -157,7 +157,7 @@ class SelectField extends FormField{
 		}
 
 		$template.='>';
-		$values=(is_array($this->getData())?$this->getData():array($this->getData()));
+		$values=(is_array($this->getData())?$this->getData():[$this->getData()]);
 		foreach($this->collection as $option){
 			$template.='<option value="'.htmlspecialchars($option['value']).'" '.(in_array($option['value'], $values)?'selected':'').'>'.htmlspecialchars($option['label']).'</option>';
 		}

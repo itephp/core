@@ -17,20 +17,6 @@ namespace ItePHP\Core;
 
 use ItePHP\Route\Dispatcher;
 
-use ItePHP\DependencyInjection\DependencyInjection;
-
-use ItePHP\Core\Response;
-use ItePHP\Core\ActionNotFoundException;
-use ItePHP\Core\Request;
-use ItePHP\Core\Enviorment;
-use ItePHP\Core\Container;
-
-use ItePHP\Core\ExecuteActionEvent;
-use ItePHP\Core\ExecutedActionEvent;
-use ItePHP\Core\ExecutePresenterEvent;
-
-use ItePHP\Core\Config;
-
 /**
  * Dispatcher for http request
  *
@@ -71,9 +57,9 @@ class HTTPDispatcher  implements Dispatcher {
 
 	/**
 	 *
-	 * @var Enviorment
+	 * @var Environment
 	 */
-	protected $enviorment;
+	protected $environment;
 
 	/**
 	 *
@@ -83,7 +69,7 @@ class HTTPDispatcher  implements Dispatcher {
 
 	/**
 	 *
-	 * @var array
+	 * @var Presenter[]
 	 */
 	protected $presenters;
 
@@ -93,10 +79,10 @@ class HTTPDispatcher  implements Dispatcher {
 	 * @param Config $config
 	 * @param Container $container
 	 * @param Request $request
-	 * @param Enviorment $enviorment
-	 * @param array $presenters
+	 * @param Environment $environment
+	 * @param Presenter[] $presenters
 	 */
-	public function __construct(Config $config,Container $container,Request $request,Enviorment $enviorment,array $presenters){
+	public function __construct(Config $config, Container $container, Request $request, Environment $environment, array $presenters){
 		$this->config=$config;
 		$this->className=$config->getAttribute('class');
 		$this->methodName=$config->getAttribute('method');
@@ -104,7 +90,7 @@ class HTTPDispatcher  implements Dispatcher {
 		$this->presenters=$presenters;
 		$this->request=$request;
 		$this->container=$container;
-		$this->enviorment=$enviorment;
+		$this->environment=$environment;
 	}
 
 
@@ -140,16 +126,16 @@ class HTTPDispatcher  implements Dispatcher {
 		return $this->presenters[$this->presenterName];
 	}
 
-	/**
-	 * 
-	 * @return Response
-	 */
+    /**
+     * @return Response
+     * @throws ActionNotFoundException
+     */
 	private function invokeController(){
 		$eventManager=$this->container->getEventManager();
 
 		$controller=new $this->className($this->request,$this->container);
 
-		if(!is_callable(array($controller,$this->methodName))){
+		if(!is_callable([$controller,$this->methodName])){
 			throw new ActionNotFoundException($this->className,$this->methodName);
 		}
 		$response=null;

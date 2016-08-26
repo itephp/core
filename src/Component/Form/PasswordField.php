@@ -15,14 +15,12 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\InputField;
 use ItePHP\Validator\TextValidator;
 
 /**
  * FormBuilder field
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.17.0
  */
 class PasswordField extends InputField{
 

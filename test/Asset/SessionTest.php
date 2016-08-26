@@ -17,7 +17,7 @@ namespace Asset;
 
 use ItePHP\Core\SessionProvider;
 use ItePHP\Action\ValueNotFoundException;
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 
 /**
  * Provider for session.

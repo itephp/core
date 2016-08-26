@@ -15,10 +15,11 @@
 
 namespace ItePHP;
 
+use ItePHP\Config\ConfigContainer;
 use ItePHP\Core\Request;
 use ItePHP\Core\HTTPRequest;
 use ItePHP\Provider\Session;
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\DependencyInjection\MetadataClass;
 use ItePHP\DependencyInjection\MetadataMethod;
@@ -38,11 +39,11 @@ use ItePHP\Core\HTTPException;
 use ItePHP\Core\CriticalErrorHandler;
 use ItePHP\Core\HTTPErrorHandler;
 use ItePHP\Core\HTTPDispatcher;
-use ItePHP\Core\Response;
 use ItePHP\Core\Container;
 use ItePHP\Core\ConsoleErrorHandler;
 use ItePHP\Core\CommandNotFoundException;
 use ItePHP\Core\ConsoleDispatcher;
+use ItePHP\Structure\Structure;
 
 /**
  * Main class of project
@@ -66,9 +67,9 @@ class Root{
 
 	/**
 	 *
-	 * @var Enviorment
+	 * @var Environment
 	 */
-	private $enviorment;
+	private $environment;
 
 	/**
 	 *
@@ -78,10 +79,10 @@ class Root{
 
 	/**
 	 *
-	 * @param Enviorment $enviorment
+	 * @param Environment $environment
 	 */
-	public function __construct(Enviorment $enviorment){
-		$this->enviorment=$enviorment;
+	public function __construct(Environment $environment){
+		$this->environment=$environment;
 	}
 	
 	/**
@@ -97,10 +98,10 @@ class Root{
 
 		$this->initConfig();
 
-		$snippets=$this->getSnippets($dependencyInjection);
+		$snippets=$this->getSnippets();
 		$this->container=new Container($dependencyInjection,$snippets);
 		$dependencyInjection->addInstance('container',$this->container);
-		$dependencyInjection->addInstance('enviorment',$this->enviorment);
+		$dependencyInjection->addInstance('environment',$this->environment);
 		$dependencyInjection->addInstance('config',$this->config);
 
 		$this->registerEventManager($dependencyInjection);
@@ -137,15 +138,15 @@ class Root{
 
 		//config
 		$this->errorManager=new ErrorManager();
-		$this->errorManager->addHandler(new CriticalErrorHandler($this->enviorment));
+		$this->errorManager->addHandler(new CriticalErrorHandler($this->environment));
 		$dependencyInjection=new DependencyInjection();
 
 		$this->initConfig();
 
-		$snippets=$this->getSnippets($dependencyInjection);
+		$snippets=$this->getSnippets();
 		$this->container=new Container($dependencyInjection,$snippets);
 		$dependencyInjection->addInstance('container',$this->container);
-		$dependencyInjection->addInstance('enviorment',$this->enviorment);
+		$dependencyInjection->addInstance('environment',$this->environment);
 		$dependencyInjection->addInstance('config',$this->config);
 
 		$this->registerServices($dependencyInjection);
@@ -154,7 +155,7 @@ class Root{
 		$this->registerPresenters($dependencyInjection);
 
 		//request
-		$session=new Session($this->enviorment);
+		$session=new Session($this->environment);
 		$request=new HTTPRequest($url,$session);
 
 	        $dependencyInjection->addInstance('request',$request);
@@ -190,7 +191,7 @@ class Root{
 		//config structure
 		$structureConfig=new ConfigBuilder();
 
-		$xmlReader=new XmlFileReader($this->enviorment->getConfigPath().'/structure.xml');
+		$xmlReader=new XmlFileReader($this->environment->getConfigPath().'/structure.xml');
 		$structureConfig->addReader($xmlReader);
 
 		$structureNode=new ConfigBuilderNode('structure');
@@ -199,7 +200,7 @@ class Root{
 
 		$structureContainer=$structureConfig->parse();
 
-		$xmlReader=new XmlFileReader($this->enviorment->getConfigPath().'/'.$this->enviorment->getName().'.xml');
+		$xmlReader=new XmlFileReader($this->environment->getConfigPath().'/'.$this->environment->getName().'.xml');
 		$importConfig=new ConfigBuilder();
 		$importConfig->addReader($xmlReader);
 
@@ -214,12 +215,22 @@ class Root{
 		$mainConfig=new ConfigBuilder();
 
 		foreach($importContainer->getNodes('import') as $importNode){
-			$xmlReader=new XmlFileReader($this->enviorment->getConfigPath().'/'.$importNode->getAttribute('file'));
+            /**
+             * @var ConfigContainer $importNode
+             */
+			$xmlReader=new XmlFileReader($this->environment->getConfigPath().'/'.$importNode->getAttribute('file'));
 			$mainConfig->addReader($xmlReader);
 		}
 
 		foreach($structureContainer->getNodes('structure') as $structureNode){
+            /**
+             * @var ConfigContainer $structureNode
+             */
+
 			$className=$structureNode->getAttribute('class');
+            /**
+             * @var Structure $structureObj
+             */
 			$structureObj=new $className();
 			$structureObj->doConfig($mainConfig);
 		}
@@ -257,11 +268,14 @@ class Root{
 		$router=new Router();
 		$presenters=$this->getPresenters($dependencyInjection);
 		foreach($this->config->getNodes('action') as $actionNode){
+            /**
+             * @var Config $actionNode
+             */
 			$router->addAction($actionNode->getAttribute('route'),
 				new HTTPDispatcher($actionNode,
 					$this->container,
 					$request,
-					$this->enviorment,
+					$this->environment,
 					$presenters
 				)
 			);
@@ -278,6 +292,9 @@ class Root{
 	private function getPresenters(DependencyInjection $dependencyInjection){
 		$presenters=[];
 		foreach($this->config->getNodes('presenter') as $presenterNode){
+            /**
+             * @var Config $presenterNode
+             */
 			$presenters[$presenterNode->getAttribute('name')]=$dependencyInjection->get('presenter.'.$presenterNode->getAttribute('name'));
 		}
 
@@ -294,6 +311,9 @@ class Root{
 		$router=new Router();
 
 		foreach($this->config->getNodes('command') as $commandNode){
+            /**
+             * @var Config $commandNode
+             */
 			$router->addAction($commandNode->getAttribute('name'),
 				new ConsoleDispatcher($commandNode,
 					$dependencyInjection,
@@ -320,6 +340,10 @@ class Root{
 	 */
 	private function registerEvents(DependencyInjection $dependencyInjection){
 		foreach($this->config->getNodes('event') as $eventNode){
+            /**
+             * @var Config $eventNode
+             */
+
 			$name=$eventNode->getAttribute('class');
 			$metadataClass=$this->getMetadataClass($name,$eventNode);
 			$dependencyInjection->register($metadataClass);
@@ -334,7 +358,10 @@ class Root{
 	 */
 	private function registerServices(DependencyInjection $dependencyInjection){
 		foreach($this->config->getNodes('service') as $serviceNode){
-			$metadataClass=$this->getMetadataClass('service.'.$serviceNode->getAttribute('name'),$serviceNode);
+            /**
+             * @var Config $serviceNode
+             */
+			$metadataClass=$this->getMetadataClass('service.'.$serviceNode->getAttribute('name'),$serviceNode,$serviceNode->getAttribute('singleton')==="true");
 			$dependencyInjection->register($metadataClass);
 		}
 	}
@@ -345,6 +372,9 @@ class Root{
 	 */
 	private function registerPresenters(DependencyInjection $dependencyInjection){
 		foreach($this->config->getNodes('presenter') as $presenterNode){
+            /**
+             * @var Config $presenterNode
+             */
 			$metadataClass=$this->getMetadataClass('presenter.'.$presenterNode->getAttribute('name'),$presenterNode);
 			$dependencyInjection->register($metadataClass);
 		}
@@ -356,6 +386,9 @@ class Root{
 	 */
 	private function registerCommands(DependencyInjection $dependencyInjection){
 		foreach($this->config->getNodes('command') as $commandNode){
+            /**
+             * @var Config $commandNode
+             */
 			$metadataClass=$this->getMetadataClass('command.'.$commandNode->getAttribute('class'),$commandNode);
 			$dependencyInjection->register($metadataClass);
 		}
@@ -363,12 +396,14 @@ class Root{
 
 	/**
 	 *
-	 * @param DependencyInjection $dependencyInjection
 	 * @return array
 	 */
-	private function getSnippets(DependencyInjection $dependencyInjection){
+	private function getSnippets(){
 		$snippets=[];
 		foreach($this->config->getNodes('snippet') as $snippetNode){
+            /**
+             * @var Config $snippetNode
+             */
 			$className=$snippetNode->getAttribute('class');
 			$snippets[$snippetNode->getAttribute('method')]=new $className();
 		}
@@ -384,6 +419,9 @@ class Root{
 	private function eventManagerBind(Config $eventNode,DependencyInjection $dependencyInjection){
 		$eventManager=$this->container->getEventManager();
 		foreach($eventNode->getNodes('bind') as $bindNode){
+            /**
+             * @var Config $bindNode
+             */
 			$eventManager->register(
 				$bindNode->getAttribute('name'),
 				$dependencyInjection->get($eventNode->getAttribute('class')),
@@ -392,14 +430,15 @@ class Root{
 		}
 	}
 
-	/**
-	 *
-	 * @param string $name
-	 * @param Config $classNode
-	 * @return MetadataClass
-	 */
-	private function getMetadataClass($name,Config $classNode){
-		$metadataClass=new MetadataClass($name,$classNode->getAttribute('class'));
+    /**
+     *
+     * @param string $name
+     * @param Config $classNode
+     * @param bool $singleton
+     * @return MetadataClass
+     */
+	private function getMetadataClass($name,Config $classNode,$singleton=true){
+		$metadataClass=new MetadataClass($name,$classNode->getAttribute('class'),$singleton);
 		foreach($classNode->getNodes('method') as $methodNode){
 			$metadataMethod=$this->getMetadataDependencyMethod($methodNode);
 			$metadataClass->registerInvoke($metadataMethod);
@@ -416,6 +455,9 @@ class Root{
 	private function getMetadataDependencyMethod(Config $methodNode){
 		$metadataMethod=new MetadataMethod($methodNode->getAttribute('name'));
 		foreach($methodNode->getNodes('argument') as $argumentNode){
+            /**
+             * @var Config $argumentNode
+             */
 			$metadataMethod->addArgument($argumentNode->getAttribute('type'),$argumentNode->getAttribute('value'));
 		}
 

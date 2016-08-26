@@ -36,11 +36,13 @@ class BooleanValidator extends ValidatorAbstract{
 		}
 
 		if((!$value || $value=='false') && $empty){
-			return;
+			return null;
 		}
 
 		if(!in_array($value, array('true','on',true))){
 			return "Invalid value.";
 		}
+
+		return null;
 	}
 }

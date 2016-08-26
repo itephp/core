@@ -32,17 +32,17 @@ class FormBuilder{
 	private $formatter;
 
     /**
-     * @var array
+     * @var FormField[]
      */
 	private $fields=[];
 
     /**
-     * @var array
+     * @var string[]
      */
 	private $formTags=[];
 
     /**
-     * @var array
+     * @var string[]
      */
 	private $submitTags=[];
 
@@ -66,20 +66,24 @@ class FormBuilder{
      */
 	private $transformer;
 
+    /**
+     * FormBuilder constructor.
+     */
 	public function __construct(){
 		$this->formatter=new BasicFormFormatter();
 		$this->transformer=new BasicFormTransformer();
-		$this->formTags=array(
+		$this->formTags=[
 			'method'=>'post'
 			,'id'=>null
 			,'class'=>null
 			,'enctype'=>null
-			);
+        ];
 
-		$this->submitTags=array(
+		$this->submitTags=[
 			'value'=>'Apply'
 			,'id'=>null
-			,'class'=>null);
+			,'class'=>null
+        ];
 	}
 
 	/**
@@ -131,13 +135,13 @@ class FormBuilder{
 	/**
 	 * Set addon form tags
 	 *
-	 * @param array $tags - array widh data (all field is optional):
-	 * array(
+	 * @param string[] $tags - array widh data (all field is optional):
+	 * [
 	 *	'method'=>'post' //"post" or "get"
 	 *	,'id'=>'id1' //html tag id
 	 *	,'class'=>'class1' //html tag class
 	 *	,'enctype'=>'multipart/form-data' //html tag enctype eg. "text/plain", "multipart/form-data" or "application/x-www-form-urlencoded" 
-	 *	)
+	 *	]
 	 */
 	public function setFormTags($tags){
 		$this->formTags=array_merge($this->formTags,$tags);
@@ -146,12 +150,12 @@ class FormBuilder{
 	/**
 	 * Set submit button tags
 	 *
-	 * @param array $tags - array with data:
-	 * array(
+	 * @param string[] $tags - array with data:
+	 * [
 	 * 	'value'=> 'Apply' //label button, default: Apply
 	 * 	,'id'=>'id1' //html tag id
 	 * 	,'class'=>'class1' //html tag class
-	 * )
+	 * ]
 	 */
 	public function setSubmitTags($tags){
 		$this->submitTags=array_merge($this->submitTags,$tags);
@@ -293,7 +297,7 @@ class FormBuilder{
 	/**
 	 * Get all fields object
 	 *
-	 * @return array
+	 * @return FormField[]
 	 */
 	public function getFields(){
 		return $this->fields;
@@ -328,12 +332,11 @@ class FormBuilder{
 	/**
 	 * Set default values for fiels
 	 *
-	 * @param array $data eg:
-	 * array(
+	 * @param mixed[] $data eg:
+	 * [
 	 * '{text field name 1}'=>'{text value name 1}'
 	 * ,'{text field name 2}'=>'{text value name 2}'
-	 * )
-	 * @since 0.13.0
+	 * ]
 	 */
 	public function setData($data){//FIXME aktualnie muszą być dodane pola, aby ustawił wartości. Trzeba by zmienić by zachowywał dane, a potem je ustawiał podczas renderowania lub walidowania
 		$data=$this->transformer->encode($data);
@@ -346,11 +349,11 @@ class FormBuilder{
 
     /**
      * Get data from fields
-     * @return array
+     * @return mixed[]
      * @throws \Exception
      */
 	public function getData(){
-		$data=array();
+		$data=[];
 		foreach($this->fields as $field){
 			if(preg_match('/^(.*?)(\[.*\])$/',$field->getName(),$result)){
 				if($result[2]==''){
@@ -364,7 +367,7 @@ class FormBuilder{
 					$storage=&$data[$result[1]];
 					foreach($resultDeep[1] as $deep){
 						if(!isset($storage[$deep])){
-							$storage[$deep]=array();
+							$storage[$deep]=[];
 						}
 						$storage=&$storage[$deep];
 					}
@@ -418,7 +421,7 @@ class FormBuilder{
 
 		//set field data
 
-		$result=array();
+		$result=[];
 		foreach($this->fields as $field){
 
 			if(isset($storage[$field->getName()])){
@@ -482,10 +485,10 @@ class FormBuilder{
 	 * @return array - with errors if success then empty array
 	 */
 	public function getErrors(){
-		$errors=array();
+		$errors=[];
 		foreach($this->fields as $field){
 			if(!$field->isValid()){				
-				$errors[]=array('field'=>$field->getLabel(),'message'=>$field->getError());
+				$errors[]=['field'=>$field->getLabel(),'message'=>$field->getError()];
 			}
 		}
 

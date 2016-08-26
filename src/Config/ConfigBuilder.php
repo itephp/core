@@ -24,13 +24,13 @@ class ConfigBuilder{
 	
 	/**
 	 *
-	 * @var array
+	 * @var ConfigBuilderNode[]
 	 */
 	private $nodes=[];
 
 	/**
 	 *
-	 * @var array
+	 * @var Reader[]
 	 */
 	private $readers=[];
 
@@ -79,9 +79,9 @@ class ConfigBuilder{
 
 	/**
 	 *
-	 * @param array $originNode
-	 * @param array $newNodes
-	 * @return array
+	 * @param ConfigContainer[][] $originNode
+	 * @param ConfigContainer[] $newNodes
+	 * @return ConfigContainer[][]
 	 */
 	private function mergeNodes($originNode,$newNodes){
 		foreach($newNodes as $nodeName=>$node){
@@ -99,7 +99,7 @@ class ConfigBuilder{
 	/**
 	 *
 	 * @param Reader $reader
-	 * @return array
+	 * @return ConfigContainer[]
 	 */
 	private function parseReader(Reader $reader){
 		$nodes=[];
@@ -114,7 +114,7 @@ class ConfigBuilder{
 	 *
 	 * @param Reader $reader
 	 * @param ConfigBuilderNode $node 
-	 * @return array
+	 * @return ConfigContainer[]
 	 */
 	private function parseNodes(Reader $reader,ConfigBuilderNode $node){
 		$nodes=[];
@@ -130,29 +130,30 @@ class ConfigBuilder{
 	 *
 	 * @param ReaderNode $readerNode
 	 * @param ConfigBuilderNode $node 
-	 * @return ConfigContainerNode
+	 * @return ConfigContainer
 	 */
 	private function parseNode(ReaderNode $readerNode,ConfigBuilderNode $node){
-		$arguments=[];
+		$attributes=[];
 		$nodes=[];
 		foreach($node->getAttributes() as $argument){
-			$arguments[$argument->getName()]=$this->parseAttribute($readerNode,$argument);
+			$attributes[$argument->getName()]=$this->parseAttribute($readerNode,$argument);
 		}
 
 		foreach($node->getNodes() as $node){
 			$nodes[$node->getName()]=$this->parseNodes($readerNode,$node);
 		}
 
-		return new ConfigContainer($nodes,$arguments);
+		return new ConfigContainer($nodes,$attributes);
 
 	}
 
-	/**
-	 *
-	 * @param ReaderNode $readerNode
-	 * @param ConfigBuilderArgument $argument 
-	 * @return string
-	 */
+    /**
+     *
+     * @param ReaderNode $readerNode
+     * @param ConfigBuilderArgument $argument
+     * @return string
+     * @throws ConfigException
+     */
 	private function parseAttribute(ReaderNode $readerNode,ConfigBuilderArgument $argument){
 		$value=null;
 		try{

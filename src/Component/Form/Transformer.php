@@ -14,13 +14,11 @@
  */
 
 namespace ItePHP\Component\Form;
-use ItePHP\Component\Form\FormBuilder;
 
 /**
  * Implementation for auto generate field list in FormBuilder
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.22.0
  */
 interface Transformer{
 	
@@ -28,16 +26,15 @@ interface Transformer{
 	 * Encode data from object to form data
 	 *
 	 * @param mixed $data
-	 * @return array
-	 * @since 0.22.0
+	 * @return mixed[]
 	 */
 	public function encode($data);
 
 	/**
 	 * Decode data from form data to object
 	 *
-	 * @param array $data
-	 * @return mixed
+	 * @param mixed $data
+	 * @return mixed[]
 	 * @since 0.22.0
 	 */
 	public function decode($data);

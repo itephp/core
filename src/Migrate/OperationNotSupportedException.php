@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Core;
+namespace ItePHP\Migrate;
 
 /**
  * Throw when executed url not configured in config/actions.xml

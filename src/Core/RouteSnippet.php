@@ -14,8 +14,6 @@
  */
 
 namespace ItePHP\Core;
-use ItePHP\Provider\Response;
-use ItePHP\Core\Container;
 
 class RouteSnippet {
 	

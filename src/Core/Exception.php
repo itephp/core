@@ -21,8 +21,13 @@ namespace ItePHP\Core;
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
 class Exception extends \Exception{
-	
-	/**
+
+    /**
+     * @var string
+     */
+    private $safeMessage;
+
+    /**
 	 * Constructor.
 	 *
 	 * @param int $code error code

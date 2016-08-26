@@ -19,7 +19,6 @@ namespace ItePHP\Component\Form;
  * Throw when FileUploaded can not save file.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.16.0
  */
 class FileFailSavedException extends \Exception{
 	

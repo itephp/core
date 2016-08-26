@@ -25,16 +25,16 @@ class CriticalErrorHandler implements ErrorHandler{
 	
 	/**
 	 *
-	 * @var Enviorment
+	 * @var Environment
 	 */ 	
-	private $enviorment;
+	private $environment;
 
 	/**
 	 *
-	 * @param Enviorment $enviorment
+	 * @param Environment $environment
 	 */
-	public function __construct(Enviorment $enviorment){
-		$this->enviorment=$enviorment;
+	public function __construct(Environment $environment){
+		$this->environment=$environment;
 	}
 
     /**
@@ -43,7 +43,7 @@ class CriticalErrorHandler implements ErrorHandler{
 	public function execute(\Exception $exception){
 		error_log($exception->getMessage()." ".$exception->getFile()."(".$exception->getLine().")");
 
-		if(!$this->enviorment->isDebug()){
+		if(!$this->environment->isDebug()){
 			return;
 		}
 

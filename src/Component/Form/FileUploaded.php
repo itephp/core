@@ -15,8 +15,6 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\FileFailSavedException;
-
 /**
  * Support for uploaded file.
  *
@@ -62,7 +60,7 @@ class FileUploaded{
 	/**
 	 * Constrcutor.
 	 *
-	 * @param array $data
+	 * @param mixed[] $data
 	 */
 	public function __construct($data){
 		$this->name=$data['name'];
@@ -143,7 +141,7 @@ class FileUploaded{
 	/**
 	 * Get file size in bytes.
 	 *
-	 * @return long
+	 * @return int
 	 * @since 0.17.0
 	 */
 	public function getSize(){

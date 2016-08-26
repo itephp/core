@@ -41,7 +41,7 @@ class ServiceStructure implements Structure{
 		$serviceNode=new ConfigBuilderNode('service');
 		$serviceNode->addAttribute('name');
 		$serviceNode->addAttribute('class');
-		$serviceNode->addAttribute('singletone','true');
+		$serviceNode->addAttribute('singleton','true');
 
 		$serviceNode->addNode($methodNode);
 

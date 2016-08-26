@@ -16,7 +16,6 @@
 namespace ItePHP\Core;
 
 use ItePHP\Error\ErrorHandler;
-use ItePHP\Core\Enviorment;
 
 /**
  *

@@ -16,23 +16,21 @@
 namespace ItePHP\Component\Grid;
 
 /**
- * Interface for grid formmater. Definition how generate view for GridBuilder.
+ * Interface for grid formatter. Definition how generate view for GridBuilder.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.17.0
  */
 interface GridFormatter{
 
 	/**
 	 * Method generated html grid
 	 *
-	 * @param array $columns - columns name
-	 * @param array $records - records list
+	 * @param Column[] $columns - columns name
+	 * @param mixed[] $records - records list
 	 * @param int $totalCount - max records count
 	 * @param int $limit - count records on page
 	 * @param int $page - current pag number
 	 * @param int $sort index column to sort
-	 * @since 0.17.0
 	 */
 	public function render($columns,$records,$totalCount,$limit,$page,$sort);
 

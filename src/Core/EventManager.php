@@ -25,9 +25,9 @@ class EventManager{
 	/**
 	 * Enviorment.
 	 *
-	 * @var array $events
+	 * @var object[][] $events
 	 */
-	private $events=array();
+	private $events=[];
 
 	/**
 	 * Register event.
@@ -47,12 +47,13 @@ class EventManager{
 			];
 	}
 
-	/**
-	 * Execute event.
-	 *
-	 * @param string $event event name
-	 * @param object $infoClass contener with event info eg.: \ItePHP\Core\ExecutePresenterEvent
-	 */
+    /**
+     * Execute event.
+     *
+     * @param $eventName
+     * @param object $infoClass contener with event info eg.: \ItePHP\Core\ExecutePresenterEvent
+     * @internal param string $event event name
+     */
 	public function fire($eventName,$infoClass=null){
 		if(isset($this->events[$eventName])){
 			foreach($this->events[$eventName] as $bind=>$data){

@@ -18,7 +18,7 @@ namespace ItePHP\Test;
 use ItePHP\Test\EmptyDataException;
 use ItePHP\Exception\InvalidQuerySelectorException;
 use ItePHP\Test\ElementNotFoundException;
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 use ItePHP\Provider\Session;
 
 /**
@@ -33,7 +33,7 @@ class BrowserEmulator{
 	private $historyCursor=0;
 	private $enviorment;
 
-	public function __construct(Enviorment $enviorment,Session $session=null){
+	public function __construct(Environment $enviorment, Session $session=null){
 		$this->enviorment=$enviorment;
 		if(!$session){
 			$session=new Session($enviorment);

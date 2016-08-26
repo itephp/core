@@ -29,9 +29,14 @@ class XmlFileNode implements ReaderNode{
 	 */ 
 	private $data;
 
-	/**
+    /**
+     * @var string[]
+     */
+    private $path=[];
+
+    /**
 	 *
-	 * @param string $path
+	 * @param string[] $path
 	 * @param SimpleXMLElement $node
 	 */
 	public function __construct($path,SimpleXMLElement $node){

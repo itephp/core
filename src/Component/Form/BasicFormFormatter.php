@@ -15,13 +15,10 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\FormFormatter;
-
 /**
  * Formatter for FormBuilder
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.18.0
  */
 class BasicFormFormatter implements FormFormatter{
 

@@ -16,11 +16,6 @@
 namespace ItePHP\Core;
 
 use ItePHP\Provider\Session;
-use ItePHP\Core\Request;
-use ItePHP\Core\HeaderNotFoundException;
-use ItePHP\Component\Form\FileUploaded;
-use ItePHP\Core\FileNotUploadedException;
-use ItePHP\Core\Config;
 
 /**
  * Provider for request.
@@ -31,13 +26,13 @@ class EmptyRequest implements Request{
 
 	/**
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private $data=[];
 
 	/**
 	 *
-	 * @var array
+     * @var string[]
 	 */
 	private $query=[];
 
@@ -49,7 +44,7 @@ class EmptyRequest implements Request{
 
 	/**
 	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	private $arguments=[];
 
@@ -61,7 +56,7 @@ class EmptyRequest implements Request{
 
 	/**
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private $headers=[];
 
@@ -73,7 +68,7 @@ class EmptyRequest implements Request{
 
 	/**
 	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	private $files=[];
 
@@ -82,14 +77,6 @@ class EmptyRequest implements Request{
 	 * @var Config
 	 */
 	private $config;
-
-	/**
-	 *
-	 * @param string $url
-	 * @param Session $session
-	 */
-	public function __construct(){
-	}
 
     /**
      * {@inheritdoc}
@@ -237,94 +224,7 @@ class EmptyRequest implements Request{
      * {@inheritdoc}
      */
 	public function isFullUploadedData(){
-		return !(isset($_SERVER['CONTENT_LENGTH']) 
-			&& (int) $_SERVER['CONTENT_LENGTH'] > $this->phpSizeToBytes(ini_get('post_max_size')));
+	    return true;
 	}
 
-    /**
-     *
-     * @param length $size
-     */
-	private function phpSizeToBytes($size){  
-		if (is_numeric( $size)){
-			return $size;
-		}
-		$suffix = substr($size, -1);
-		$value = substr($size, 0, -1);
-		switch(strtolower($suffix)){
-			case 'p':
-				$value *= 1024;
-			case 't':
-				$value *= 1024;
-			case 'g':
-				$value *= 1024;
-			case 'm':
-				$value *= 1024;
-			case 'k':
-				$value *= 1024;
-				break;
-		}
-		return $value;  
-	}
-
-    /**
-     *
-     */
-	private function prepare(){
-		$this->data=$_POST;
-		$this->query=$_GET;
-
-		foreach($_FILES as $kFile=>$file){
-			$fileData=null;
-			if(is_array($file['name'])){ //multiple files
-				$fileData=array();
-				for($i=0; $i<count($file['name']); $i++){
-					if($file['tmp_name'][$i]==''){
-						continue;
-					}
-
-					$metadata=array(
-						'name'=>$file['name'][$i]
-						,'tmp_name'=>$file['tmp_name'][$i]
-						,'error'=>$file['error'][$i]
-						,'size'=>$file['size'][$i]
-						,'type'=>$file['type'][$i]
-						);
-					$fileData[]=new FileUploaded($metadata);
-				}
-			}
-			else{
-				if($file['tmp_name']==''){
-					continue;
-				}
-				$fileData=new FileUploaded($file);
-			}
-			$this->files[$kFile]=$fileData;
-
-
-		}
-
-		foreach ($_SERVER as $name => $value) { 
-			if(substr($name, 0, 5) == 'HTTP_'){ 
-				$name = strtolower(str_replace(' ', '-', ucwords(str_replace('_', ' ', substr($name, 5))))); 
-				$this->headers[$name] = $value; 
-			}
-			else if ($name == "CONTENT_TYPE"){ 
-				$this->headers["content-type"] = $value; 
-			}
-			else if ($name == "CONTENT_LENGTH"){ 
-				$this->headers["content-length"] = $value; 
-			}
-		}
-
-		if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-			$this->clientIp = $_SERVER['HTTP_CLIENT_IP'];
-		}
-		else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-			$this->clientIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		}
-		else{
-			$this->clientIp = $_SERVER['REMOTE_ADDR'];
-		}		
-	}
 }

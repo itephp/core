@@ -23,13 +23,13 @@ class CommandExecutor{
 
 	/**
 	 *
-	 * @var Command
+	 * @var CommandInterface
 	 */
 	private $commandObject;
 
 	/**
 	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	private $arguments=[];
 
@@ -66,7 +66,7 @@ class CommandExecutor{
 
 	/**
 	 *
-	 * @param array $arguments
+	 * @param mixed[] $arguments
 	 */
 	public function setArguments($arguments){
 		$this->arguments=$arguments;
@@ -74,7 +74,7 @@ class CommandExecutor{
 
 	/**
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function getArguments(){
 		return $this->arguments;
@@ -130,12 +130,13 @@ class CommandExecutor{
 
 	}
 
-	/**
-	 *
-	 * @param CommandArgument $argument
-	 * @param int $index
-	 * @throws CommandInvalidArgumentLengthException
-	 */
+    /**
+     *
+     * @param CommandArgument $argument
+     * @param int $index
+     * @return mixed
+     * @throws CommandInvalidArgumentLengthException
+     */
 	private function getValue(CommandArgument $argument,$index){
 		$length=$argument->getLength();
 

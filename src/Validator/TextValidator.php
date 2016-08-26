@@ -39,5 +39,6 @@ class TextValidator extends ValidatorAbstract{
 		if(!$value && !$empty){
 			return 'Value can not empty';
 		}
+        return null;
 	}
 }

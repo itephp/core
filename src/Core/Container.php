@@ -15,13 +15,8 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\MethodNotFoundException;
-use ItePHP\Core\ExecuteResources;
-use ItePHP\Core\EventManager;
-use ItePHP\Core\ServiceNotFoundException;
-use ItePHP\Core\Enviorment;
-
 use ItePHP\DependencyInjection\DependencyInjection;
+use ItePHP\DependencyInjection\InstanceNotFoundException;
 
 
 /**
@@ -40,15 +35,15 @@ class Container{
 	/**
 	 * Snippets.
 	 *
-	 * @var array
+	 * @var object[]
 	 */
 	private $snippets=[];	
 
 	/**
 	 * Constructor.
 	 *
-	 * @param DependencyInjection $executeResources
-	 * @param array $snippets
+	 * @param DependencyInjection $dependencyInjection
+	 * @param object[] $snippets
 	 */
 	public function __construct(DependencyInjection $dependencyInjection,array $snippets){
 
@@ -57,12 +52,12 @@ class Container{
 	}
 
 	/**
-	 * Get Enviorment
+	 * Get Environment
 	 *
-	 * @return Enviorment
+	 * @return Environment
 	 */
-	public function getEnviorment(){
-		return $this->dependencyInjection->get('enviorment');
+	public function getEnvironment(){
+		return $this->dependencyInjection->get('environment');
 	}
 
 	/**
@@ -74,11 +69,12 @@ class Container{
 		return $this->dependencyInjection->get('eventManager');
 	}
 
-	/**
-	 *
-	 * @param string $name service name
-	 * @return object
-	 */
+    /**
+     *
+     * @param string $name service name
+     * @return object
+     * @throws ServiceNotFoundException
+     */
 	public function getService($name){
 		try{
 			return $this->dependencyInjection->get('service.'.$name);

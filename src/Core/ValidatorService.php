@@ -14,6 +14,7 @@
  */
 
 namespace ItePHP\Core;
+use ItePHP\Validator\ValidatorAbstract;
 
 /**
  * Service to validate
@@ -21,20 +22,24 @@ namespace ItePHP\Core;
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
 class ValidatorService{
-	
-	/**
-	 *
-	 * @param string $validator
-	 * @param mixed $value
-	 */
+
+    /**
+     *
+     * @param string $validator
+     * @param mixed $value
+     * @return mixed
+     */
 	public function validate($validator,$value){
+        /**
+         * @var ValidatorAbstract $validator
+         */
 		$validator=new $validator();
 		return $validator->validate($value);
 	}
 
 	/**
 	 *
-	 * @param array $validators - array with value and validators: 
+	 * @param mixed[][] $validators - array with value and validators:
 	 * [
 	 * 'field name'=>[
 	 *		'validator rule class'
@@ -61,9 +66,9 @@ class ValidatorService{
 	/**
 	 * Validate data from storage array.
 	 *
-	 * @param array $validators - array with rules validation example: ['nameField'=>'Validator\ExampleClassValidator']
-	 * @param array $storage - array with values, example ['nameField1'=>'value1','nameField2'=>'value2']
-	 * @return array with errors. If success then empty array.
+	 * @param mixed[] $validators - array with rules validation example: ['nameField'=>'Validator\ExampleClassValidator']
+	 * @param mixed[] $storage - array with values, example ['nameField1'=>'value1','nameField2'=>'value2']
+	 * @return string[] with errors. If success then empty array.
 	 */
 	public function storageValidate($validators,$storage){
 		$errors=[];

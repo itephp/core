@@ -15,8 +15,6 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\Container;
-
 /**
  * Snippet for mapper
  *

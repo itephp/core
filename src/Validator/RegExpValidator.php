@@ -30,5 +30,6 @@ class RegExpValidator extends ValidatorAbstract{
 		if(!preg_match('/'.$pattern.'/',$value)){
 			return 'Invalid pattern format.';
 		}
+        return null;
 	}
 }

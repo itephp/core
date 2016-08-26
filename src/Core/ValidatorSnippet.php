@@ -15,8 +15,6 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\Container;
-
 /**
  * Snippet for validator
  *
@@ -28,7 +26,7 @@ class ValidatorSnippet {
 	 * Execute validator
 	 *
 	 * @param Container $container
-	 * @param strint $validatorName
+	 * @param string $validatorName
 	 * @param mixed $value
 	 * @return string
 	 */

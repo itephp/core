@@ -11,7 +11,7 @@ use ItePHP\Core\HTTPRequest;
 use ItePHP\Action\AuthenticateEvent;
 use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\Provider\Session;
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 use Asset\RequestTest;
 use ItePHP\Structure\ActionStructure;
 use ItePHP\Structure\ActionAuthenticateStructure;
@@ -25,7 +25,7 @@ class AuthenticateEventTest extends \PHPUnit_Framework_TestCase{
 	
 	public function testOnExecuteActionAutheticate(){
 
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$request=new RequestTest('/test/1','GET');
 		$request->getSession()->set('authenticate.user_id',1);
@@ -46,7 +46,7 @@ class AuthenticateEventTest extends \PHPUnit_Framework_TestCase{
 
 	public function testOnExecuteActionAutheticateRedirect(){
 
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$request=new RequestTest('/test/1','GET');
 		$request->getSession()->set('authenticate.user_id',1);
@@ -67,7 +67,7 @@ class AuthenticateEventTest extends \PHPUnit_Framework_TestCase{
 
 	public function testOnExecuteActionUnautheticate(){
 
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$request=new RequestTest('/test/1','GET');
 
@@ -85,7 +85,7 @@ class AuthenticateEventTest extends \PHPUnit_Framework_TestCase{
 
 	public function testOnExecuteActionUnautheticateRedirect(){
 
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$request=new RequestTest('/test/1','GET');
 
@@ -104,7 +104,7 @@ class AuthenticateEventTest extends \PHPUnit_Framework_TestCase{
 
 	public function testOnExecuteActionPermissionDeniedException(){
 
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$request=new RequestTest('/test/1','GET');
 

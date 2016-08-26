@@ -14,7 +14,6 @@
  */
 
 namespace ItePHP\Core;
-use ItePHP\Core\Exception;
 
 /**
  * Throw when controller doesn't have executed method.

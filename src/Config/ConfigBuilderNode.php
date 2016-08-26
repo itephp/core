@@ -30,13 +30,13 @@ class ConfigBuilderNode{
 
 	/**
 	 *
-	 * @var array
+	 * @var ConfigBuilderArgument[]
 	 */	
 	private $attributes=[];
 
 	/**
 	 *
-	 * @var array
+	 * @var ConfigBuilderNode[]
 	 */	
 	private $nodes=[];
 
@@ -59,8 +59,7 @@ class ConfigBuilderNode{
 	/**
 	 *
 	 * @param string $name
-	 * @param boolean $required
-	 * @param string default
+	 * @param string $default
 	 */	
 	public function addAttribute($name,$default=null){
 		$this->attributes[$name]=new ConfigBuilderArgument($name,$default);
@@ -68,7 +67,7 @@ class ConfigBuilderNode{
 
 	/**
 	 *
-	 * @return array
+	 * @return ConfigBuilderArgument[]
 	 */	
 	public function getAttributes(){
 		return array_values($this->attributes);
@@ -97,7 +96,7 @@ class ConfigBuilderNode{
 
 	/**
 	 *
-	 * @return array
+	 * @return ConfigBuilderNode[]
 	 */	
 	public function getNodes(){
 		return array_values($this->nodes);

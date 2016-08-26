@@ -28,7 +28,7 @@ class ConfigBuilderArgument{
 	private $name;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $required;
 
@@ -40,7 +40,6 @@ class ConfigBuilderArgument{
 	/**
 	 *
 	 * @param string $name
-	 * @param boolean $required
 	 * @param string $default
 	 */
 	public function __construct($name,$default=null){
@@ -66,7 +65,7 @@ class ConfigBuilderArgument{
 
 	/**
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRequired(){
 		return $this->required;

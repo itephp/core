@@ -18,7 +18,7 @@ namespace ItePHP\Presenter;
 use ItePHP\Core\Presenter;
 use ItePHP\Core\Request;
 use ItePHP\Core\Response;
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 
 /**
  * Presenter for html.
@@ -29,15 +29,15 @@ class HTML implements Presenter{
 
 	/**
 	 *
-	 * @var Enviorment
+	 * @var Environment
 	 */
 	private $enviorment;
 
 	/**
 	 *
-	 * @param Enviorment $enviorment
+	 * @param Environment $enviorment
 	 */
-	public function __construct(Enviorment $enviorment){
+	public function __construct(Environment $enviorment){
 		$this->enviorment=$enviorment;
 	}
 

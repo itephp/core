@@ -37,10 +37,11 @@ class TelephoneValidator extends ValidatorAbstract{
 		}
 
 		if(!$value && $empty){
-			return;
+            return null;
 		}
 
 		if(!preg_match("/^[1-9][0-9]{8}$/",$value))
 			return "Invalid telephone format.";
-	}	
+        return null;
+	}
 }

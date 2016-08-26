@@ -15,7 +15,7 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\Container;
+use ItePHP\Mapper\MapperAbstract;
 use ItePHP\Mapper\MapperNotFoundException;
 
 /**
@@ -51,6 +51,9 @@ class MapperService{
 			throw new MapperNotFoundException($mapperName);
 		}
 
+        /**
+         * @var MapperAbstract $mapper
+         */
 		$mapper=new $mapperName($this->container);
 		return $mapper->cast($value);
 	}

@@ -15,9 +15,6 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\Request;
-use ItePHP\Core\Response;
-
 /**
  * Contener with data for event "executeAction"
  *

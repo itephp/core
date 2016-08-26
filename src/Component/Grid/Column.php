@@ -15,21 +15,17 @@
 
 namespace ItePHP\Component\Grid;
 
-use ItePHP\Component\Grid\ColumnFormatter;
-use ItePHP\Component\Grid\BasicColumnFormatter;
-
 /**
  * Interface of column formatter (cell in grid).
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.21.0
  */
 class Column{
 
 	/**
 	 * List of id.
 	 *
-	 * @var array $keys
+	 * @var string[] $keys
 	 */
 	private $keys;
 
@@ -50,7 +46,7 @@ class Column{
 	/**
 	 * List of sort id.
 	 *
-	 * @var array $sortKeys
+	 * @var mixed[] $sortKeys
 	 */
 	private $sortKeys;
 
@@ -60,12 +56,11 @@ class Column{
 	 * @param mixed $keys list of id for column or one element
 	 * @param string $label
 	 * @param ColumnFormatter $formatter class with template to format column
-	 * @param array $sortKeys sort by list of id
-	 * @since 0.22.0
+	 * @param mixed $sortKeys sort by list of id
 	 */
 	public function __construct($keys,$label,ColumnFormatter $formatter=null,$sortKeys=null){
 		if(!is_array($keys)){
-			$keys=array($keys);
+			$keys=[$keys];
 		}
 
 		$this->keys=$keys;
@@ -87,7 +82,6 @@ class Column{
 	 * Set formatter class
 	 *
 	 * @param ColumnFormatter $formatter class with template to format column
-	 * @since 0.22.0
 	 */
 	public function setFormatter(ColumnFormatter $formatter){
 		$this->formatter=$formatter;
@@ -96,25 +90,23 @@ class Column{
 	/**
 	 * Set sortable column by Keys
 	 *
-	 * @param miaxed $sortKeys sort by list of id
-	 * @since 0.22.0
+	 * @param mixed $sortKeys sort by list of id
 	 */
 	public function setSortBy($sortKeys){
 
 		if($sortKeys==null){
-			$sortKeys=array();
+			$sortKeys=[];
 		}
 
 		if(!is_array($sortKeys)){
-			$sortKeys=array($sortKeys);
+			$sortKeys=[$sortKeys];
 		}
 		$this->sortKeys=$sortKeys;
 	}
 
 	/**
 	 * 
-	 * @return array
-	 * @since 0.22.0
+	 * @return mixed[]
 	 */
 	public function getSortKeys(){
 		return $this->sortKeys;
@@ -123,8 +115,7 @@ class Column{
 	/**
 	 * Check sortable column
 	 *
-	 * @return boolean
-	 * @since 0.22.0
+	 * @return bool
 	 */
 	public function isSortable(){
 		return !empty($this->sortKeys);
@@ -134,7 +125,6 @@ class Column{
 	 * Get label of column
 	 *
 	 * @return string
-	 * @since 0.22.0
 	 */
 	public function getLabel(){
 		return $this->label;
@@ -144,7 +134,6 @@ class Column{
 	 * Get column formatter
 	 *
 	 * @return ColumnFormatter
-	 * @since 0.22.0
 	 */
 	public function getFormatter(){
 		return $this->formatter;
@@ -153,8 +142,7 @@ class Column{
 	/**
 	 * Get column keys
 	 *
-	 * @return array
-	 * @since 0.22.0
+	 * @return string[]
 	 */
 	public function getKeys(){
 		return $this->keys;

@@ -15,16 +15,12 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\FormFormatter;
-use ItePHP\Component\Form\BasicFormFormatter;
-use ItePHP\Core\ValidatorService;
 use ItePHP\Validator\NumberValidator;
 
 /**
  * FormBuilder field
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.16.0
  */
 class NumberField extends InputField{
 
@@ -55,7 +51,6 @@ class NumberField extends InputField{
 	 * Set html tag min
 	 *
 	 * @param int $value - value of tag min
-	 * @since 0.18.0
 	 */
 	public function setMin($value){
 		$this->setTag('min',$value);
@@ -68,7 +63,6 @@ class NumberField extends InputField{
 	 * Get html tag min
 	 *
 	 * @return int - value of tag min
-	 * @since 0.18.0
 	 */
 	public function getMin(){
 		return $this->getTag('min');
@@ -78,7 +72,6 @@ class NumberField extends InputField{
 	 * Set html tag max
 	 *
 	 * @param int $value - value of tag max
-	 * @since 0.18.0
 	 */
 	public function setMax($value){
 		$this->setTag('max',$value);
@@ -91,7 +84,6 @@ class NumberField extends InputField{
 	 * Get html tag max
 	 *
 	 * @return int - value of tag max
-	 * @since 0.18.0
 	 */
 	public function getMax(){
 		return $this->getTag('max');

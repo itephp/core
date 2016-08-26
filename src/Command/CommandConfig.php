@@ -23,7 +23,7 @@ class CommandConfig{
 
 	/**
 	 *
-	 * @var array
+	 * @var CommandArgument[]
 	 */
 	private $arguments=[];
 
@@ -44,7 +44,7 @@ class CommandConfig{
 
 	/**
 	 *
-	 * @return array
+	 * @return CommandArgument[]
 	 */
 	public function getArguments(){
 		return $this->arguments;

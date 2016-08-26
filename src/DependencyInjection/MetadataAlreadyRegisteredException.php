@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
@@ -13,20 +12,21 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Config;
+namespace ItePHP\DependencyInjection;
 
 /**
- * Source reader.
- *
- * @author Michal Tomczak (michal.tomczak@itephp.com)
+ * Class MetadataAlreadyRegisteredException
+ * @package ItePHP\DependencyInjection
  */
-interface Reader{
+class MetadataAlreadyRegisteredException extends \Exception
+{
 
-	/**
-	 *
-	 * @param string $name
-	 * @return ReaderNode[]
-	 */
-	public function getNodes($name);
-
+    /**
+     * MetadataAlreadyRegisteredException constructor.
+     * @param string $name
+     */
+    public function __construct($name)
+    {
+        parent::__construct("Metadata ".$name." already registered.");
+    }
 }

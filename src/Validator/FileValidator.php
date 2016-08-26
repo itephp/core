@@ -37,7 +37,7 @@ class FileValidator extends ValidatorAbstract{
 		}
 
 		if(!$value && $empty){
-			return;
+            return null;
 		}
 
 		if(!$value){
@@ -67,5 +67,6 @@ class FileValidator extends ValidatorAbstract{
 		catch(ValueNotFoundException $e){
 			//ignore
 		}
+        return null;
 	}
 }

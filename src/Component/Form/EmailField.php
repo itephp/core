@@ -15,16 +15,12 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\FormFormatter;
-use ItePHP\Component\Form\BasicFormFormatter;
-use ItePHP\Core\ValidatorService;
 use ItePHP\Validator\EmailValidator;
 
 /**
  * FormBuilder field
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.17.0
  */
 class EmailField extends InputField{
 

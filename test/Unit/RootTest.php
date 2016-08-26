@@ -4,7 +4,7 @@ namespace Test;
 
 require_once(__DIR__.'/../autoload.php');
 
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 use ItePHP\Root;
 
 class RootTest extends \PHPUnit_Framework_TestCase{
@@ -12,7 +12,7 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 	private $enviorment;
 	
 	public function setUp(){
-		$this->enviorment=new Enviorment(true,true,'test',__DIR__.'/../Asset/Root');
+		$this->enviorment=new Environment(true,true,'test',__DIR__.'/../Asset/Root');
 	}
 
 	public function testExecuteRequestTest(){

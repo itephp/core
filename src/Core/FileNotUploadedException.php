@@ -14,7 +14,6 @@
  */
 
 namespace ItePHP\Core;
-use ItePHP\Core\Exception;
 
 /**
  * Throw when FileUploaded can not get file data from php.

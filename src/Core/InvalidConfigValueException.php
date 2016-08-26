@@ -14,7 +14,6 @@
  */
 
 namespace ItePHP\Core;
-use ItePHP\Core\Exception;
 
 /**
  * Throw when Global config can not parse node value.

@@ -15,23 +15,39 @@
 
 namespace ItePHP\Component\Grid;
 
-use ItePHP\Component\Grid\GridFormatter;
-use ItePHP\Component\Grid\GridDataManager;
-use ItePHP\Component\Grid\Column;
 use ItePHP\Core\Request;
 
 /**
  * Generator grid. Support for mapping data, pagination and generate html code.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.17.0
  */
 class GridBuilder{
+
+    /**
+     * @var GridFormatter
+     */
 	private $formatter;
+
+    /**
+     * @var GridDataManager
+     */
 	private $dataManager;
+
+    /**
+     * @var int
+     */
 	private $limit=10;
+
+    /**
+     * @var int
+     */
 	private $page=1;
-	private $columns=array();
+
+    /**
+     * @var Column[]
+     */
+	private $columns=[];
 
 	/**
 	 * @var Request $request
@@ -42,7 +58,6 @@ class GridBuilder{
 	 * Constructor
 	 *
 	 * @param Request $request
-	 * @since 0.20.0
 	 */
 	public function __construct(Request $request){
 		$this->request=$request;
@@ -51,8 +66,7 @@ class GridBuilder{
 	/**
 	 * Set formatter with html rule pattern
 	 *
-	 * @param \ItePHP\Component\Grid\GridFormatter $formatter
-	 * @since 0.17.0
+	 * @param GridFormatter $formatter
 	 */
 	public function setFormatter(GridFormatter $formatter){
 		$this->formatter=$formatter;
@@ -61,8 +75,7 @@ class GridBuilder{
 	/**
 	 * Set formatter with html rule pattern
 	 *
-	 * @param \ItePHP\Component\Grid\GridDataManager $dataManager
-	 * @since 0.17.0
+	 * @param GridDataManager $dataManager
 	 */
 	public function setDataManager(GridDataManager $dataManager){
 		$this->dataManager=$dataManager;
@@ -71,8 +84,7 @@ class GridBuilder{
 	/**
 	 * Get DataManager
 	 *
-	 * @return \ItePHP\Component\Grid\GridDataManager
-	 * @since 0.18.0
+	 * @return GridDataManager
 	 */
 	public function getDataManager(){
 		return $this->dataManager;
@@ -81,8 +93,7 @@ class GridBuilder{
 	/**
 	 * Get columns data
 	 *
-	 * @return array
-	 * @since 0.18.0
+	 * @return Column[]
 	 */
 	public function getColumns(){
 		return $this->columns;
@@ -91,8 +102,7 @@ class GridBuilder{
 	/**
 	 * Get records
 	 *
-	 * @return array
-	 * @since 0.18.0
+	 * @return mixed[]
 	 */
 	public function getRecords(){
 		$query=$this->request->getQuery();
@@ -112,7 +122,6 @@ class GridBuilder{
 	 * Get total count records
 	 *
 	 * @return int
-	 * @since 0.18.0
 	 */
 	public function getTotalCount(){
 		return $this->dataManager->getTotalCount();
@@ -122,7 +131,6 @@ class GridBuilder{
 	 * Set limit records on single page
 	 *
 	 * @param int $limit - items on page
-	 * @since 0.17.0
 	 */
 	public function setLimit($limit){
 		$this->limit=$limit;
@@ -132,7 +140,6 @@ class GridBuilder{
 	 * Set current page
 	 *
 	 * @param int $page - current page
-	 * @since 0.17.0
 	 */
 	public function setPage($page){
 		$this->page=$page;
@@ -152,7 +159,6 @@ class GridBuilder{
 	 * Generate html grid string
 	 *
 	 * @return string with html form
-	 * @since 0.17.0
 	 */
 	public function render(){
 		$sort=0;
@@ -167,9 +173,9 @@ class GridBuilder{
 	}
 
 
-	/**
-	 * @since 0.17.0
-	 */
+    /**
+     * @return string
+     */
 	public function __toString(){
 		return $this->render();
 	}

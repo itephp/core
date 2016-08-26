@@ -21,8 +21,13 @@ namespace ItePHP\Core;
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
 class HTTPException extends \Exception{
-	
-	/**
+
+    /**
+     * @var int
+     */
+    private $statusCode;
+
+    /**
 	 * Constructor.
 	 *
 	 * @param int $statusCode

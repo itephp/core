@@ -17,7 +17,7 @@ namespace ItePHP\Provider;
 
 use ItePHP\Core\SessionProvider;
 use ItePHP\Action\ValueNotFoundException;
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 
 /**
  * Provider for session.
@@ -34,10 +34,10 @@ class Session implements SessionProvider{
 
 	/**
      *
-     * @param Enviorment $enviorment
+     * @param Environment $environment
      */
-	public function __construct(Enviorment $enviorment){
-		if(!$enviorment->isSilent()){
+	public function __construct(Environment $environment){
+		if(!$environment->isSilent()){
 			session_start();			
 			$this->id=session_id();
 		}
@@ -46,9 +46,9 @@ class Session implements SessionProvider{
 		}
 	}
 
-	/**
+    /**
      *
-     * @param int
+     * @return string
      */
 	public function getId(){
 		return $this->id;

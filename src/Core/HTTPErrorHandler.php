@@ -16,10 +16,7 @@
 namespace ItePHP\Core;
 
 use ItePHP\Error\ErrorHandler;
-use ItePHP\Core\HTTPException;
 use ItePHP\Presenter\HTML as HTMLPresenter;
-use ItePHP\Core\ExecutePresenterEvent;
-use ItePHP\Core\Request;
 use ItePHP\DependencyInjection\DependencyInjection;
 
 /**
@@ -54,7 +51,7 @@ class HTTPErrorHandler implements ErrorHandler{
      * {@inheritdoc}
      */
 	public function execute(\Exception $exception){
-		if(!$this->dependencyInjection->get('enviorment')->isSilent()){
+		if(!$this->dependencyInjection->get('environment')->isSilent()){
 			error_log($exception->getMessage()." ".$exception->getFile()."(".$exception->getLine().")");
 		}
 
@@ -77,15 +74,23 @@ class HTTPErrorHandler implements ErrorHandler{
 	/**
 	 *
 	 * @param string $url
-	 * @return string
+	 * @return Presenter
 	 */
 	private function getPresenter($url){
-		foreach($this->dependencyInjection->get('config')->getNodes('error') as $error){
+        /**
+         * @var Config $config
+         */
+        $config=$this->dependencyInjection->get('config');
+		foreach($config->getNodes('error') as $error){
 			if(!preg_match('/^'.$error->getAttribute('pattern').'$/',$url)){
 				continue;
 			}
 			$presenterName=$error->getAttribute('presenter');
-			return $this->dependencyInjection->get('presenter.'.$presenterName);
+            /**
+             * @var Presenter $presenterObject
+             */
+            $presenterObject=$this->dependencyInjection->get('presenter.'.$presenterName);
+			return $presenterObject;
 		}
 
 		return new HTMLPresenter($this->dependencyInjection->get('enviorment'));

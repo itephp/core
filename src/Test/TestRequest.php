@@ -18,7 +18,7 @@ namespace ItePHP\Test;
 use ItePHP\Provider\Session;
 use ItePHP\Core\Request;
 use ItePHP\Exception\HeaderNotFoundException;
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 use ItePHP\Root;
 use ItePHP\Core\Autoloader;
 use ItePHP\Core\FileUploaded;
@@ -53,7 +53,7 @@ class TestRequest implements Request{
 	private $ajax;
 	private $clientIp;
 
-	public function __construct($url,Enviorment $enviorment,Session $session=null){
+	public function __construct($url, Environment $enviorment, Session $session=null){
 		$this->url=$url;
 		$this->session=($session?$session:new Session($enviorment));
 		$this->enviorment=$enviorment;

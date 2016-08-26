@@ -15,44 +15,34 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\FormField;
-
 /**
- * Interface for form formmater. Definition how generate view for FormBuilder.
+ * Interface for form formatter. Definition how generate view for FormBuilder.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.15.0
  */
 interface FormFormatter{
 
-	/**
-	 * Method generated html for field
-	 *
-	 * @param \ItePHP\Common\FormField $field - FormField object 
-	 * @since 0.15.0
-	 */
+    /**
+     * @param FormField $field
+     */
 	public function renderField(FormField $field);
 
 	/**
 	 * Method generated html for form open html element
 	 *
-	 * @param array $tags - tag list
-	 * @since 0.13.0
+	 * @param string[] $tags - tag list
 	 */
 	public function renderFormBegin($tags);
 
 	/**
 	 * Method generated html for form close html element
-	 *
-	 * @since 0.13.0
 	 */
 	public function renderFormEnd();
 
 	/**
 	 * Method generated html for form submit button
 	 *
-	 * @param array $tags - tag list
-	 * @since 0.13.0
+	 * @param string[] $tags - tag list
 	 */
 	public function renderSubmit($tags);
 

@@ -5,10 +5,11 @@ namespace Test;
 require_once(__DIR__.'/../../autoload.php');
 
 use ItePHP\DependencyInjection\DependencyInjection;
+use ItePHP\DependencyInjection\InvalidTypeException;
+use ItePHP\DependencyInjection\MetadataAlreadyRegisteredException;
 use ItePHP\DependencyInjection\MetadataClass;
 use ItePHP\DependencyInjection\MetadataMethod;
 use Asset\StandaloneClass;
-use Asset\DependencyClass;
 
 class DependencyInjectionTest extends \PHPUnit_Framework_TestCase{
 	
@@ -70,7 +71,51 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase{
 		$this->assertTrue($dependencyClass->isFlag());
 	}
 
-	public function testAddInstance(){
+    public function testGetNotSingleton(){
+
+        $metadataClass=new MetadataClass('standalone','Asset\StandaloneClass',false);
+
+        $metadataMethod=new MetadataMethod('__construct');
+        $metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'param1');
+        $metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'param2');
+        $metadataClass->registerInvoke($metadataMethod);
+
+        $metadataMethod=new MetadataMethod('setParam3');
+        $metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'data');
+        $metadataClass->registerInvoke($metadataMethod);
+
+        $di=new DependencyInjection();
+        $di->register($metadataClass);
+
+        $standaloneClass1=$di->get('standalone');
+        $standaloneClass2=$di->get('standalone');
+
+        $this->assertNotEquals(spl_object_hash($standaloneClass1),spl_object_hash($standaloneClass2));
+    }
+
+    public function testGetSingleton(){
+
+        $metadataClass=new MetadataClass('standalone','Asset\StandaloneClass');
+
+        $metadataMethod=new MetadataMethod('__construct');
+        $metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'param1');
+        $metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'param2');
+        $metadataClass->registerInvoke($metadataMethod);
+
+        $metadataMethod=new MetadataMethod('setParam3');
+        $metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'data');
+        $metadataClass->registerInvoke($metadataMethod);
+
+        $di=new DependencyInjection();
+        $di->register($metadataClass);
+
+        $standaloneClass1=$di->get('standalone');
+        $standaloneClass2=$di->get('standalone');
+
+        $this->assertEquals(spl_object_hash($standaloneClass1),spl_object_hash($standaloneClass2));
+    }
+
+    public function testAddInstance(){
 		$di=new DependencyInjection();
 		$instance=new StandaloneClass('1','2');
 		$di->addInstance('class',$instance);
@@ -80,4 +125,55 @@ class DependencyInjectionTest extends \PHPUnit_Framework_TestCase{
 		$this->assertEquals('1',$dependencyClass->getParam1());
 		$this->assertEquals('2',$dependencyClass->getParam2());
 	}
+
+    public function testRegisterMetadataAlreadyRegisteredException(){
+        $metadataClass=new MetadataClass('standalone','Asset\StandaloneClass');
+
+        $metadataMethod=new MetadataMethod('__construct');
+        $metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'param1');
+        $metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'param2');
+        $metadataClass->registerInvoke($metadataMethod);
+
+        $metadataMethod=new MetadataMethod('setParam3');
+        $metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'data');
+        $metadataClass->registerInvoke($metadataMethod);
+
+        $di=new DependencyInjection();
+        $di->register($metadataClass);
+        $exception=null;
+        try{
+            $di->register($metadataClass);
+        }
+        catch (\Exception $e){
+            $exception=$e;
+        }
+
+        $this->assertInstanceOf(MetadataAlreadyRegisteredException::class,$exception);
+    }
+
+    public function testGetInvalidTypeException(){
+        $metadataClass=new MetadataClass('standalone','Asset\StandaloneClass');
+
+        $metadataMethod=new MetadataMethod('__construct');
+        $metadataMethod->addArgument('unknown','param1');
+        $metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'param2');
+        $metadataClass->registerInvoke($metadataMethod);
+
+        $metadataMethod=new MetadataMethod('setParam3');
+        $metadataMethod->addArgument(MetadataMethod::PRIMITIVE_TYPE,'data');
+        $metadataClass->registerInvoke($metadataMethod);
+
+        $di=new DependencyInjection();
+        $di->register($metadataClass);
+        $exception=null;
+        try{
+            $di->get('standalone');
+        }
+        catch (\Exception $e){
+            $exception=$e;
+        }
+
+        $this->assertInstanceOf(InvalidTypeException::class,$exception);
+    }
+
 }

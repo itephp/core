@@ -15,15 +15,13 @@
 
 namespace ItePHP\Action;
 
-use ItePHP\Provider\Response;
+use ItePHP\Mapper\MapperAbstract;
 use ItePHP\Core\ExecuteActionEvent;
 use ItePHP\Core\InvalidConfigValueException;
-use ItePHP\Action\RequiredArgumentException;
-use ItePHP\Action\InvalidArgumentException;
 use ItePHP\Core\Request;
 use ItePHP\Core\Config;
-use ItePHP\Core\ValidatorService;
 use ItePHP\Core\Container;
+use ItePHP\Validator\ValidatorAbstract;
 
 /**
  * Event to foward http param ($_POST[],$_GET[],url) to controllr method.
@@ -87,6 +85,9 @@ class ArgumentEvent{
 
 		$validatorName=$config->getAttribute('validator');
 		if($validatorName!==''){
+            /**
+             * @var ValidatorAbstract $validatorObject
+             */
 			$validatorObject=new $validatorName();
 			$error=$validatorObject->validate($value);
 			if($error){
@@ -96,6 +97,9 @@ class ArgumentEvent{
 
 		$mapperName=$config->getAttribute('mapper');
 		if($mapperName!==''){
+            /**
+             * @var MapperAbstract $mapper
+             */
 			$mapper=new $mapperName($this->container);
 			$value=$mapper->cast($value);
 		}
@@ -119,7 +123,7 @@ class ArgumentEvent{
 			return $matches[1];			
 		}
 		else if($default!==false){
-			return $config->getAttribute('default');;			
+			return $config->getAttribute('default');
 		}
 		else{
 			throw new RequiredArgumentException($position,$config->getAttribute('name'));			
@@ -129,7 +133,7 @@ class ArgumentEvent{
 	/**
 	 * Validate GET.
 	 *
-	 * @param array $data http post/get data
+	 * @param string[] $data http post/get data
 	 * @param Config $config argument
 	 * @param int $position
 	 * @return string

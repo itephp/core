@@ -36,7 +36,7 @@ class Response{
 
 	/**
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private $headers=[];
 
@@ -48,7 +48,7 @@ class Response{
 
 	/**
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private $availableStatusCodes=[
 			100 =>'Continue'
@@ -148,7 +148,7 @@ class Response{
 
 	/**
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	public function getHeaders(){
 		return $this->headers;

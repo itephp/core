@@ -15,21 +15,23 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\FormFormatter;
-use ItePHP\Component\Form\BasicFormFormatter;
-use ItePHP\Core\ValidatorService;
 use ItePHP\Validator\FileValidator;
-use ItePHP\Component\Form\FileMaxSizeException;
 
 /**
  * FormBuilder field
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.15.0
  */
 class FileField extends InputField{
 
+    /**
+     * @var mixed[]
+     */
 	private $data;
+
+    /**
+     * @var int
+     */
 	private $maxSize;
 
 	/**
@@ -67,7 +69,6 @@ class FileField extends InputField{
 	 * Set html tag multiple
 	 *
 	 * @param boolean $flag - value of tag multiple
-	 * @since 0.17.0
 	 */
 	public function setMultiple($flag){
 		$this->setTag('multiple',$flag);
@@ -76,8 +77,7 @@ class FileField extends InputField{
 	/**
 	 * Get html tag multiple
 	 *
-	 * @return boolean
-	 * @since 0.17.0
+	 * @return bool
 	 */
 	public function isMultiple(){
 		$tags=$this->getTags();
@@ -88,7 +88,6 @@ class FileField extends InputField{
 	 * Set html tag accept
 	 *
 	 * @param string $accept - value of tag accept
-	 * @since 0.18.0
 	 */
 	public function setAccept($accept){
 		$this->setTag('accept',$accept);
@@ -101,18 +100,17 @@ class FileField extends InputField{
 	 * Get html tag accept
 	 *
 	 * @return string
-	 * @since 0.18.0
 	 */
 	public function getAccept(){
 		return $this->accept;
 	}
 
-	/**
-	 * Set max size file
-	 *
-	 * @param long $maxSize - size in bytes
-	 * @since 0.18.0
-	 */
+    /**
+     * Set max size file
+     *
+     * @param int $maxSize - size in bytes
+     * @throws FileMaxSizeException
+     */
 	public function setMaxSize($maxSize){
 		$serverMaxSize=$this->getServerMaxSize();
 		if($maxSize>$serverMaxSize){
@@ -127,8 +125,7 @@ class FileField extends InputField{
 	/**
 	 * Get max size file
 	 *
-	 * @return long - file size in bytes
-	 * @since 0.18.0
+	 * @return int - file size in bytes
 	 */
 	public function getMaxSize(){
 		return $this->maxSize;
@@ -177,8 +174,7 @@ class FileField extends InputField{
 	/**
 	 * Get max size file from config server
 	 *
-	 * @return long - file size in bytes
-	 * @since 0.18.0
+	 * @return int - file size in bytes
 	 */
 	private function getServerMaxSize(){
 		return min($this->phpSizeToBytes(ini_get('post_max_size')),$this->phpSizeToBytes(ini_get('upload_max_filesize')));  
@@ -188,8 +184,7 @@ class FileField extends InputField{
 	 * Php size format to bytes
 	 *
 	 * @param string $size - php size format
-	 * @return long - file size in bytes
-	 * @since 0.18.0
+	 * @return int - file size in bytes
 	 */
 	private function phpSizeToBytes($size){  
 		if (is_numeric( $size)){

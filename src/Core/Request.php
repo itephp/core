@@ -14,9 +14,7 @@
  */
 
 namespace ItePHP\Core;
-
-use ItePHP\Core\Config;
-
+use ItePHP\Component\Form\FileUploaded;
 
 /**
  * Interface for request
@@ -88,7 +86,7 @@ interface Request{
 	/**
 	 * Get session provider.
 	 *
-	 * @return \ItePHP\Core\SessionProvider
+	 * @return SessionProvider
 	 */
 	public function getSession();
 

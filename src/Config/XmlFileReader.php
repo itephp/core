@@ -24,7 +24,7 @@ class XmlFileReader implements Reader{
 	
 	/**
 	 *
-	 * @var SimpleXMLElement
+	 * @var \SimpleXMLElement
 	 */ 
 	private $data;
 

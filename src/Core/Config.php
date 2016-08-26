@@ -33,7 +33,7 @@ class Config{
 
 	/**
 	 *
-	 * @var array
+	 * @var string[]
 	 */	
 	private static $variables=[];
 
@@ -48,7 +48,6 @@ class Config{
 			return;
 		}
 
-		$variables=[];
 		try{
 			$variables=$this->container->getNodes('variable');
 		}
@@ -65,7 +64,7 @@ class Config{
 	/**
 	 *
 	 * @param string $name
-	 * @return array
+	 * @return Config[]
 	 * @throws ConfigException
 	 */	
 	public function getNodes($name){

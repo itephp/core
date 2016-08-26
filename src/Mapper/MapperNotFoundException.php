@@ -13,7 +13,8 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Exception;
+namespace ItePHP\Mapper;
+
 use ItePHP\Core\Exception;
 
 /**
@@ -22,7 +23,7 @@ use ItePHP\Core\Exception;
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
 class MapperNotFoundException extends Exception{
-	
+
 	/**
 	 * Constructor.
 	 *

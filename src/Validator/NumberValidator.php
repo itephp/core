@@ -36,7 +36,7 @@ class NumberValidator extends ValidatorAbstract{
 		}
 
 		if(!$value && $empty){
-			return;
+            return null;
 		}
 
 		if(!is_numeric($value))
@@ -61,5 +61,6 @@ class NumberValidator extends ValidatorAbstract{
 		catch(ValueNotFoundException $e){
 			//ignore
 		}
+        return null;
 	}
 }

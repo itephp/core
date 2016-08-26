@@ -21,16 +21,14 @@ use ItePHP\Core\Exception;
  * Throw when File is too large. Exception for FileValidator
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.18.0
  */
 class FileMaxSizeException extends Exception{
 	
 	/**
 	 * Constructor.
 	 *
-	 * @param long $maxSize
-	 * @since 0.1.0
-	 */	
+	 * @param int $maxSize
+	 */
 	public function __construct($maxSize){
 		parent::__construct(17,'Max size for file is too large. Server limit: '.$maxSize.'.');
 	}

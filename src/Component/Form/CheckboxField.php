@@ -15,16 +15,12 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\FormFormatter;
-use ItePHP\Component\Form\BasicFormFormatter;
-use ItePHP\Core\ValidatorService;
 use ItePHP\Validator\BooleanValidator;
 
 /**
  * FormBuilder field
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.15.0
  */
 class CheckboxField extends InputField{
 
@@ -32,9 +28,9 @@ class CheckboxField extends InputField{
      * {@inheritdoc}
      */
 	public function __construct($options){
-		$options+=array(
+		$options+=[
 			'checked'=>false
-		);
+		];
 
 		$options['type']='checkbox';
 
@@ -71,7 +67,6 @@ class CheckboxField extends InputField{
 	 * Get value of tag checked
 	 *
 	 * @return boolean
-	 * @since 0.15.0
 	 */
 	public function isChecked(){
 		return $this->getTag('checked');
@@ -81,7 +76,6 @@ class CheckboxField extends InputField{
 	 * Set value of tag checked
 	 *
 	 * @param boolean $flag - if true then checked else unchecked
-	 * @since 0.15.0
 	 */
 	public function setChecked($flag){
 		return $this->setTag('checked',$flag);

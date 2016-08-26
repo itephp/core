@@ -25,7 +25,7 @@ abstract class ValidatorAbstract{
 	/**
 	 * Array with config options.
 	 *
-	 * @var array $options
+	 * @var mixed[] $options
 	 */
 	private $options=[];
 	

@@ -18,7 +18,7 @@ namespace ItePHP\DependencyInjection;
 use \ReflectionClass;
 
 /**
- * Manager for dependency injeciton
+ * Manager for dependency injection.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
@@ -26,23 +26,27 @@ class DependencyInjection{
 
 	/**
 	 *
-	 * @var array
+	 * @var MetadataClass[]
 	 */
 	private $metadataClasses=[];
 
 	/**
 	 *
-	 * @var array
+	 * @var object[]
 	 */
 	private $instances=[];
 
-	/**
-	 *
-	 * @param MetadataClass $metadaDataClass
-	 */
-	public function register(MetadataClass $metadaDataClass){
-		//TODO exception already registered
-		$this->metadataClasses[$metadaDataClass->getName()]=$metadaDataClass;
+    /**
+     *
+     * @param MetadataClass $metadataClass
+     * @throws MetadataAlreadyRegisteredException
+     */
+	public function register(MetadataClass $metadataClass){
+	    if(isset($this->metadataClasses[$metadataClass->getName()])){
+	        throw new MetadataAlreadyRegisteredException($metadataClass->getName());
+        }
+
+		$this->metadataClasses[$metadataClass->getName()]=$metadataClass;
 	}
 
 	/**
@@ -54,33 +58,39 @@ class DependencyInjection{
 		$this->instances[$name]=$object;
 	}
 
-	/**
-	 *
-	 * @param string $name
-	 */
+    /**
+     *
+     * @param string $name
+     * @return object
+     * @throws InstanceNotFoundException
+     */
 	public function get($name){
-		if(!isset($this->instances[$name])){
-			$this->instances[$name]=$this->createInstance($name);
+
+        if(isset($this->instances[$name]) && !isset($this->metadataClasses[$name])){
+            return $this->instances[$name];
+        }
+
+        if(!isset($this->metadataClasses[$name])){
+            throw new InstanceNotFoundException($name);
+        }
+
+        $metaData=$this->metadataClasses[$name];
+		if(!$metaData->isSingleton() || !isset($this->instances[$name])){
+			$this->instances[$name]=$this->createInstance($metaData);
 		}
 
 		return $this->instances[$name];
 
 	}
 
-	/**
-	 *
-	 * @param string $name
-	 * @return object
-	 * @throws InstanceNotFoundException
-	 */
-	private function createInstance($name){
-		if(!isset($this->metadataClasses[$name])){
-			throw new InstanceNotFoundException($name);
-		}
+    /**
+     *
+     * @param MetadataClass $metadataClass
+     * @return object
+     * @throws InstanceNotFoundException
+     */
+	private function createInstance(MetadataClass $metadataClass){
 
-		$metadataClass=$this->metadataClasses[$name];
-
-		$className=$metadataClass->getClassName();
 		$metadataConstructor=$this->getMetadataConstructor($metadataClass);
 		$arguments=[];
 		if($metadataConstructor){
@@ -125,11 +135,12 @@ class DependencyInjection{
 
 	}
 
-	/**
-	 *
-	 * @param MetadataMethod $metadata
-	 * @return array
-	 */
+    /**
+     *
+     * @param MetadataMethod $metadata
+     * @return \mixed[]
+     * @throws InvalidTypeException
+     */
 	private function getMethodArguments(MetadataMethod $metadata){
 		$arguments=[];
 		foreach ($metadata->getArguments() as $argument) {
@@ -146,7 +157,7 @@ class DependencyInjection{
 					$value=$this->get($argument['value']);
 				break;
 				default:
-					//TODO throw exception type invalid
+					throw new InvalidTypeException($argument['type']);
 			}
 			$arguments[]=$value;
 		}

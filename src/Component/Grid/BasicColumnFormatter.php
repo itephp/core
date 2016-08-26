@@ -15,13 +15,10 @@
 
 namespace ItePHP\Component\Grid;
 
-use ItePHP\Component\Grid\ColumnFormatter;
-
 /**
  * Formatter for GridBuilder
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.17.0
  */
 class BasicColumnFormatter implements ColumnFormatter{
 

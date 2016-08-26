@@ -19,7 +19,6 @@ namespace ItePHP\Component\Grid;
  * Manager to loading records from source.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.17.0
  */
 interface GridDataManager{
 
@@ -29,8 +28,7 @@ interface GridDataManager{
 	 * @param int $limit - count record on page
 	 * @param int $page - current page
 	 * @param string $sort - sort by column
-	 * @return array - records
-	 * @since 0.17.0
+	 * @return mixed[] - records
 	 */
 	public function getRecords($limit,$page,$sort=null);
 
@@ -38,7 +36,6 @@ interface GridDataManager{
 	 * Get total count records
 	 *
 	 * @return int - total count records
-	 * @since 0.17.0
 	 */
 	public function getTotalCount();
 	

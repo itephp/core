@@ -15,9 +15,6 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\Presenter;
-use ItePHP\Core\Response;
-
 /**
  * Presenter for http error.
  *
@@ -40,18 +37,18 @@ class HTTPErrorPresenter implements Presenter{
 
 	}
 
-	/**
-	 *
-	 * @param Response $response
-	 */
+    /**
+     *
+     * @param Response $response
+     * @return string
+     */
 	private function createTemplate($response){
 		$content=$response->getContent();
-		$templateContent='';
 		if($content instanceof \Exception){
 			$templateContent=$this->createExceptionContent($content);
 		}
 		else{
-			$templateContent=$this->createObjectContent();
+			$templateContent=$this->createObjectContent($content);
 
 		}
 		$template='<!DOCTYPE html>
@@ -68,10 +65,11 @@ class HTTPErrorPresenter implements Presenter{
 
 	}
 
-	/**
-	 *
-	 * @param Exception $exception
-	 */
+    /**
+     *
+     * @param \Exception $exception
+     * @return string
+     */
 	private function createExceptionContent(\Exception $exception){
 		$template='
 			<div>'.get_class($exception).'</div>
@@ -84,11 +82,12 @@ class HTTPErrorPresenter implements Presenter{
 
 	}
 
-	/**
-	 *
-	 * @param mixed $exception
-	 */
-	private function createObjectContent(mixed $content){
+    /**
+     *
+     * @param mixed $content
+     * @return string
+     */
+	private function createObjectContent($content){
 		$template='
 			<div>'.gettype($content).'</div>
 			<div>'.(string)$content.'</div>

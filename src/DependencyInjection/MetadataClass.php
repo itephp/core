@@ -36,18 +36,25 @@ class MetadataClass{
 
 	/**
 	 *
-	 * @var array
+	 * @var MetadataMethod[]
 	 */
 	private $methods=[];
 
-	/**
-	 *
-	 * @param string $name
-	 * @param string $className
-	 */
-	public function __construct($name,$className){
+    /**
+     * @var bool
+     */
+    private $singleton;
+
+    /**
+     *
+     * @param string $name
+     * @param string $className
+     * @param bool $singleton
+     */
+	public function __construct($name,$className,$singleton=true){
 		$this->name=$name;
 		$this->className=$className;
+        $this->singleton=$singleton;
 	}
 
 	/**
@@ -74,11 +81,17 @@ class MetadataClass{
 		$this->methods[]=$method;
 	}
 
-	/**
-	 *
-	 * @return array
-	 */
+    /**
+     * @return MetadataMethod[]
+     */
 	public function getMethods(){
 		return $this->methods;
 	}
+
+    /**
+     * @return bool
+     */
+    public function isSingleton(){
+        return $this->singleton;
+    }
 }

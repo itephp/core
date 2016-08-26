@@ -15,12 +15,10 @@
 
 namespace ItePHP\Core;
 
+use ItePHP\Command\CommandInterface;
 use ItePHP\Route\Dispatcher;
 
 use ItePHP\DependencyInjection\DependencyInjection;
-
-use ItePHP\Core\Config;
-
 use ItePHP\Command\OutputStreamConsole;
 use ItePHP\Command\CommandExecutor;
 
@@ -51,7 +49,7 @@ class ConsoleDispatcher  implements Dispatcher {
 
 	/**
 	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	protected $arguments;
 
@@ -60,7 +58,7 @@ class ConsoleDispatcher  implements Dispatcher {
 	 *
 	 * @param Config $config
 	 * @param DependencyInjection $dependencyInjection
-	 * @param array $arguments
+	 * @param mixed[] $arguments
 	 */
 	public function __construct(Config $config,DependencyInjection $dependencyInjection,$arguments){
 		$this->config=$config;
@@ -69,11 +67,13 @@ class ConsoleDispatcher  implements Dispatcher {
 		$this->arguments=$arguments;
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 */
 	public function execute(){
+        /**
+         * @var CommandInterface $command
+         */
 		$command=$this->dependencyInjection->get('command.'.$this->className);
 
 		$commandExecutor=new CommandExecutor($command);

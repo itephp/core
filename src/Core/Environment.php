@@ -20,58 +20,51 @@ namespace ItePHP\Core;
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class Enviorment{
+class Environment{
 
 	/**
-	 * Debug flag.
-	 *
-	 * @var boolean $debug
+	 * @var bool $debug
 	 */
 	private $debug;
 
 	/**
-	 * Silent flag.
-	 *
 	 * @var boolean $silent
 	 */
 	private $silent;
 
 	/**
-	 * Enviorment name.
-	 *
 	 * @var string $name
 	 */
 	private $name;
 
 	/**
-	 *
 	 * @var string
 	 */
 	private $rootPath;
 
 	/**
-	 *
 	 * @var string
 	 */
 	private $srcPath;
 
 	/**
-	 *
 	 * @var string
 	 */
 	private $cachePath;
 
 	/**
-	 *
 	 * @var string
 	 */
 	private $webPath;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param boolean $debug
-	 * @param boolean $silent
+    /**
+     * @var string
+     */
+    private $vendorPath;
+
+    /**
+	 * @param bool $debug
+	 * @param bool $silent
 	 * @param string $name
 	 * @param string $rootPath
 	 * @param string $configPath
@@ -110,26 +103,20 @@ class Enviorment{
 	}
 
 	/**
-	 * Check is debug mode.
-	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDebug(){
 		return $this->debug;
 	}	
 
 	/**
-	 * Check is silent mode.
-	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSilent(){
 		return $this->silent;
 	}
 
 	/**
-	 * Get enviorment name.
-	 *
 	 * @return string
 	 */
 	public function getName(){
@@ -137,7 +124,6 @@ class Enviorment{
 	}
 
 	/**
-	 *
 	 * @return string
 	 */
 	public function getRootPath(){
@@ -145,7 +131,6 @@ class Enviorment{
 	}
 
 	/**
-	 *
 	 * @return string
 	 */
 	public function getSrcPath(){
@@ -153,7 +138,6 @@ class Enviorment{
 	}
 
 	/**
-	 *
 	 * @return string
 	 */
 	public function getVendorPath(){
@@ -161,7 +145,6 @@ class Enviorment{
 	}
 
 	/**
-	 *
 	 * @return string
 	 */
 	public function getWebPath(){
@@ -169,7 +152,6 @@ class Enviorment{
 	}
 
 	/**
-	 *
 	 * @return string
 	 */
 	public function getCachePath(){
@@ -177,7 +159,6 @@ class Enviorment{
 	}
 
 	/**
-	 *
 	 * @return string
 	 */
 	public function getConfigPath(){

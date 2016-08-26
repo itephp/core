@@ -15,33 +15,45 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\FormFormatter;
-use ItePHP\Component\Form\BasicFormFormatter;
-use ItePHP\Core\ValidatorService;
+use ItePHP\Validator\ValidatorAbstract;
 
 /**
  * FormBuilder field
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.15.0
  */
 abstract class FormField{
+
+    /**
+     * @var mixed[]
+     */
 	private $tags;
+
+    /**
+     * @var ValidatorAbstract
+     */
 	private $validator;
+
+    /**
+     * @var bool
+     */
 	private $isValid=true;
+
+    /**
+     * @var string
+     */
 	private $error;
 
 	/**
-	 * @param array $options - array with configura data. All field is optional eg:
-	 * array(
+	 * @param mixed[] $options - array with configura data. All field is optional eg:
+	 * [
 	 * 	'name'=>'{text}' //tag name
 	 * 	,'validator'=>'{text}' //validator class name
 	 * 	,'id'=>'{text}' //tag id
 	 * 	,'value'=>'{text}' //tag value
 	 * 	,'required'=>{boolean} //tag required
 	 * 	,...
-	 * )
-	 * @since 0.15.0
+	 * ]
 	 */
 	public function __construct($options){
 
@@ -55,13 +67,13 @@ abstract class FormField{
 			unset($options['label']);
 		}
 
-		$options+=array(
+		$options+=[
 			'value'=>''
 			,'name'=>null
 			,'id'=>null
 			,'class'=>''
 			,'required'=>false
-			);
+			];
 
 		$this->tags=$options;
 
@@ -73,7 +85,6 @@ abstract class FormField{
 	 * Set html tag name
 	 *
 	 * @param string $name - value of tag name:
-	 * @since 0.15.0
 	 */
 	public function setName($name){
 		$this->tags['name']=$name;
@@ -84,7 +95,6 @@ abstract class FormField{
 	 * Get value of html tag name
 	 *
 	 * @return string
-	 * @since 0.15.0
 	 */
 	public function getName(){
 		return $this->tags['name'];
@@ -94,7 +104,6 @@ abstract class FormField{
 	 * Set html tag id
 	 *
 	 * @param string $id - value of tag id:
-	 * @since 0.15.0
 	 */
 	public function setId($id){
 		$this->tags['id']=$id;
@@ -104,7 +113,6 @@ abstract class FormField{
 	 * Get value of html tag id
 	 *
 	 * @return string
-	 * @since 0.15.0
 	 */
 	public function getId(){
 		return $this->tags['id'];
@@ -113,8 +121,7 @@ abstract class FormField{
 	/**
 	 * Set validator class rule
 	 *
-	 * @param \ItePHP\Core\Validator $validator - validator class
-	 * @since 0.15.0
+	 * @param ValidatorAbstract $validator - validator class
 	 */
 	public function setValidator($validator=null){
 		$this->validator=$validator;
@@ -124,8 +131,7 @@ abstract class FormField{
 	/**
 	 * Get validator class
 	 *
-	 * @return \ItePHP\Core\Validator 
-	 * @since 0.15.0
+	 * @return ValidatorAbstract
 	 */
 	public function getValidator(){
 		return $this->validator;
@@ -135,7 +141,6 @@ abstract class FormField{
 	 * Add part html tag class
 	 *
 	 * @param string $name - class name:
-	 * @since 0.15.0
 	 */
 	public function addClass($name){
 		$classParts=explode(' ',$this->tags['class']);
@@ -152,7 +157,6 @@ abstract class FormField{
 	 * Remove part html tag class
 	 *
 	 * @param string $name - class name:
-	 * @since 0.15.0
 	 */
 	public function removeClass($name){
 		$classParts=explode(' ',$this->tags['class']);
@@ -171,7 +175,6 @@ abstract class FormField{
 	 * Get value of html tag class
 	 *
 	 * @return string
-	 * @since 0.15.0
 	 */
 	public function getClass(){
 		return  $this->tags['class'];
@@ -181,7 +184,6 @@ abstract class FormField{
 	 * Set label name for field
 	 *
 	 * @param string $label
-	 * @since 0.15.0
 	 */
 	public function setLabel($label){
 		$this->label=$label;
@@ -191,7 +193,6 @@ abstract class FormField{
 	 * Get value of label field
 	 *
 	 * @return string
-	 * @since 0.15.0
 	 */
 	public function getLabel(){
 		return $this->label;
@@ -200,8 +201,7 @@ abstract class FormField{
 	/**
 	 * Set html tag required
 	 *
-	 * @param boolean $flag - if true then required else optional
-	 * @since 0.15.0
+	 * @param bool $flag - if true then required else optional
 	 */
 	public function setRequired($flag){
 		$this->tags['required']=$flag;
@@ -213,8 +213,7 @@ abstract class FormField{
 	/**
 	 * Get value of html tag required
 	 *
-	 * @return boolean
-	 * @since 0.15.0
+	 * @return bool
 	 */
 	public function isRequired(){
 		return $this->tags['required'];		
@@ -225,7 +224,6 @@ abstract class FormField{
 	 *
 	 * @param string $name - tag name
 	 * @param mixed $value - value of tag
-	 * @since 0.15.0
 	 */
 	public function setTag($name,$value){
 		$this->tags[$name]=$value;
@@ -235,8 +233,7 @@ abstract class FormField{
 	 * Get html tag
 	 *
 	 * @param string $name - tag name
-	 * @return string|array
-	 * @since 0.15.0
+	 * @return mixed
 	 */
 	public function getTag($name){
 		return $this->tags[$name];
@@ -245,8 +242,7 @@ abstract class FormField{
 	/**
 	 * Get all html tags
 	 *
-	 * @return array
-	 * @since 0.15.0
+	 * @return mixed[]
 	 */
 	public function getTags(){
 		return $this->tags;
@@ -256,7 +252,6 @@ abstract class FormField{
 	 * Check valid field
 	 *
 	 * @return boolean
-	 * @since 0.17.0
 	 */
 	public function isValid(){
 		return $this->isValid;
@@ -266,7 +261,6 @@ abstract class FormField{
 	 * Get error message
 	 *
 	 * @return string
-	 * @since 0.17.0
 	 */
 	public function getError(){
 		return $this->error;
@@ -276,8 +270,6 @@ abstract class FormField{
 	 * Set error message
 	 *
 	 * @param string $error - message
-	 * @return string
-	 * @since 0.17.0
 	 */
 	public function setError($error){
 		$this->error=$error;
@@ -288,7 +280,6 @@ abstract class FormField{
 	 * Implement render html label and field
 	 *
 	 * @return string
-	 * @since 0.15.0
 	 */
 	abstract public function render();
 
@@ -296,7 +287,6 @@ abstract class FormField{
 	 * Set confirmed data 
 	 *
 	 * @param mixed $data - confirmed data
-	 * @since 0.16.0
 	 */
 	abstract public function setData($data);
 
@@ -304,15 +294,11 @@ abstract class FormField{
 	 * Get value field
 	 *
 	 * @return mixed
-	 * @since 0.16.0
 	 */
 	abstract public function getData();
 
 	/**
 	 * Remove field data
-	 *
-	 * @param mixed $data - confirmed data
-	 * @since 0.17.0
 	 */
 	abstract public function clearData();
 
@@ -320,7 +306,6 @@ abstract class FormField{
 	 * Implement render html field
 	 *
 	 * @return string
-	 * @since 0.15.0
 	 */
 	abstract public function componentRender();
 
@@ -328,7 +313,6 @@ abstract class FormField{
 	 * implement render html label
 	 *
 	 * @return string
-	 * @since 0.15.0
 	 */
 	abstract public function labelRender();
 

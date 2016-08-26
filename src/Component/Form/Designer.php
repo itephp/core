@@ -14,21 +14,17 @@
  */
 
 namespace ItePHP\Component\Form;
-use ItePHP\Component\Form\FormBuilder;
 
 /**
  * Implementation for auto generate field list in FormBuilder
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.18.0
  */
 interface Designer{
-	
-	/**
-	 * Method with rules create field for FormBuilder
-	 *
-	 * @param ItePHP\Component\Form\FormBuilder $formBuilder
-	 * @since 0.18.0
-	 */
+
+    /**
+     * @param FormBuilder $formBuilder
+     * @return mixed
+     */
 	public function build(FormBuilder $formBuilder);
 }

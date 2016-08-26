@@ -15,13 +15,10 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\Transformer;
-
 /**
  * Transformer for FormBuilder
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.22.0
  */
 class BasicFormTransformer implements Transformer{
 

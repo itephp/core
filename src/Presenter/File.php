@@ -15,7 +15,7 @@
 
 namespace ItePHP\Presenter;
 
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 use ItePHP\Core\HeaderNotFoundException;
 use ItePHP\Core\Presenter;
 use ItePHP\Core\Request;
@@ -29,15 +29,15 @@ use ItePHP\Core\Response;
 class File implements Presenter{
 
     /**
-     * @var Enviorment
+     * @var Environment
      */
     private $enviorment;
 
     /**
      * File constructor.
-     * @param Enviorment $enviorment
+     * @param Environment $enviorment
      */
-    public function __construct(Enviorment $enviorment)
+    public function __construct(Environment $enviorment)
     {
         $this->enviorment=$enviorment;
     }

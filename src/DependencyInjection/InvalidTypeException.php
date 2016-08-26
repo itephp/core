@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
@@ -13,20 +12,21 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Config;
+namespace ItePHP\DependencyInjection;
 
 /**
- * Source reader.
- *
- * @author Michal Tomczak (michal.tomczak@itephp.com)
+ * Class InvalidTypeException
+ * @package ItePHP\DependencyInjection
  */
-interface Reader{
+class InvalidTypeException extends \Exception
+{
 
-	/**
-	 *
-	 * @param string $name
-	 * @return ReaderNode[]
-	 */
-	public function getNodes($name);
-
+    /**
+     * InvalidTypeException constructor.
+     * @param $type
+     */
+    public function __construct($type)
+    {
+        parent::__construct("Invalid type ".$type.".");
+    }
 }

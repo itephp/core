@@ -15,15 +15,10 @@
 
 namespace ItePHP\Component\Form;
 
-use ItePHP\Component\Form\FormFormatter;
-use ItePHP\Component\Form\BasicFormFormatter;
-use ItePHP\Core\ValidatorService;
-
 /**
  * FormBuilder field
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.15.0
  */
 abstract class InputField extends FormField{
 
@@ -38,7 +33,6 @@ abstract class InputField extends FormField{
 	 * Set html tag pattern
 	 *
 	 * @param string $pattern - value of tag pattern (regular expression)
-	 * @since 0.16.0
 	 */
 	public function setPattern($pattern){
 		$this->setTag('pattern',$pattern);
@@ -51,7 +45,6 @@ abstract class InputField extends FormField{
 	 * Get value of html tag pattern
 	 *
 	 * @return string
-	 * @since 0.16.0
 	 */
 	public function getPattern(){
 		return $this->getTag('pattern');		
@@ -61,7 +54,6 @@ abstract class InputField extends FormField{
 	 * Set value field
 	 *
 	 * @param mixed $value - value field
-	 * @since 0.16.0
 	 */
 	public function setValue($value){
 		$this->setTag('value',$value);
@@ -70,8 +62,7 @@ abstract class InputField extends FormField{
 	/**
 	 * Get value field
 	 *
-	 * @return string|array
-	 * @since 0.16.0
+	 * @return mixed
 	 */
 	public function getValue(){
 		return $this->getTag('value');		
@@ -127,6 +118,4 @@ abstract class InputField extends FormField{
 	public function clearData(){
 		return $this->setValue(null);
 	}
-
-
 }

@@ -23,22 +23,23 @@ class InputStream{
 
 	/**
 	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	private $arguments=[];
 
 	/**
 	 *
-	 * @param array $arguments
+	 * @param mixed[] $arguments
 	 */
 	public function __construct($arguments){
 		$this->arguments=$arguments;
 	}
 
-	/**
-	 *
-	 * @param string $name
-	 */
+    /**
+     *
+     * @param string $name
+     * @return mixed
+     */
 	public function getArgument($name){
 		//TODO check exist argument
 		return $this->arguments[$name];

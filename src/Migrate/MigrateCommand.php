@@ -21,7 +21,7 @@ use ItePHP\Command\InputStream;
 use ItePHP\Command\OutputStream;
 
 use ItePHP\Core\Container;
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 
 /**
  * Migrate command.
@@ -36,9 +36,9 @@ class MigrateCommand implements CommandInterface{
 	private $container;
 
 	/**
-	 * @var Enviorment
+	 * @var Environment
 	 */
-	private $enviorment;
+	private $environment;
 
 	/**
 	 * @var string
@@ -50,16 +50,21 @@ class MigrateCommand implements CommandInterface{
 	 */
 	private $savePath;
 
-	/**
+    /**
+     * @var string
+     */
+    private $stagePath;
+
+    /**
 	 *
 	 * @param Container $container
-	 * @param Enviorment $enviorment
+	 * @param Environment $environment
 	 */
-	public function __construct(Container $container,Enviorment $enviorment){
+	public function __construct(Container $container, Environment $environment){
 		$this->container=$container;
-		$this->enviorment=$enviorment;
+		$this->environment=$environment;
 		$this->setPatternPath('/vendor/itephp/framework/pattern/migrate.txt');
-		$this->setSavePath('/config/migrate.'.$this->enviorment->getName().'.txt');
+		$this->setSavePath('/config/migrate.'.$this->environment->getName().'.txt');
 		$this->setStagePath('/src/Migrate');
 	}
 
@@ -101,13 +106,13 @@ class MigrateCommand implements CommandInterface{
 		$operation=$in->getArgument('-o');
 		switch($in->getArgument('-o')){
 			case 'create':
-				$this->createOperation($in,$out);
+				$this->createOperation($out);
 			break;
 			case 'upgrade':
-				$this->upgradeOperation($in,$out);
+				$this->upgradeOperation($out);
 			break;
 			case 'downgrade':
-				$this->downgradeOperation($in,$out);
+				$this->downgradeOperation($out);
 			break;
 			default:
 				throw new OperationNotSupportedException($operation);
@@ -116,10 +121,9 @@ class MigrateCommand implements CommandInterface{
 
 	/**
 	 *
-	 * @param InputStream $in
 	 * @param OutputStream $out
 	 */
-	public function createOperation(InputStream $in,OutputStream $out){
+	public function createOperation(OutputStream $out){
 		$now=new \DateTime();
 
 		$template=file_get_contents($this->getPatternPath());
@@ -132,11 +136,10 @@ class MigrateCommand implements CommandInterface{
 
 	/**
 	 *
-	 * @param InputStream $in
 	 * @param OutputStream $out
-	 * @throws Exception
+	 * @throws \Exception
 	 */
-	public function upgradeOperation(InputStream $in,OutputStream $out){
+	public function upgradeOperation(OutputStream $out){
 		$currentVersion=0;
 		if(file_exists($this->getSavePath())){
 			$currentVersion=file_get_contents($this->getSavePath());			
@@ -155,8 +158,13 @@ class MigrateCommand implements CommandInterface{
 		foreach($migrateFiles as $migrateFile){
 			try{
 				if($migrateFile>$currentVersion){
-					require_once($this->getStagePath().'/Version'.$migrateFile.'.php');
+				    $versionFile=$this->getStagePath().'/Version'.$migrateFile.'.php';
+                    /** @noinspection PhpIncludeInspection */
+                    require_once($versionFile);
 					$versionClassName='Migrate\Version'.$migrateFile;
+                    /**
+                     * @var MigrateStage $versionObject
+                     */
 					$versionObject=new $versionClassName();
 
 					$versionObject->up($this->container);
@@ -177,11 +185,10 @@ class MigrateCommand implements CommandInterface{
 
 	/**
 	 *
-	 * @param InputStream $in
 	 * @param OutputStream $out
-	 * @throws Exception
+	 * @throws \Exception
 	 */
-	public function downgradeOperation(InputStream $in,OutputStream $out){
+	public function downgradeOperation(OutputStream $out){
 		$currentVersion=0;
 		if(file_exists($this->getSavePath())){
 			$currentVersion=file_get_contents($this->getSavePath());			
@@ -199,12 +206,17 @@ class MigrateCommand implements CommandInterface{
 		foreach($migrateFiles as $migrateFile){
 			try{
 				if($migrateFile<=$currentVersion){
-					require_once($this->getStagePath().'/Version'.$migrateFile.'.php');
+				    $versionFile=$this->getStagePath().'/Version'.$migrateFile.'.php';
+                    /** @noinspection PhpIncludeInspection */
+                    require_once($versionFile);
 					$versionClassName='Migrate\Version'.$migrateFile;
 					$versionObject=new $versionClassName();
 
-					$versionObject->down($this->container);
-					$this->currentVersion=$migrateFile;
+                    /**
+                     * @var MigrateStage $versionObject
+                     */
+                    $versionObject->down($this->container);
+					$currentVersion=$migrateFile;
 					file_put_contents($this->getSavePath(), $currentVersion);
 
 				}
@@ -229,7 +241,7 @@ class MigrateCommand implements CommandInterface{
 	 * @return string
 	 */
 	private function getSavePath(){
-		return $this->enviorment->getRootPath().$this->savePath;
+		return $this->environment->getRootPath().$this->savePath;
 	}
 
 	/**
@@ -237,7 +249,7 @@ class MigrateCommand implements CommandInterface{
 	 * @return string
 	 */
 	private function getStagePath(){
-		return $this->enviorment->getRootPath().$this->stagePath;
+		return $this->environment->getRootPath().$this->stagePath;
 	}
 
 	/**
@@ -245,7 +257,7 @@ class MigrateCommand implements CommandInterface{
 	 * @return string
 	 */
 	private function getPatternPath(){
-		return $this->enviorment->getRootPath().$this->patternPath;
+		return $this->environment->getRootPath().$this->patternPath;
 	}
 
 }

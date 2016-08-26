@@ -24,20 +24,20 @@ class ConfigContainer{
 	
 	/**
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private $attributes=[];
 
 	/**
 	 *
-	 * @var array
+	 * @var ConfigContainer[][]
 	 */
 	private $nodes=[];
 
 	/**
 	 *
-	 * @param array $nodes
-	 * @param array $attributes
+	 * @param ConfigContainer[] $nodes
+	 * @param string[] $attributes
 	 */
 	public function __construct($nodes, $attributes){
 		$this->nodes=$nodes;
@@ -47,7 +47,7 @@ class ConfigContainer{
 	/**
 	 *
 	 * @param string $name
-	 * @return array
+	 * @return ConfigContainer[]
 	 * @throws ConfigException
 	 */	
 	public function getNodes($name){

@@ -11,7 +11,7 @@ use ItePHP\Core\HTTPRequest;
 use ItePHP\Action\ArgumentEvent;
 use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\Provider\Session;
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 use Asset\RequestTest;
 use ItePHP\Structure\ActionStructure;
 use ItePHP\Structure\ActionArgumentStructure;
@@ -26,7 +26,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 
 		$container=new Container(new DependencyInjection(),[]);
 
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$request=new RequestTest('/test/1','POST');
 		$request->setQuery(['var'=>'3']);
@@ -49,7 +49,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 
 		$container=new Container(new DependencyInjection(),[]);
 
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$request=new RequestTest('/test','POST');
 
@@ -70,7 +70,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 
 		$container=new Container(new DependencyInjection(),[]);
 
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$request=new RequestTest('/test/999999999','POST');
 		$request->setData(['data2'=>'123321123']);
@@ -92,7 +92,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 
 		$container=new Container(new DependencyInjection(),[]);
 
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$request=new RequestTest('/test/1','POST');
 		$request->setData(['data2'=>'123321123']);
@@ -118,7 +118,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 
 		$container=new Container(new DependencyInjection(),[]);
 
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$request=new RequestTest('/test/1','POST');
 		$request->setQuery(['var'=>'3']);
@@ -143,7 +143,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 
 		$container=new Container(new DependencyInjection(),[]);
 
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$request=new RequestTest('/test/s','POST');
 		$request->setQuery(['var'=>'3']);

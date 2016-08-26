@@ -36,13 +36,15 @@ class DateValidator extends ValidatorAbstract{
 		}
 
 		if(!$value && $empty){
-			return;
+			return null;
 		}
 
 		$d = \DateTime::createFromFormat('Y-m-d', $value);
 	    if($d && $d->format('Y-m-d') == $value);
 	    else
 			return 'Invalid date format.';
+
+        return null;
 	}
 
 }

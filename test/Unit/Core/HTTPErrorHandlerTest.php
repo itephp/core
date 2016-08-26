@@ -5,7 +5,7 @@ namespace Test;
 require_once(__DIR__.'/../../autoload.php');
 
 use ItePHP\Core\HTTPErrorHandler;
-use ItePHP\Core\Enviorment;
+use ItePHP\Core\Environment;
 use ItePHP\Config\ConfigBuilder;
 use ItePHP\Config\ConfigBuilderNode;
 use ItePHP\Config\XmlFileReader;
@@ -61,7 +61,7 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	private function createHandler($url){
-		$enviorment=new Enviorment(true,true,'test',__DIR__);
+		$enviorment=new Environment(true,true,'test',__DIR__);
 
 		$_SERVER=[];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';

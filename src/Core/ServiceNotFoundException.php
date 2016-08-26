@@ -15,8 +15,6 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\Core\Exception;
-
 /**
  * Throw when service not found.
  *

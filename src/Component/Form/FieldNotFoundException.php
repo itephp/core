@@ -21,7 +21,6 @@ use ItePHP\Core\Exception;
  * Throw when file not found in request provider.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @since 0.16.0
  */
 class FieldNotFoundException extends Exception{
 	
@@ -29,7 +28,6 @@ class FieldNotFoundException extends Exception{
 	 * Constructor.
 	 *
 	 * @param string $name field name
-	 * @since 0.16.0
 	 */
 	public function __construct($name){
 		parent::__construct(4,'Field "'.$name.'" not found.','Internal server error.');

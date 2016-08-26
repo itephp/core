@@ -27,13 +27,13 @@ class ErrorDispatcher{
 	/**
 	 * Flag block propagation error events
 	 *
-	 * @var boolean $stopPropagation
+	 * @var bool $stopPropagation
 	 */	
 	private $stopPropagation;
 
 	/**
 	 *
-	 * @var array
+	 * @var ErrorHandler[]
 	 */
 	private $handlers=[];
 
@@ -47,7 +47,7 @@ class ErrorDispatcher{
 
 	/**
 	 *
-	 * @return array
+	 * @return ErrorHandler[]
 	 */
 	public function getHandlers(){
 		return array_values($this->handlers);
@@ -69,7 +69,6 @@ class ErrorDispatcher{
 			return;
 		$error = error_get_last();
 		if( $error !== NULL) {
-			$errno   = $error["type"];
 			$errfile = $error["file"];
 			$errline = $error["line"];
 			$errstr  = $error["message"];
@@ -84,11 +83,12 @@ class ErrorDispatcher{
 	 * Exception callback.
 	 *
 	 * @param Exception $exception
-	 * @return boolean
+	 * @return bool
 	 */	
 	public function exception(Exception $exception){
-		if($this->stopPropagation)
-			return;
+		if($this->stopPropagation){
+            return false;
+        }
 
 		$this->fireHandlers($exception);
 

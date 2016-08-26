@@ -24,7 +24,7 @@ class Router{
 	
 	/**
 	 *
-	 * @var array
+	 * @var Dispatcher[]
 	 */
 	private $actions=[];
 
@@ -67,6 +67,8 @@ class Router{
 			}
 			return $metadata;
 		}
+
+		return null;
 
 	}
 

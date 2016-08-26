@@ -16,11 +16,7 @@
 namespace ItePHP\Core;
 
 use ItePHP\Provider\Session;
-use ItePHP\Core\Request;
-use ItePHP\Core\HeaderNotFoundException;
 use ItePHP\Component\Form\FileUploaded;
-use ItePHP\Core\FileNotUploadedException;
-use ItePHP\Core\Config;
 
 /**
  * Provider for request.
@@ -31,13 +27,13 @@ class HTTPRequest implements Request{
 
 	/**
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private $data=[];
 
 	/**
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private $query=[];
 
@@ -49,7 +45,7 @@ class HTTPRequest implements Request{
 
 	/**
 	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	private $arguments=[];
 
@@ -61,7 +57,7 @@ class HTTPRequest implements Request{
 
 	/**
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private $headers=[];
 
@@ -73,7 +69,7 @@ class HTTPRequest implements Request{
 
 	/**
 	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	private $files=[];
 
@@ -247,7 +243,8 @@ class HTTPRequest implements Request{
 
     /**
      *
-     * @param length $size
+     * @param mixed $size
+     * @return int
      */
 	private function phpSizeToBytes($size){  
 		if (is_numeric( $size)){
@@ -256,12 +253,16 @@ class HTTPRequest implements Request{
 		$suffix = substr($size, -1);
 		$value = substr($size, 0, -1);
 		switch(strtolower($suffix)){
-			case 'p':
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 'p':
 				$value *= 1024;
-			case 't':
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 't':
 				$value *= 1024;
+            /** @noinspection PhpMissingBreakStatementInspection */
 			case 'g':
 				$value *= 1024;
+            /** @noinspection PhpMissingBreakStatementInspection */
 			case 'm':
 				$value *= 1024;
 			case 'k':
@@ -281,19 +282,19 @@ class HTTPRequest implements Request{
 		foreach($_FILES as $kFile=>$file){
 			$fileData=null;
 			if(is_array($file['name'])){ //multiple files
-				$fileData=array();
+				$fileData=[];
 				for($i=0; $i<count($file['name']); $i++){
 					if($file['tmp_name'][$i]==''){
 						continue;
 					}
 
-					$metadata=array(
+					$metadata=[
 						'name'=>$file['name'][$i]
 						,'tmp_name'=>$file['tmp_name'][$i]
 						,'error'=>$file['error'][$i]
 						,'size'=>$file['size'][$i]
 						,'type'=>$file['type'][$i]
-						);
+                    ];
 					$fileData[]=new FileUploaded($metadata);
 				}
 			}

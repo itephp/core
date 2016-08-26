@@ -17,8 +17,6 @@ namespace ItePHP\Action;
 
 use ItePHP\Core\Response;
 use ItePHP\Core\ExecuteActionEvent;
-use ItePHP\Action\ValueNotFoundException;
-use ItePHP\Action\PermissionDeniedException;
 use ItePHP\Core\Request;
 use ItePHP\Core\Config;
 
@@ -28,12 +26,6 @@ use ItePHP\Core\Config;
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
 class AuthenticateEvent{
-	
-	/**
-	 *
-	 * @var Config
-	 */
-	private $config;
 
 	/**
 	 *
@@ -41,10 +33,17 @@ class AuthenticateEvent{
 	 */
 	private $maxTime=0;
 
+    /**
+     * AuthenticateEvent constructor.
+     * @param Config $config
+     */
 	public function __construct(Config $config){
-		$config=$config->getNodes('authenticate');
-		if($config){
-			$this->maxTime=$config[0]->getAttribute('max-time');
+        /**
+         * @var Config[] $authenticateNode
+         */
+		$authenticateNode=$config->getNodes('authenticate');
+		if($authenticateNode){
+			$this->maxTime=$authenticateNode[0]->getAttribute('max-time');
 		}
 
 	}
@@ -53,7 +52,6 @@ class AuthenticateEvent{
 	 * Detect config authenticate.
 	 *
 	 * @param ExecuteActionEvent $event
-	 * @param array $eventConfig
 	 */
 	public function onExecuteAction(ExecuteActionEvent $event){
 		$request=$event->getRequest();
@@ -67,8 +65,7 @@ class AuthenticateEvent{
 	 * Check authenticate.
 	 *
 	 * @param ExecuteActionEvent $event
-	 * @param array $config
-	 * @param array $eventConfig
+	 * @param Config $config
 	 * @throws ValueNotFoundException
 	 * @throws PermissionDeniedException
 	 */

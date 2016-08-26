@@ -48,7 +48,7 @@ class MetadataMethod{
 
 	/**
 	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	private $arguments=[];
 
@@ -68,18 +68,18 @@ class MetadataMethod{
 		return $this->name;
 	}
 
-	/**
-	 *
-	 * @return string $type
-	 * @return mixed $value
-	 */
+    /**
+     *
+     * @param string $type
+     * @param mixed $value
+     */
 	public function addArgument($type,$value){
 		$this->arguments[]=['type'=>$type,'value'=>$value];
 	}
 
 	/**
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function getArguments(){
 		return $this->arguments;
