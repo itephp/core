@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ItePHP: Framework PHP (http://itephp.com)
  * Copyright (c) NewClass (http://newclass.pl)
@@ -13,21 +12,21 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Test;
-
-use ItePHP\Core\Exception;
+namespace ItePHP\Component\Form;
 
 /**
- * Throw when BrowserEmulator can not find html element in response.
- *
- * @author Michal Tomczak (michal.tomczak@itephp.com)
+ * Class AttributeNotFoundException
+ * @package ItePHP\Component\Form
  */
-class ElementNotFoundException extends Exception{
-	
-	/**
-	 * Constructor
-	 */	
-	public function __construct(){
-		parent::__construct(20,'Element not found.');
-	}
+class AttributeNotFoundException extends \Exception
+{
+
+    /**
+     * AttributeNotFoundException constructor.
+     * @param string $name
+     */
+    public function __construct($name)
+    {
+        parent::__construct('Attribute '.$name.' not found.');
+    }
 }

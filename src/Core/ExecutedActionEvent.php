@@ -16,7 +16,7 @@
 namespace ItePHP\Core;
 
 /**
- * Contener with data for event "executedAction"
+ * Container with data for event "executedAction"
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */

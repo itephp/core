@@ -2,24 +2,22 @@
 
 namespace Test;
 
-require_once(__DIR__.'/../autoload.php');
-
 use ItePHP\Core\Environment;
 use ItePHP\Root;
 
 class RootTest extends \PHPUnit_Framework_TestCase{
 
-	private $enviorment;
+	private $environment;
 	
 	public function setUp(){
-		$this->enviorment=new Environment(true,true,'test',__DIR__.'/../Asset/Root');
+		$this->environment=new Environment(true,true,'test',__DIR__.'/../Asset/Root');
 	}
 
 	public function testExecuteRequestTest(){
 		$_SERVER=[];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
 
-		$root=new Root($this->enviorment);
+		$root=new Root($this->environment);
 
 		ob_start();
 		$root->executeRequest('/test');
@@ -34,7 +32,7 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 		$_SERVER=[];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
 
-		$root=new Root($this->enviorment);
+		$root=new Root($this->environment);
 
 		ob_start();
 		$root->executeRequest('/error');
@@ -49,7 +47,7 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 		$_SERVER=[];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
 
-		$root=new Root($this->enviorment);
+		$root=new Root($this->environment);
 
 		ob_start();
 		$root->executeRequest('/notfound');
@@ -66,7 +64,7 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 		$_GET=[];
 		$_GET['var']='testValue';
 
-		$root=new Root($this->enviorment);
+		$root=new Root($this->environment);
 
 		ob_start();
 		$root->executeRequest('/argument');
@@ -79,7 +77,7 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 
 	public function testExecuteCommand(){
 
-		$root=new Root($this->enviorment);
+		$root=new Root($this->environment);
 
 		ob_start();
 		$sigint=$root->executeCommand(['hello','--name','Michal']);
@@ -94,7 +92,7 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 
 	public function testExecuteCommandCommandNotFoundException(){
 
-		$root=new Root($this->enviorment);
+		$root=new Root($this->environment);
 
 		ob_start();
 		$sigint=$root->executeCommand(['not:found','--name','Michal']);

@@ -16,22 +16,29 @@
 namespace ItePHP\Error;
 
 /**
- * Throw when in php file is synax error.
+ * Throw when in php file is syntax error.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
 class SyntaxException extends \Exception{
-	
-	/**
-	 * Constructor.
-	 *
-	 * @param string $errfile
-	 * @param int $errline
-	 * @param string $errstr
-	 */
-	public function __construct($errfile,$errline,$errstr){
-		parent::__construct($errstr);
-		$this->file=$errfile;
-		$this->line=$errline;
+
+    /**
+     * @var int
+     */
+    private $level;
+
+    /**
+     * Constructor.
+     *
+     * @param string $message
+     * @param string $file
+     * @param int $line
+     * @param int $level
+     */
+	public function __construct($message,$file, $line,$level=0){
+		parent::__construct($message);
+		$this->file=$file;
+		$this->line=$line;
+        $this->level=$level;
 	}
 }

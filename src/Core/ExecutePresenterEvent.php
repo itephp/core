@@ -16,7 +16,7 @@
 namespace ItePHP\Core;
 
 /**
- * Contener with data for event "executePresenter"
+ * Container with data for event "executePresenter"
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */

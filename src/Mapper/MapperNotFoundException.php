@@ -18,7 +18,7 @@ namespace ItePHP\Mapper;
 use ItePHP\Core\Exception;
 
 /**
- * Throw when mapper service or mapper snipper can not find cast rule.
+ * Throw when mapper service or mapper snippet can not find cast rule.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */

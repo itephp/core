@@ -69,13 +69,11 @@ class ErrorDispatcher{
 			return;
 		$error = error_get_last();
 		if( $error !== NULL) {
-			$errfile = $error["file"];
-			$errline = $error["line"];
-			$errstr  = $error["message"];
+			$file = $error["file"];
+			$line = $error["line"];
+			$message = $error["message"];
 
-
-			$this->fireHandlers(new SyntaxException($errfile,$errline,$errstr));
-
+			$this->fireHandlers(new SyntaxException($message,$file,$line));
 		}
 	}
 
@@ -99,14 +97,14 @@ class ErrorDispatcher{
 	/**
 	 * Error callback.
 	 *
-	 * @param int $errno
-	 * @param string $errstr
-	 * @param string $errfile
-	 * @param int $errline
+	 * @param int $level
+	 * @param string $message
+	 * @param string $file
+	 * @param int $line
 	 * @throws SyntaxException
 	 */	
-	public function error($errno, $errstr, $errfile, $errline){
-		throw new SyntaxException($errfile,$errline,$errstr);
+	public function error($level, $message, $file, $line){
+		throw new SyntaxException($message,$file,$line,$level);
 	}
 
 	/**

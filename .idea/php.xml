@@ -2,7 +2,7 @@
 <project version="4">
   <component name="PhpUnit">
     <phpunit_settings>
-      <PhpUnitSettings load_method="PHPUNIT_PHAR" custom_loader_path="" phpunit_phar_path="$PROJECT_DIR$/phpunit.phar" />
+      <PhpUnitSettings load_method="PHPUNIT_PHAR" bootstrap_file_path="$PROJECT_DIR$/phpunit.xml.dist" configuration_file_path="$PROJECT_DIR$/phpunit.xml.dist" custom_loader_path="" phpunit_phar_path="$PROJECT_DIR$/phpunit.phar" use_bootstrap_file="true" />
     </phpunit_settings>
   </component>
 </project>

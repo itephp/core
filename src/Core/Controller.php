@@ -65,7 +65,7 @@ abstract class Controller{
     /**
      * @return Environment
      */
-    public function getEnviorment(){
+    public function getEnvironment(){
         return $this->container->getEnvironment();
     }
 
@@ -97,7 +97,7 @@ abstract class Controller{
 	}
 
 	/**
-	 * Execute snipper method.
+	 * Execute snippet method.
 	 *
 	 * @param string $method
 	 * @param mixed[] $args

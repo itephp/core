@@ -133,9 +133,9 @@ class FormBuilder{
 	}
 
 	/**
-	 * Set addon form tags
+	 * Set form tags
 	 *
-	 * @param string[] $tags - array widh data (all field is optional):
+	 * @param string[] $tags - array with data (all field is optional):
 	 * [
 	 *	'method'=>'post' //"post" or "get"
 	 *	,'id'=>'id1' //html tag id
@@ -304,10 +304,9 @@ class FormBuilder{
 	}
 
 	/**
-	 * Check confirmed form (clicked submit button in frontend/sended fields value)
+	 * Check confirmed form (clicked submit button in frontend/mailed fields value)
 	 *
 	 * @return boolean - if success then true else false
-	 * @since 0.13.0
 	 */
 	public function isConfirmed(){
 		return $this->isConfirmed;
@@ -330,7 +329,7 @@ class FormBuilder{
 	}
 
 	/**
-	 * Set default values for fiels
+	 * Set default values for fields
 	 *
 	 * @param mixed[] $data eg:
 	 * [
@@ -338,7 +337,7 @@ class FormBuilder{
 	 * ,'{text field name 2}'=>'{text value name 2}'
 	 * ]
 	 */
-	public function setData($data){//FIXME aktualnie muszą być dodane pola, aby ustawił wartości. Trzeba by zmienić by zachowywał dane, a potem je ustawiał podczas renderowania lub walidowania
+	public function setData($data){
 		$data=$this->transformer->encode($data);
 		foreach($this->fields as $field){
 			if(isset($data[$field->getName()])){

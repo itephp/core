@@ -33,8 +33,8 @@ class Exception extends \Exception{
 	 * @param int $code error code
 	 * @param string $message error message
 	 * @param string $safeMessage message show in production mode
-	 * @param string $file file when throwed exception
-	 * @param int $line line when throwed exception
+	 * @param string $file file when threw exception
+	 * @param int $line line when threw exception
 	 */	
 	public function __construct($code,$message , $safeMessage=null,$file=null,$line=null){
 		$this->code=$code;

@@ -140,7 +140,7 @@ interface Request{
 	public function getClientIp();
 
 	/**
-	 * Detect for uploaded big post data on server. If return false then propably file and other post data not uploaded.
+	 * Detect for uploaded big post data on server. If return false then probably file and other post data not uploaded.
 	 *
 	 * @return boolean
 	 */

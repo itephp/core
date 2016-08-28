@@ -23,7 +23,7 @@ namespace ItePHP\Core;
 class EventManager{
 	
 	/**
-	 * Enviorment.
+	 * Environment.
 	 *
 	 * @var object[][] $events
 	 */
@@ -51,7 +51,7 @@ class EventManager{
      * Execute event.
      *
      * @param $eventName
-     * @param object $infoClass contener with event info eg.: \ItePHP\Core\ExecutePresenterEvent
+     * @param object $infoClass container with event info eg.: \ItePHP\Core\ExecutePresenterEvent
      * @internal param string $event event name
      */
 	public function fire($eventName,$infoClass=null){

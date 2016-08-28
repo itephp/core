@@ -45,7 +45,7 @@ abstract class FormField{
 	private $error;
 
 	/**
-	 * @param mixed[] $options - array with configura data. All field is optional eg:
+	 * @param mixed[] $options - array with configure data. All field is optional eg:
 	 * [
 	 * 	'name'=>'{text}' //tag name
 	 * 	,'validator'=>'{text}' //validator class name
@@ -77,7 +77,7 @@ abstract class FormField{
 
 		$this->tags=$options;
 
-		$this->setRequired($this->isRequired());//invoke configure validator by execute seters
+		$this->setRequired($this->isRequired());//invoke configure validator by execute setters
 
 	}
 
@@ -229,13 +229,17 @@ abstract class FormField{
 		$this->tags[$name]=$value;
 	}
 
-	/**
-	 * Get html tag
-	 *
-	 * @param string $name - tag name
-	 * @return mixed
-	 */
+    /**
+     * Get html tag
+     *
+     * @param string $name - tag name
+     * @return mixed
+     * @throws AttributeNotFoundException
+     */
 	public function getTag($name){
+	    if(!isset($this->tags[$name])){
+	        throw new AttributeNotFoundException($name);
+        }
 		return $this->tags[$name];
 	}
 

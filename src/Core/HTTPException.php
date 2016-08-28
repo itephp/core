@@ -16,7 +16,7 @@
 namespace ItePHP\Core;
 
 /**
- * Throw when in php file is synax error.
+ * Throw when in php file is syntax error.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */

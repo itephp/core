@@ -24,7 +24,7 @@ use ItePHP\Core\Container;
 use ItePHP\Validator\ValidatorAbstract;
 
 /**
- * Event to foward http param ($_POST[],$_GET[],url) to controllr method.
+ * Event to forward http param ($_POST[],$_GET[],url) to controller method.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */

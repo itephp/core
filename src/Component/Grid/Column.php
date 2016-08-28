@@ -51,7 +51,7 @@ class Column{
 	private $sortKeys;
 
 	/**
-	 * Constuctor
+	 * Constructor
 	 *
 	 * @param mixed $keys list of id for column or one element
 	 * @param string $label

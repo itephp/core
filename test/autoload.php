@@ -1,8 +1,8 @@
 <?php
 
-define('ROOT', realpath(__DIR__.'/..'));
 
 spl_autoload_register(function ($className) {
+    $path=realpath(__DIR__.'/..');
 	$classPath=str_replace('\\', '/', $className);
 	if(strpos($classPath, 'ItePHP')===0){
 		$classPath='src/'.substr($classPath, 7);
@@ -10,5 +10,7 @@ spl_autoload_register(function ($className) {
 	else{
 		$classPath='test/'.$classPath;
 	}
-    require_once ROOT.'/'.$classPath.'.php';
+	$classPath=$path.'/'.$classPath.'.php';
+        /** @noinspection PhpIncludeInspection */
+        require_once $classPath;
 });

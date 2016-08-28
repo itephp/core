@@ -16,7 +16,7 @@
 namespace ItePHP\Core;
 
 /**
- * Throw when controller doesn't have executed method.
+ * Throw when controller does not have executed method.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */

@@ -31,14 +31,14 @@ class JSON implements Presenter{
 	 *
 	 * @var Environment
 	 */
-	private $enviorment;
+	private $environment;
 
 	/**
 	 *
-	 * @param Environment $enviorment
+	 * @param Environment $environment
 	 */
-	public function __construct(Environment $enviorment){
-		$this->enviorment=$enviorment;
+	public function __construct(Environment $environment){
+		$this->environment=$environment;
 	}
 
 	/**
@@ -56,7 +56,7 @@ class JSON implements Presenter{
 	 * @param Response $response
 	 */
 	private function setHeaders(Response $response){
-		if($this->enviorment->getName()==='test'){
+		if($this->environment->getName()==='test'){
 			return;
 		}
 		header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());

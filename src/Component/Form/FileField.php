@@ -102,7 +102,7 @@ class FileField extends InputField{
 	 * @return string
 	 */
 	public function getAccept(){
-		return $this->accept;
+		return $this->getTag('accept');
 	}
 
     /**
@@ -193,13 +193,17 @@ class FileField extends InputField{
 		$suffix = substr($size, -1);
 		$value = substr($size, 0, -1);
 		switch(strtolower($suffix)){
-			case 'p':
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 'p':
 				$value *= 1024;
-			case 't':
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 't':
 				$value *= 1024;
-			case 'g':
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 'g':
 				$value *= 1024;
-			case 'm':
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 'm':
 				$value *= 1024;
 			case 'k':
 				$value *= 1024;

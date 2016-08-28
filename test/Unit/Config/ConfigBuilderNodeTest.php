@@ -1,6 +1,6 @@
 <?php
 
-namespace Test;
+namespace Test\Config;
 
 require_once(__DIR__.'/../../autoload.php');
 

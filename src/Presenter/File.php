@@ -31,15 +31,15 @@ class File implements Presenter{
     /**
      * @var Environment
      */
-    private $enviorment;
+    private $environment;
 
     /**
      * File constructor.
-     * @param Environment $enviorment
+     * @param Environment $environment
      */
-    public function __construct(Environment $enviorment)
+    public function __construct(Environment $environment)
     {
-        $this->enviorment=$enviorment;
+        $this->environment=$environment;
     }
 
     /**
@@ -48,7 +48,7 @@ class File implements Presenter{
      */
 	public function render(Request $request, Response $response){
 
-	    if(!$this->enviorment->isSilent()){
+	    if(!$this->environment->isSilent()){
             header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());
             foreach($response->getHeaders() as $name=>$value){
                 header($name.': '.$value);

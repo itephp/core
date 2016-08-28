@@ -93,7 +93,7 @@ class HTTPErrorHandler implements ErrorHandler{
 			return $presenterObject;
 		}
 
-		return new HTMLPresenter($this->dependencyInjection->get('enviorment'));
+		return new HTMLPresenter($this->dependencyInjection->get('environment'));
 
 	}
 

@@ -16,7 +16,7 @@
 namespace ItePHP\Core;
 
 /**
- * Enviorment settings.
+ * Environment settings.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */

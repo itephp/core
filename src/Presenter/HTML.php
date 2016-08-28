@@ -31,14 +31,14 @@ class HTML implements Presenter{
 	 *
 	 * @var Environment
 	 */
-	private $enviorment;
+	private $environment;
 
 	/**
 	 *
-	 * @param Environment $enviorment
+	 * @param Environment $environment
 	 */
-	public function __construct(Environment $enviorment){
-		$this->enviorment=$enviorment;
+	public function __construct(Environment $environment){
+		$this->environment=$environment;
 	}
 
 	/**
@@ -47,7 +47,7 @@ class HTML implements Presenter{
 	 * @param Response $response
 	 */
 	public function render(Request $request,Response $response){
-		if($this->enviorment->getName()!=='test'){
+		if($this->environment->getName()!=='test'){
 			header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());			
 
 			foreach($response->getHeaders() as $name=>$value){

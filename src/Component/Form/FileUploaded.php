@@ -58,7 +58,7 @@ class FileUploaded{
 	private $extension;
 
 	/**
-	 * Constrcutor.
+	 * Constructor.
 	 *
 	 * @param mixed[] $data
 	 */
@@ -87,15 +87,15 @@ class FileUploaded{
 			mkdir($path,0777,true);
 		}
 
-		$destPath=rtrim($path, '/');
+		$destinationPath=rtrim($path, '/');
 		if($name){
-			$destPath.='/'.$name;
+			$destinationPath.='/'.$name;
 		}
 		else{
-			$destPath.='/'.$this->name;
+			$destinationPath.='/'.$this->name;
 		}
 
-		if(!copy($this->tmpName, $destPath)){
+		if(!copy($this->tmpName, $destinationPath)){
 			//detect error reason
 			$reason='Unknown';
 			if(!file_exists($path)){
