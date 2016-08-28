@@ -1,8 +1,6 @@
 <?php
 
-namespace Test;
-
-require_once(__DIR__.'/../../autoload.php');
+namespace Test\Mapper;
 
 class MapperServiceTest extends \PHPUnit_Framework_TestCase{
 	

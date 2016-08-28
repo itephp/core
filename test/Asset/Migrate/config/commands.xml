@@ -5,7 +5,7 @@
 	<command class="ItePHP\Migrate\MigrateCommand" name="migrate">
 		<method name="__construct">
 			<argument type="reference" value="container" />
-			<argument type="reference" value="enviorment" />
+			<argument type="reference" value="environment" />
 		</method>
 		<method name="setSavePath">
 			<argument type="primitive" value="/migrate.txt" />

@@ -11,6 +11,9 @@ spl_autoload_register(function ($className) {
 		$classPath='test/'.$classPath;
 	}
 	$classPath=$path.'/'.$classPath.'.php';
-        /** @noinspection PhpIncludeInspection */
-        require_once $classPath;
+    if(!file_exists($classPath)){
+        return;
+    }
+    /** @noinspection PhpIncludeInspection */
+    require_once $classPath;
 });

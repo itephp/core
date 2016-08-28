@@ -1,8 +1,6 @@
 <?php
 
-namespace Test;
-
-require_once(__DIR__.'/../../autoload.php');
+namespace Test\Command;
 
 use ItePHP\Command\CommandExecutor;
 use Asset\Command\TestCommand;

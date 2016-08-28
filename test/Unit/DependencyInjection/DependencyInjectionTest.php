@@ -1,8 +1,6 @@
 <?php
 
-namespace Test;
-
-require_once(__DIR__.'/../../autoload.php');
+namespace Test\DependencyInjection;
 
 use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\DependencyInjection\InvalidTypeException;

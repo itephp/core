@@ -23,18 +23,30 @@ namespace ItePHP\Core;
 class HTTPErrorPresenter implements Presenter{
 
     /**
+     * @var Environment
+     */
+    private $environment;
+
+    /**
+     * HTTPErrorPresenter constructor.
+     * @param Environment $environment
+     */
+    public function __construct(Environment $environment){
+        $this->environment=$environment;
+    }
+
+    /**
      * {@inheritdoc}
      */
 	public function render(Request $request , Response $response){
-
-		header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());			
-
-		foreach($response->getHeaders() as $name=>$value){
-			header($name.': '.$value);
-		}
+	    if(!$this->environment->isSilent()){
+            header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());
+            foreach($response->getHeaders() as $name=>$value){
+                header($name.': '.$value);
+            }
+        }
 
 		echo $this->createTemplate($response);
-
 	}
 
     /**
@@ -79,7 +91,6 @@ class HTTPErrorPresenter implements Presenter{
 		';
 
 		return $template;
-
 	}
 
     /**
@@ -94,7 +105,6 @@ class HTTPErrorPresenter implements Presenter{
 		';
 
 		return $template;
-
 	}
 
 }

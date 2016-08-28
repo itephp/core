@@ -84,17 +84,56 @@ class Config{
 	 */	
 	public function getAttribute($name){
 		$value=$this->container->getAttribute($name);
-		if(strpos($value, '!')!==0){
-			return $value;
-		}
-
-		$variableName=substr($value, 1);
-		if(!isset(static::$variables[$variableName])){
-			throw new ConfigException('Variable '.$variableName.' not found.');
-		}
-
-		return static::$variables[$variableName];
+        switch (substr($value,0,1)){
+            case '@':
+                return $this->getAttributeVariable($value);
+            case '!':
+                return $this->getAttributePrimitive($value);
+            default:
+                return $value;
+        }
 
 	}
+
+    /**
+     * @param string $value
+     * @return string
+     * @throws ConfigException
+     */
+    private function getAttributeVariable($value){
+        $variableName=substr($value, 1);
+        if(!isset(static::$variables[$variableName])){
+            throw new ConfigException('Variable '.$variableName.' not found.');
+        }
+
+        return static::$variables[$variableName];
+    }
+
+    /**
+     * @param string $value
+     * @return mixed
+     * @throws ConfigException
+     */
+    private function getAttributePrimitive($value){
+        $primitiveValue=substr($value, 1);
+        if(preg_match('/^true|false$/',$primitiveValue)){
+            return $primitiveValue==='true';
+        }
+
+        if(preg_match('/^[0-9]+$/',$primitiveValue)){
+            return (int)$primitiveValue;
+        }
+
+        if(preg_match('/^[0-9]+\.[0-9]+$/',$primitiveValue)){
+            return (float)$primitiveValue;
+        }
+
+        if($primitiveValue==='null'){
+            return null;
+        }
+
+        throw new ConfigException('Invalid primitive data value '.$primitiveValue.'.');
+
+    }
 
 }

@@ -2,13 +2,13 @@
 
 	<presenter name="json" class="ItePHP\Presenter\JSON">
 		<method name="__construct">
-			<argument type="reference" value="enviorment" />
+			<argument type="reference" value="environment" />
 		</method>
 	</presenter>
 
 	<presenter name="html" class="ItePHP\Presenter\HTML">
 		<method name="__construct">
-			<argument type="reference" value="enviorment" />
+			<argument type="reference" value="environment" />
 		</method>
 	</presenter>
 

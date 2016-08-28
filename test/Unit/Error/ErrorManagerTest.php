@@ -1,8 +1,6 @@
 <?php
 
-namespace Test;
-
-require_once(__DIR__.'/../../autoload.php');
+namespace Test\Error;
 
 use ItePHP\Error\ErrorManager;
 use Asset\Error\TestHandler;
