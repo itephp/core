@@ -37,9 +37,9 @@ class Container{
 	 *
 	 * @var object[]
 	 */
-	private $snippets=[];	
-
-	/**
+	private $snippets=[];
+    
+    /**
 	 * Constructor.
 	 *
 	 * @param DependencyInjection $dependencyInjection
@@ -97,5 +97,13 @@ class Container{
 
 		return $this->snippets[$method];
 
+    }
+
+    /**
+     * @return Config
+     */
+    public function getConfig()
+    {
+        return $this->dependencyInjection->get('config');
     }
 }

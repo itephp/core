@@ -464,7 +464,7 @@ class FormBuilder{
 		if($request->isFullUploadedData()){
 			foreach($this->fields as $field){
 				if($field->getValidator()){
-					if($error=$this->validatorService->validate($field->getValidator(),$field->getData())){
+					if($error=$field->getValidator()->validate($field->getData())){
 						$field->setError($error);
 					}
 

@@ -70,6 +70,13 @@ abstract class Controller{
     }
 
     /**
+     * @return Config
+     */
+    public function getConfig(){
+        return $this->container->getConfig();
+    }
+    
+    /**
 	 *
 	 * @return SessionProvider
 	 */

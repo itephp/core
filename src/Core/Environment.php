@@ -63,17 +63,18 @@ class Environment{
     private $vendorPath;
 
     /**
-	 * @param bool $debug
-	 * @param bool $silent
-	 * @param string $name
-	 * @param string $rootPath
-	 * @param string $configPath
-	 * @param string $srcPath
-	 * @param string $webPath
-	 * @param string $cachePath
-	 */
+     * @param bool $debug
+     * @param bool $silent
+     * @param string $name
+     * @param string $rootPath
+     * @param string $configPath
+     * @param string $srcPath
+     * @param string $webPath
+     * @param string $cachePath
+     * @param string $vendorPath
+     */
 	public function __construct($debug,$silent,$name,$rootPath,$configPath=null,$srcPath=null,$webPath=null
-		,$cachePath=null){
+		,$cachePath=null,$vendorPath=null){
 
 		$this->debug=$debug;
 		$this->silent=$silent;
@@ -96,10 +97,15 @@ class Environment{
 			$webPath=$this->rootPath.'/web';
 		}
 
-		$this->srcPath=$srcPath;
+        if($vendorPath===null){
+            $vendorPath=$this->rootPath.'/vendor';
+        }
+
+        $this->srcPath=$srcPath;
 		$this->configPath=$configPath;
 		$this->cachePath=$cachePath;
 		$this->webPath=$webPath;
+        $this->vendorPath=$vendorPath;
 	}
 
 	/**
