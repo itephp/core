@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<content>
 
 	<structure class="ItePHP\Structure\ImportStructure" />
 	<structure class="ItePHP\Structure\ActionStructure" />

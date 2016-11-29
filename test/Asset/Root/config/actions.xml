@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
 
-<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<content>
 
-	<action class="Asset\Root\Controller\TestController" method="index" route="\/test" presenter="html" />
+	<action class="Test\Asset\Root\Controller\TestController" method="index" path="/test" http-method="get" presenter="html" />
 
-	<action class="Asset\Root\Controller\TestController" method="error" route="\/error" presenter="html" />
+	<action class="Test\Asset\Root\Controller\TestController" method="error" path="/error" presenter="html" />
 
-	<action class="Asset\Root\Controller\TestController" method="argument" route="\/argument" presenter="html">
+	<action class="Test\Asset\Root\Controller\TestController" method="argument" path="/argument" presenter="html">
 		<argument storage="get" name="var" validator="ItePHP\Validator\TextValidator" />
 	</action>
 

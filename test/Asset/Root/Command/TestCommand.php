@@ -1,13 +1,13 @@
 <?php
 
-namespace Asset\Root\Command;
+namespace Test\Asset\Root\Command;
 
 use ItePHP\Command\CommandInterface;
 use ItePHP\Command\CommandConfig;
 use ItePHP\Command\InputStream;
 use ItePHP\Command\OutputStream;
 
-use Asset\Root\Service\TestService;
+use Test\Asset\Root\Service\TestService;
 
 class TestCommand implements CommandInterface{
 

@@ -16,7 +16,7 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 	public function testExecuteRequestTest(){
 		$_SERVER=[];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
-
+        $_SERVER['REQUEST_METHOD']='GET';
 		$root=new Root($this->environment);
 
 		ob_start();
@@ -31,6 +31,7 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 	public function testExecuteRequestError(){
 		$_SERVER=[];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
+        $_SERVER['REQUEST_METHOD']='GET';
 
 		$root=new Root($this->environment);
 
@@ -46,6 +47,7 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 	public function testExecuteRequestNotFound(){
 		$_SERVER=[];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
+        $_SERVER['REQUEST_METHOD']='GET';
 
 		$root=new Root($this->environment);
 
@@ -54,13 +56,14 @@ class RootTest extends \PHPUnit_Framework_TestCase{
 		$result=ob_get_clean();
 		ob_flush();
 
-		$this->assertRegExp('/Route not found for url/',$result);
+		$this->assertRegExp('/Route not found./',$result);
 
 	}
 
 	public function testExecuteRequestArgument(){
 		$_SERVER=[];
 		$_SERVER['REMOTE_ADDR']='127.0.0.1';
+        $_SERVER['REQUEST_METHOD']='GET';
 		$_GET=[];
 		$_GET['var']='testValue';
 

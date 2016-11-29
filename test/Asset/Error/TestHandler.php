@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace Asset\Error;
+namespace Test\Asset\Error;
 
 use ItePHP\Error\ErrorHandler;
 use \Exception;

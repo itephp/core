@@ -1,17 +1,28 @@
 <?php
 
+$vendors=[
+    'Via'=>'vendor/iteracja/via/src',
+    'ItePHP'=>'src',
+];
 
-spl_autoload_register(function ($className) {
+spl_autoload_register(function ($className) use ($vendors){
     $path=realpath(__DIR__.'/..');
 	$classPath=str_replace('\\', '/', $className);
-	if(strpos($classPath, 'ItePHP')===0){
-		$classPath='src/'.substr($classPath, 7);
+	if(strpos($classPath, 'Test')===0){
+        $classPath='test/'.substr($classPath, 5);
 	}
 	else{
-		$classPath='test/'.$classPath;
+	    foreach($vendors as $kVendor=>$vendor){
+            if(strpos($classPath, $kVendor)===0){
+                $classPath=$vendor.'/'.$classPath;
+                break;
+            }
+
+        }
 	}
 	$classPath=$path.'/'.$classPath.'.php';
     if(!file_exists($classPath)){
+//        echo $classPath; exit;
         return;
     }
     /** @noinspection PhpIncludeInspection */

@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
-<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<content>
 
-	<command class="Asset\Root\Command\TestCommand" name="hello">
+	<command class="Test\Asset\Root\Command\TestCommand" name="hello">
 		<method name="__construct">
 			<argument type="reference" value="service.test" />
 		</method>

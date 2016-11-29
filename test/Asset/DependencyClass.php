@@ -1,6 +1,6 @@
 <?php
 
-namespace Asset;
+namespace Test\Asset;
 
 class DependencyClass{
 

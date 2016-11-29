@@ -4,9 +4,7 @@ namespace Test;
 
 require_once(__DIR__.'/../../autoload.php');
 
-use ItePHP\Route\Router;
-use ItePHP\Root;
-use Asset\Route\TestDispatcher;
+use Via\Router;
 
 class RouterTest extends \PHPUnit_Framework_TestCase{
 	

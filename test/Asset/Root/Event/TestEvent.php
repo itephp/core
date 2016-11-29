@@ -12,7 +12,7 @@
  * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace Asset\Root\Event;
+namespace Test\Asset\Root\Event;
 
 use Asset\Root\Service\TestService;
 use ItePHP\Core\ExecuteActionEvent;

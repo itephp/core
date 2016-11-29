@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
-<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<content>
 
-	<service name="test" class="Asset\Root\Service\TestService">
+	<service name="test" class="Test\Asset\Root\Service\TestService">
 		<method name="__construct">
 			<argument type="primitive" value="@var" />
 		</method>

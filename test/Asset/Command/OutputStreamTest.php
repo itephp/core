@@ -1,6 +1,6 @@
 <?php
 
-namespace Asset\Command;
+namespace Test\Asset\Command;
 
 use ItePHP\Command\OutputStream;
 

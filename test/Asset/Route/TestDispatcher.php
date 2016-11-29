@@ -1,8 +1,9 @@
 <?php
 
-namespace Asset\Route;
+namespace Test\Asset\Route;
 
-use ItePHP\Route\Dispatcher;
+
+use Via\Dispatcher;
 
 class TestDispatcher implements Dispatcher{
 

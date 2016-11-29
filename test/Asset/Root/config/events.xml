@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
-<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<content>
 
-	<event class="Asset\Root\Event\TestEvent">
+	<event class="Test\Asset\Root\Event\TestEvent">
 		<method name="__construct">
 			<argument type="reference" value="service.test" />
 		</method>

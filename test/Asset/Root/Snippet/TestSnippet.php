@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace Asset\Root\Snippet;
+namespace Test\Asset\Root\Snippet;
 
 use ItePHP\Core\Container;
 

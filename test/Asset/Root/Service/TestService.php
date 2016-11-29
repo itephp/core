@@ -12,7 +12,7 @@
  * @link          http://itephp.com ItePHP Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace Asset\Root\Service;
+namespace Test\Asset\Root\Service;
 
 class TestService{
 	
