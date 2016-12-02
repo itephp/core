@@ -1,29 +1,29 @@
 <?xml version="1.0" ?>
 
-<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<content>
 
-	<action class="Asset\Root\Controller\TestController" method="argument" route="\/argument" presenter="ItePHP\Presenter\HTML">
+	<action class="Asset\Root\Controller\TestController" method="argument" path="\/argument" presenter="ItePHP\Presenter\HTML">
 		<argument storage="get" name="var" />
 		<argument storage="post" name="data2" />
 		<argument storage="url" name="id" pattern="\/test\/([0-9]+)" />
 	</action>
 
-	<action class="Asset\Root\Controller\TestController" method="argument" route="\/argument" presenter="ItePHP\Presenter\HTML">
+	<action class="Asset\Root\Controller\TestController" method="argument" path="\/argument" presenter="ItePHP\Presenter\HTML">
 		<argument storage="get" name="var" default="3" />
 		<argument storage="post" name="data2" default="2" />
 		<argument storage="url" name="id" pattern="\/test\/([0-9]+)" default="1" />
 	</action>
 
-	<action class="Asset\Root\Controller\TestController" method="argument" route="\/argument" presenter="ItePHP\Presenter\HTML">
+	<action class="Asset\Root\Controller\TestController" method="argument" path="\/argument" presenter="ItePHP\Presenter\HTML">
 		<argument storage="get" name="var" default="123321222" validator="ItePHP\Validator\TelephoneValidator" />
 		<argument storage="post" name="data2" validator="ItePHP\Validator\TelephoneValidator" />
 		<argument storage="url" name="id" pattern="\/test\/([0-9]+)"  validator="ItePHP\Validator\TelephoneValidator" />
 	</action>
 
-	<action class="Asset\Root\Controller\TestController" method="argument" route="\/argument" presenter="ItePHP\Presenter\HTML">
-		<argument storage="get" name="var" mapper="Asset\Action\ArgumentEvent\NumberMapper" />
-		<argument storage="post" name="data2" mapper="Asset\Action\ArgumentEvent\NumberMapper" />
-		<argument storage="url" name="id" pattern="\/test\/(.+)" mapper="Asset\Action\ArgumentEvent\NumberMapper" />
+	<action class="Asset\Root\Controller\TestController" method="argument" path="\/argument" presenter="ItePHP\Presenter\HTML">
+		<argument storage="get" name="var" mapper="Test\Asset\Action\ArgumentEvent\NumberMapper" />
+		<argument storage="post" name="data2" mapper="Test\Asset\Action\ArgumentEvent\NumberMapper" />
+		<argument storage="url" name="id" pattern="\/test\/(.+)" mapper="Test\Asset\Action\ArgumentEvent\NumberMapper" />
 	</action>
 
 </content>

@@ -22,6 +22,7 @@ class OutputStreamTest implements OutputStream{
     /**
      *
      * @param string
+     * @return string
      */
 	public function getBuffer(){
 		return $this->buffer;

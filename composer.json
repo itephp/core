@@ -12,7 +12,8 @@
     "require": {
         "php": ">=5.4.0"
         ,"newclass/via": "^v1.0",
-        "newclass/pactum": "^1.2"
+        "newclass/pactum": "^1.2",
+        "newclass/onus": "^v1.0"
         },
     "autoload": {
         "psr-4": { "ItePHP\\": "src/ItePHP" }

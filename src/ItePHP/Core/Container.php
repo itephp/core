@@ -15,8 +15,9 @@
 
 namespace ItePHP\Core;
 
-use ItePHP\DependencyInjection\DependencyInjection;
-use ItePHP\DependencyInjection\InstanceNotFoundException;
+use Onus\ClassLoader;
+use Onus\InstanceNotFoundException;
+use Pactum\ConfigContainer;
 
 
 /**
@@ -28,18 +29,18 @@ class Container{
 
 	/**
 	 *
-	 * @var DependencyInjection
+	 * @var ClassLoader
 	 */
-	private $dependencyInjection;
+	private $classLoader;
 
     /**
      * Constructor.
      *
-     * @param DependencyInjection $dependencyInjection
+     * @param ClassLoader $classLoader
      */
-	public function __construct(DependencyInjection $dependencyInjection){
+	public function __construct(ClassLoader $classLoader){
 
-		$this->dependencyInjection=$dependencyInjection;
+		$this->classLoader=$classLoader;
 	}
 
 	/**
@@ -48,7 +49,7 @@ class Container{
 	 * @return Environment
 	 */
 	public function getEnvironment(){
-		return $this->dependencyInjection->get('environment');
+		return $this->classLoader->get('environment');
 	}
 
 	/**
@@ -57,7 +58,7 @@ class Container{
 	 * @return EventManager
 	 */
 	public function getEventManager(){
-		return $this->dependencyInjection->get('eventManager');
+		return $this->classLoader->get('eventManager');
 	}
 
     /**
@@ -68,7 +69,7 @@ class Container{
      */
 	public function getService($name){
 		try{
-			return $this->dependencyInjection->get('service.'.$name);
+			return $this->classLoader->get('service.'.$name);
 		}
 		catch(InstanceNotFoundException $e){
 			throw new ServiceNotFoundException($name);
@@ -76,10 +77,10 @@ class Container{
 	}
 
     /**
-     * @return Config
+     * @return ConfigContainer
      */
     public function getConfig()
     {
-        return $this->dependencyInjection->get('config');
+        return $this->classLoader->get('config');
     }
 }

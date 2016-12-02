@@ -7,6 +7,9 @@ use ItePHP\Root;
 
 class MigrateCommandTest extends \PHPUnit_Framework_TestCase{
 
+    /**
+     * @var Environment
+     */
 	private $environment;
 
 	public function setUp(){
@@ -39,8 +42,8 @@ class MigrateCommandTest extends \PHPUnit_Framework_TestCase{
 		$root=new Root($this->environment);
 
 		ob_start();
-		$sigint=$root->executeCommand(['migrate','-o','upgrade']);
-		$result=ob_get_clean();
+		$root->executeCommand(['migrate','-o','upgrade']);
+		ob_get_clean();
 		ob_flush();
 		$data=file_get_contents($this->environment->getRootPath().'/count.txt');
 
@@ -57,8 +60,8 @@ class MigrateCommandTest extends \PHPUnit_Framework_TestCase{
 		$root=new Root($this->environment);
 
 		ob_start();
-		$sigint=$root->executeCommand(['migrate','-o','downgrade']);
-		$result=ob_get_clean();
+		$root->executeCommand(['migrate','-o','downgrade']);
+		ob_get_clean();
 		ob_flush();
 		$data=file_get_contents($this->environment->getRootPath().'/count.txt');
 

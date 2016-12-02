@@ -64,7 +64,7 @@ class HTTPDispatcher  implements Dispatcher {
 
 	/**
 	 *
-	 * @var Config
+	 * @var ConfigContainer
 	 */
 	protected $config;
 

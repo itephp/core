@@ -1,12 +1,11 @@
 <?xml version="1.0" ?>
 
-<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<content>
 
-	<structure class="ItePHP\Structure\ImportStructure" />
-	<structure class="ItePHP\Structure\CommandStructure" />
-	<structure class="ItePHP\Structure\EventStructure" />
-	<structure class="ItePHP\Structure\ServiceStructure" />
-	<structure class="ItePHP\Structure\SnippetStructure" />
-	<structure class="ItePHP\Structure\VariableStructure" />
+	<structure value="ItePHP\Structure\ImportStructure" />
+	<structure value="ItePHP\Structure\CommandStructure" />
+	<structure value="ItePHP\Structure\EventStructure" />
+	<structure value="ItePHP\Structure\ServiceStructure" />
+	<structure value="ItePHP\Structure\VariableStructure" />
 
 </content>

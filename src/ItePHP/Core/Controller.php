@@ -15,6 +15,8 @@
 
 namespace ItePHP\Core;
 
+use Pactum\ConfigContainer;
+
 /**
  * Main class for project controllers
  *
@@ -70,7 +72,7 @@ abstract class Controller{
     }
 
     /**
-     * @return Config
+     * @return ConfigContainer
      */
     public function getConfig(){
         return $this->container->getConfig();
@@ -102,5 +104,14 @@ abstract class Controller{
 	public function getService($name){
 		return $this->container->getService($name);
 	}
+
+    /**
+     * @param string $url
+     * @return Response
+     */
+	public function redirect($url){
+        $response=new Response();
+        return $response->redirect($url);
+    }
 
 }

@@ -16,7 +16,6 @@
 namespace ItePHP\Structure;
 
 use Pactum\ConfigBuilder;
-use Pactum\ConfigBuilderObject;
 use Pactum\ConfigBuilderValue;
 
 /**

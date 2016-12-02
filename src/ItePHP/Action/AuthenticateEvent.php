@@ -18,7 +18,7 @@ namespace ItePHP\Action;
 use ItePHP\Core\Response;
 use ItePHP\Core\ExecuteActionEvent;
 use ItePHP\Core\Request;
-use ItePHP\Core\Config;
+use Pactum\ConfigContainer;
 
 /**
  * Event for support authenticate user
@@ -35,16 +35,14 @@ class AuthenticateEvent{
 
     /**
      * AuthenticateEvent constructor.
-     * @param Config $config
+     * @param ConfigContainer $config
      */
-	public function __construct(Config $config){
+	public function __construct(ConfigContainer $config){
         /**
-         * @var Config[] $authenticateNode
+         * @var ConfigContainer[] $authenticate
          */
-		$authenticateNode=$config->getNodes('authenticate');
-		if($authenticateNode){
-			$this->maxTime=$authenticateNode[0]->getAttribute('max-time');
-		}
+		$authenticate=$config->getObject('authenticate');
+        $this->maxTime=$authenticate->getValue('max-time');
 
 	}
 
@@ -55,9 +53,9 @@ class AuthenticateEvent{
 	 */
 	public function onExecuteAction(ExecuteActionEvent $event){
 		$request=$event->getRequest();
-		$authenticates=$request->getConfig()->getNodes('authenticate');
-		if($authenticates){
-			$this->execute($event,$authenticates[0]);
+		$authenticate=$request->getConfig()->getObject('authenticate');
+		if($authenticate){
+			$this->execute($event,$authenticate);
 		}
 	}
 
@@ -65,7 +63,7 @@ class AuthenticateEvent{
 	 * Check authenticate.
 	 *
 	 * @param ExecuteActionEvent $event
-	 * @param Config $config
+	 * @param ConfigContainer $config
 	 * @throws ValueNotFoundException
 	 * @throws PermissionDeniedException
 	 */
@@ -84,18 +82,18 @@ class AuthenticateEvent{
 				$session->set('authenticate.epoch',time()+$this->maxTime);
 			}
 
-			if($config->getAttribute('auth-redirect')!==false){
-				$response=$this->createResponseRedirect($config->getAttribute('auth-redirect'),$request);
+			if($config->getValue('auth-redirect')!==false){
+				$response=$this->createResponseRedirect($config->getValue('auth-redirect'),$request);
 				$event->setResponse($response);
 
 			}
 		}
 		catch(ValueNotFoundException $e){
-			if($config->getAttribute('unauth-redirect')!==false){
-				$response=$this->createResponseRedirect($config->getAttribute('unauth-redirect'),$request);
+			if($config->getValue('unauth-redirect')!==false){
+				$response=$this->createResponseRedirect($config->getValue('unauth-redirect'),$request);
 				$event->setResponse($response);					
 			}
-			else if($config->getAttribute('auth-redirect')!==false){
+			else if($config->getValue('auth-redirect')!==false){
 				//ignore
 			}
 			else{

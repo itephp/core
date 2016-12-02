@@ -4,17 +4,16 @@ namespace Test\Core;
 
 use ItePHP\Core\HTTPErrorHandler;
 use ItePHP\Core\Environment;
-use ItePHP\Config\ConfigBuilder;
-use ItePHP\Config\XmlFileReader;
 use ItePHP\Provider\Session;
 use ItePHP\Core\HTTPRequest;
 use ItePHP\Core\EventManager;
-use ItePHP\Core\Config;
-use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\Structure\ErrorStructure;
 use ItePHP\Structure\PresenterStructure;
 use ItePHP\Presenter\HTML;
 use ItePHP\Presenter\JSON;
+use Onus\ClassLoader;
+use Pactum\ConfigBuilder;
+use Pactum\Reader\XMLReader;
 
 class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 
@@ -27,10 +26,10 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 		$structure=new PresenterStructure();
 		$structure->doConfig($configBuilder);
 
-		$xmlFileReader=new XmlFileReader(__DIR__.'/../../Asset/Core/HTTPErrorHandler/config.xml');
+		$xmlFileReader=new XMLReader(__DIR__.'/../../Asset/Core/HTTPErrorHandler/config.xml');
 		$configBuilder->addReader($xmlFileReader);
 
-		return new Config($configBuilder->parse());
+		return $configBuilder->parse();
 	}
 
 	public function testExecuteHTML(){
@@ -64,7 +63,7 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 		$session=new Session($environment);
 		$request=new HTTPRequest($url,$session);
 
-		$dependencyInjection=new DependencyInjection();
+		$dependencyInjection=new ClassLoader();
 		$dependencyInjection->addInstance('environment',$environment);
 		$dependencyInjection->addInstance('config',$this->createConfigContainer());
 		$dependencyInjection->addInstance('eventManager',new EventManager());

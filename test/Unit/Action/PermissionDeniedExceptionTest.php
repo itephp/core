@@ -6,6 +6,9 @@ use ItePHP\Action\PermissionDeniedException;
 
 class PermissionDeniedExceptionTest extends \PHPUnit_Framework_TestCase{
 
+    /**
+     * @var PermissionDeniedException
+     */
 	private $exception;
 
 	public function setUp(){

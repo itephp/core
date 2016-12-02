@@ -31,8 +31,8 @@ class ActionAuthenticateStructure implements Structure{
 	    $configBuilder->getArray('action')
         ->getValue()
             ->addObject('authenticate')
-                ->addBoolean('unauth-redirect',false)
-                ->addBoolean('auth-redirect',false);
+                ->addMixed('unauth-redirect',false)
+                ->addMixed('auth-redirect',false);
 
 	    $configBuilder->addObject('authenticate')
             ->addNumber('max-time',0);

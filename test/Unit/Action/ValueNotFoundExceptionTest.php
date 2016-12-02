@@ -6,6 +6,9 @@ use ItePHP\Action\ValueNotFoundException;
 
 class ValueNotFoundExceptionTest extends \PHPUnit_Framework_TestCase{
 
+    /**
+     * @var ValueNotFoundException
+     */
 	private $exception;
 
 	public function setUp(){

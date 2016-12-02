@@ -15,7 +15,6 @@
 
 namespace Test\Asset\Action\ArgumentEvent;
 
-use ItePHP\Core\Container;
 use ItePHP\Mapper\MapperAbstract;
 
 /**

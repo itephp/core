@@ -17,9 +17,9 @@ namespace ItePHP\Core;
 
 use ItePHP\Command\CommandInterface;
 
-use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\Command\OutputStreamConsole;
 use ItePHP\Command\CommandExecutor;
+use Onus\ClassLoader;
 use Pactum\ConfigContainer;
 use Via\Dispatcher;
 
@@ -38,13 +38,13 @@ class ConsoleDispatcher  implements Dispatcher {
 
 	/**
 	 *
-	 * @var DependencyInjection
+	 * @var ClassLoader
 	 */
-	protected $dependencyInjection;
+	protected $classLoader;
 
 	/**
 	 *
-	 * @var Config
+	 * @var ConfigContainer
 	 */
 	protected $config;
 
@@ -58,13 +58,13 @@ class ConsoleDispatcher  implements Dispatcher {
 	 * Constructor.
 	 *
 	 * @param ConfigContainer $config
-	 * @param DependencyInjection $dependencyInjection
+	 * @param ClassLoader $classLoader
 	 * @param mixed[] $arguments
 	 */
-	public function __construct(ConfigContainer $config,DependencyInjection $dependencyInjection,$arguments){
+	public function __construct(ConfigContainer $config, ClassLoader $classLoader, $arguments){
 		$this->config=$config;
 		$this->name=$config->getValue('name');
-		$this->dependencyInjection=$dependencyInjection;
+		$this->classLoader=$classLoader;
 		$this->arguments=$arguments;
 	}
 
@@ -75,7 +75,7 @@ class ConsoleDispatcher  implements Dispatcher {
         /**
          * @var CommandInterface $command
          */
-		$command=$this->dependencyInjection->get('command.'.$this->name);
+		$command=$this->classLoader->get('command.'.$this->name);
 		$commandExecutor=new CommandExecutor($command);
 		$commandExecutor->setOutputStream(new OutputStreamConsole());
 		$commandExecutor->setArguments($this->arguments);

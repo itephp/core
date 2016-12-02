@@ -6,6 +6,9 @@ use ItePHP\Action\RequiredArgumentException;
 
 class RequiredArgumentExceptionTest extends \PHPUnit_Framework_TestCase{
 
+    /**
+     * @var RequiredArgumentException
+     */
 	private $exception;
 
 	public function setUp(){

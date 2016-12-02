@@ -6,6 +6,9 @@ use ItePHP\Action\InvalidArgumentException;
 
 class InvalidArgumentExceptionTest extends \PHPUnit_Framework_TestCase{
 
+    /**
+     * @var InvalidArgumentException
+     */
 	private $exception;
 
 	public function setUp(){

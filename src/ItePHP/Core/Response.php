@@ -156,10 +156,12 @@ class Response{
 
     /**
      * @param $url
+     * @return $this
      */
 	public function redirect($url){
 		$this->setStatusCode(302);
 		$this->setHeader('Location',$url);
+		return $this;
 	}
 
 	/**

@@ -17,7 +17,7 @@ namespace ItePHP\Core;
 
 use ItePHP\Error\ErrorHandler;
 use ItePHP\Presenter\HTML as HTMLPresenter;
-use ItePHP\DependencyInjection\DependencyInjection;
+use Onus\ClassLoader;
 use Pactum\ConfigContainer;
 
 /**
@@ -28,9 +28,9 @@ class HTTPErrorHandler implements ErrorHandler{
 	
 	/**
 	 *
-	 * @var DependencyInjection
+	 * @var ClassLoader
 	 */ 
-	private $dependencyInjection;
+	private $classLoader;
 
 	/**
 	 *
@@ -40,11 +40,11 @@ class HTTPErrorHandler implements ErrorHandler{
 
 	/**
 	 *
-	 * @param DependencyInjection $dependencyInjection
+	 * @param ClassLoader $classLoader
 	 * @param Request $request
 	 */
-	public function __construct(DependencyInjection $dependencyInjection,Request $request){
-		$this->dependencyInjection=$dependencyInjection;
+	public function __construct(ClassLoader $classLoader, Request $request){
+		$this->classLoader=$classLoader;
 		$this->request=$request;
 	}
 
@@ -52,7 +52,7 @@ class HTTPErrorHandler implements ErrorHandler{
      * {@inheritdoc}
      */
 	public function execute(\Exception $exception){
-		if(!$this->dependencyInjection->get('environment')->isSilent()){
+		if(!$this->classLoader->get('environment')->isSilent()){
 			error_log($exception->getMessage()." ".$exception->getFile()."(".$exception->getLine().")");
 		}
 
@@ -66,7 +66,7 @@ class HTTPErrorHandler implements ErrorHandler{
 		}
 
 		$event=new ExecutePresenterEvent($this->request,$response);
-		$this->dependencyInjection->get('eventManager')->fire('executePresenter',$event);
+		$this->classLoader->get('eventManager')->fire('executePresenter',$event);
 
 		$presenter->render($this->request,$response);
 
@@ -81,7 +81,7 @@ class HTTPErrorHandler implements ErrorHandler{
         /**
          * @var ConfigContainer $config
          */
-        $config=$this->dependencyInjection->get('config');
+        $config=$this->classLoader->get('config');
 		foreach($config->getArray('error') as $error){
             /**
              * @var ConfigContainer $error
@@ -93,11 +93,11 @@ class HTTPErrorHandler implements ErrorHandler{
             /**
              * @var Presenter $presenterObject
              */
-            $presenterObject=$this->dependencyInjection->get('presenter.'.$presenterName);
+            $presenterObject=$this->classLoader->get('presenter.'.$presenterName);
 			return $presenterObject;
 		}
 
-		return new HTMLPresenter($this->dependencyInjection->get('environment'));
+		return new HTMLPresenter($this->classLoader->get('environment'));
 
 	}
 

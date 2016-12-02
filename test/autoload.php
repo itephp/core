@@ -3,6 +3,7 @@
 $vendors=[
     'Via'=>'vendor/newclass/via/src',
     'Pactum'=>'vendor/newclass/pactum/src',
+    'Onus'=>'vendor/newclass/onus/src',
     'ItePHP'=>'src',
 ];
 
@@ -23,7 +24,6 @@ spl_autoload_register(function ($className) use ($vendors){
 	}
 	$classPath=$path.'/'.$classPath.'.php';
     if(!file_exists($classPath)){
-//        echo $classPath; exit;
         return;
     }
     /** @noinspection PhpIncludeInspection */

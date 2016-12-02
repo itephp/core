@@ -3,10 +3,13 @@
 namespace Test\Error;
 
 use ItePHP\Error\ErrorManager;
-use Asset\Error\TestHandler;
+use Test\Asset\Error\TestHandler;
 
 class ErrorManagerTest extends \PHPUnit_Framework_TestCase{
-	
+
+    /**
+     * @var ErrorManager
+     */
 	private $errorManager;
 
 	protected function setUp(){

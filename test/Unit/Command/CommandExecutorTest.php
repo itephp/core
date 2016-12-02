@@ -3,13 +3,16 @@
 namespace Test\Command;
 
 use ItePHP\Command\CommandExecutor;
-use Asset\Command\TestCommand;
-use Asset\Command\OutputStreamTest;
 use ItePHP\Command\CommandArgumentRequiredException;
 use ItePHP\Command\CommandInvalidArgumentLengthException;
+use Test\Asset\Command\OutputStreamTest;
+use Test\Asset\Command\TestCommand;
 
 class CommandExecutorTest extends \PHPUnit_Framework_TestCase{
 
+    /**
+     * @var CommandExecutor
+     */
 	private $commandExecutor;
 
 	protected function  setUp(){
@@ -18,7 +21,6 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testRun(){
-		$args=[];
 		$outputStream=new OutputStreamTest();
 		$this->commandExecutor->setOutputStream($outputStream);
 
@@ -34,7 +36,6 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testRunDefault(){
-		$args=[];
 		$outputStream=new OutputStreamTest();
 		$this->commandExecutor->setOutputStream($outputStream);
 
@@ -46,7 +47,6 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testRunRequired(){
-		$args=[];
 		$outputStream=new OutputStreamTest();
 		$this->commandExecutor->setOutputStream($outputStream);
 		try{
@@ -61,7 +61,6 @@ class CommandExecutorTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testRunLength(){
-		$args=[];
 		$outputStream=new OutputStreamTest();
 		$this->commandExecutor->setOutputStream($outputStream);
 		try{

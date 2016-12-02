@@ -15,14 +15,12 @@
 
 namespace ItePHP;
 
+use ItePHP\Core\EventManager;
 use ItePHP\Core\Presenter;
 use ItePHP\Core\Request;
 use ItePHP\Core\HTTPRequest;
 use ItePHP\Provider\Session;
 use ItePHP\Core\Environment;
-use ItePHP\DependencyInjection\DependencyInjection;
-use ItePHP\DependencyInjection\MetadataClass;
-use ItePHP\DependencyInjection\MetadataMethod;
 
 use ItePHP\Error\ErrorManager;
 
@@ -37,6 +35,9 @@ use ItePHP\Core\ConsoleDispatcher;
 use ItePHP\Structure\ImportStructure;
 use ItePHP\Structure\Structure;
 use ItePHP\Structure\VariableStructure;
+use Onus\ClassLoader;
+use Onus\MetadataClass;
+use Onus\MetadataMethod;
 use Pactum\ConfigBuilder;
 use Pactum\ConfigBuilderObject;
 use Pactum\ConfigBuilderValue;
@@ -97,19 +98,19 @@ class Root{
 		//config
 		$this->errorManager=new ErrorManager();
 		$this->errorManager->addHandler(new ConsoleErrorHandler());
-		$dependencyInjection=new DependencyInjection();
+		$classLoader=new ClassLoader();
 
 		$this->initConfig();
 
-		$this->container=new Container($dependencyInjection);
-		$dependencyInjection->addInstance('container',$this->container);
-		$dependencyInjection->addInstance('environment',$this->environment);
-		$dependencyInjection->addInstance('config',$this->config);
+		$this->container=new Container($classLoader);
+		$classLoader->addInstance('container',$this->container);
+		$classLoader->addInstance('environment',$this->environment);
+		$classLoader->addInstance('config',$this->config);
 
-		$this->registerEventManager($dependencyInjection);
-		$this->registerServices($dependencyInjection);
-		$this->registerEvents($dependencyInjection);
-		$this->registerCommands($dependencyInjection);
+		$this->registerEventManager($classLoader);
+		$this->registerServices($classLoader);
+		$this->registerEvents($classLoader);
+		$this->registerCommands($classLoader);
 
 		//command
 		$sigint=1;
@@ -117,7 +118,7 @@ class Root{
 		array_shift($command);
 		$arguments=$command;
 		try{
-			$dispatcher=$this->createConsoleRouter($dependencyInjection,$arguments)->createDispatcher($commandName);
+			$dispatcher=$this->createConsoleRouter($classLoader,$arguments)->createDispatcher($commandName);
 			$dispatcher->execute();
 			$sigint=0;
 		}
@@ -141,30 +142,30 @@ class Root{
 		//config
 		$this->errorManager=new ErrorManager();
 		$this->errorManager->addHandler(new CriticalErrorHandler($this->environment));
-		$dependencyInjection=new DependencyInjection();
+		$classLoader=new ClassLoader();
 
 		$this->initConfig();
 
-		$this->container=new Container($dependencyInjection);
-		$dependencyInjection->addInstance('container',$this->container);
-		$dependencyInjection->addInstance('environment',$this->environment);
-		$dependencyInjection->addInstance('config',$this->config);
+		$this->container=new Container($classLoader);
+		$classLoader->addInstance('container',$this->container);
+		$classLoader->addInstance('environment',$this->environment);
+		$classLoader->addInstance('config',$this->config);
 
-		$this->registerServices($dependencyInjection);
-		$this->registerEventManager($dependencyInjection);
-		$this->registerEvents($dependencyInjection);
-		$this->registerPresenters($dependencyInjection);
+		$this->registerServices($classLoader);
+		$this->registerEventManager($classLoader);
+		$this->registerEvents($classLoader);
+		$this->registerPresenters($classLoader);
 
 		//request
 		$session=new Session($this->environment);
 		$request=new HTTPRequest($url,$session);
 
-        $dependencyInjection->addInstance('request',$request);
+        $classLoader->addInstance('request',$request);
 
-		$this->reconfigureErrorManager($dependencyInjection,$request);
+		$this->reconfigureErrorManager($classLoader,$request);
 
 		try{
-			$dispatcher=$this->createHttpRouter($dependencyInjection,$request)
+			$dispatcher=$this->createHttpRouter($classLoader,$request)
                 ->createDispatcher(new \Via\Action\HTTPRequest($request->getUrl(),$request->getType()));
 			$dispatcher->execute();
 		}
@@ -267,15 +268,15 @@ class Root{
 
 	/**
 	 *
-	 * @param DependencyInjection $dependencyInjection
+	 * @param ClassLoader $classLoader
 	 * @param Request $request
 	 */
-	private function reconfigureErrorManager(DependencyInjection $dependencyInjection,Request $request){
+	private function reconfigureErrorManager(ClassLoader $classLoader, Request $request){
 		$removeHandlers=$this->errorManager->getHandlers();
 
 		$this->errorManager->addHandler(
 			new HTTPErrorHandler(
-				$dependencyInjection,$request
+				$classLoader,$request
 			)
 		);
 
@@ -287,13 +288,13 @@ class Root{
 
 	/**
 	 *
-	 * @param DependencyInjection $dependencyInjection
+	 * @param ClassLoader $classLoader
 	 * @param Request $request
 	 * @return Router
 	 */
-	private function createHttpRouter(DependencyInjection $dependencyInjection,Request $request){
+	private function createHttpRouter(ClassLoader $classLoader, Request $request){
 		$router=new Router();
-		$presenters=$this->getPresenters($dependencyInjection);
+		$presenters=$this->getPresenters($classLoader);
 		foreach($this->config->getArray('action') as $actionObject){
 		    $this->addHttpMethodActions($router,$actionObject,$request,$presenters);
 		}
@@ -325,16 +326,16 @@ class Root{
 
 	/**
 	 *
-	 * @param DependencyInjection $dependencyInjection
+	 * @param ClassLoader $classLoader
 	 * @return array
 	 */
-	private function getPresenters(DependencyInjection $dependencyInjection){
+	private function getPresenters(ClassLoader $classLoader){
 		$presenters=[];
 		foreach($this->config->getArray('presenter') as $presenterNode){
             /**
              * @var ConfigContainer $presenterNode
              */
-			$presenters[$presenterNode->getValue('name')]=$dependencyInjection->get('presenter.'.$presenterNode->getValue('name'));
+			$presenters[$presenterNode->getValue('name')]=$classLoader->get('presenter.'.$presenterNode->getValue('name'));
 		}
 
 		return $presenters;
@@ -342,11 +343,11 @@ class Root{
 
 	/**
 	 *
-	 * @param DependencyInjection $dependencyInjection
+	 * @param ClassLoader $classLoader
 	 * @param array $commandArguments
 	 * @return Router
 	 */
-	private function createConsoleRouter(DependencyInjection $dependencyInjection,$commandArguments){
+	private function createConsoleRouter(ClassLoader $classLoader, $commandArguments){
 		$router=new Router();
 
 		foreach($this->config->getArray('command') as $commandNode){
@@ -355,7 +356,7 @@ class Root{
              */
 			$router->addAction(new StringAction($commandNode->getValue('name')),
 				new ConsoleDispatcher($commandNode,
-					$dependencyInjection,
+					$classLoader,
 					$commandArguments
 				)
 			);
@@ -366,18 +367,18 @@ class Root{
 
 	/**
 	 *
-	 * @param DependencyInjection $dependencyInjection
+	 * @param ClassLoader $classLoader
 	 */
-	private function registerEventManager(DependencyInjection $dependencyInjection){
-		$metadataClass=new MetadataClass('eventManager','ItePHP\Core\EventManager');
-		$dependencyInjection->register($metadataClass);
+	private function registerEventManager(ClassLoader $classLoader){
+		$metadataClass=new MetadataClass('eventManager',EventManager::class);
+		$classLoader->register($metadataClass);
 	}
 
-	/**
-	 *
-	 * @param DependencyInjection $dependencyInjection
-	 */
-	private function registerEvents(DependencyInjection $dependencyInjection){
+    /**
+     *
+     * @param ClassLoader $classLoader
+     */
+	private function registerEvents(ClassLoader $classLoader){
 		foreach($this->config->getArray('event') as $eventNode){
             /**
              * @var ConfigContainer $eventNode
@@ -385,60 +386,60 @@ class Root{
 
 			$name=$eventNode->getValue('class');
 			$metadataClass=$this->getMetadataClass($name,$eventNode);
-			$dependencyInjection->register($metadataClass);
+			$classLoader->register($metadataClass);
 
-			$this->eventManagerBind($eventNode,$dependencyInjection);
+			$this->eventManagerBind($eventNode,$classLoader);
 		}
 	}
 
 	/**
 	 *
-	 * @param DependencyInjection $dependencyInjection
+	 * @param ClassLoader $classLoader
 	 */
-	private function registerServices(DependencyInjection $dependencyInjection){
+	private function registerServices(ClassLoader $classLoader){
 		foreach($this->config->getArray('service') as $serviceNode){
             /**
              * @var ConfigContainer $serviceNode
              */
 			$metadataClass=$this->getMetadataClass('service.'.$serviceNode->getValue('name'),$serviceNode,$serviceNode->getValue('singleton')==="true");
-			$dependencyInjection->register($metadataClass);
+			$classLoader->register($metadataClass);
 		}
 	}
 
 	/**
 	 *
-	 * @param DependencyInjection $dependencyInjection
+	 * @param ClassLoader $classLoader
 	 */
-	private function registerPresenters(DependencyInjection $dependencyInjection){
+	private function registerPresenters(ClassLoader $classLoader){
 		foreach($this->config->getArray('presenter') as $presenterNode){
             /**
              * @var ConfigContainer $presenterNode
              */
 			$metadataClass=$this->getMetadataClass('presenter.'.$presenterNode->getValue('name'),$presenterNode);
-			$dependencyInjection->register($metadataClass);
+			$classLoader->register($metadataClass);
 		}
 	}
 
 	/**
 	 *
-	 * @param DependencyInjection $dependencyInjection
+	 * @param ClassLoader $classLoader
 	 */
-	private function registerCommands(DependencyInjection $dependencyInjection){
+	private function registerCommands(ClassLoader $classLoader){
 		foreach($this->config->getArray('command') as $commandNode){
             /**
              * @var ConfigContainer $commandNode
              */
 			$metadataClass=$this->getMetadataClass('command.'.$commandNode->getValue('name'),$commandNode);
-			$dependencyInjection->register($metadataClass);
+			$classLoader->register($metadataClass);
 		}
 	}
 
 	/**
 	 *
 	 * @param ConfigContainer $eventNode
-	 * @param DependencyInjection $dependencyInjection
+	 * @param ClassLoader $classLoader
 	 */
-	private function eventManagerBind(ConfigContainer $eventNode,DependencyInjection $dependencyInjection){
+	private function eventManagerBind(ConfigContainer $eventNode,ClassLoader $classLoader){
 		$eventManager=$this->container->getEventManager();
 		foreach($eventNode->getArray('bind') as $bindNode){
             /**
@@ -446,7 +447,7 @@ class Root{
              */
 			$eventManager->register(
 				$bindNode->getValue('name'),
-				$dependencyInjection->get($eventNode->getValue('class')),
+				$classLoader->get($eventNode->getValue('class')),
 				$bindNode->getValue('method')
 			);
 		}
@@ -463,7 +464,7 @@ class Root{
 		$metadataClass=new MetadataClass($name,$classNode->getValue('class'),$singleton);
 		foreach($classNode->getArray('method') as $methodNode){
 			$metadataMethod=$this->getMetadataDependencyMethod($methodNode);
-			$metadataClass->registerInvoke($metadataMethod);
+			$metadataClass->register($metadataMethod);
 		}
 
 		return $metadataClass;

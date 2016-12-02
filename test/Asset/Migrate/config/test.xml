@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
-<content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<content>
 
-	<import file="commands.xml" />
+	<import value="commands.xml" />
 
 </content>
