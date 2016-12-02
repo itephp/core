@@ -103,16 +103,4 @@ abstract class Controller{
 		return $this->container->getService($name);
 	}
 
-	/**
-	 * Execute snippet method.
-	 *
-	 * @param string $method
-	 * @param mixed[] $args
-	 * @return mixed
-	 * @throws MethodNotFoundException
-	 */
-	public function __call($method, $args){
-		$snippet=$this->container->getSnippet($method);
-        return call_user_func_array([$snippet, $method],array_merge([$this->container],$args));
-    }
 }

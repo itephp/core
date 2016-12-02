@@ -25,13 +25,14 @@ class TestController extends Controller{
 	 * @return array
 	 */
 	public function index(){
-		return $this->invokeTest($this->getService('test'));
+
+        return $this->getService('test')->getText();
 	}
 
-	/**
-	 *
-	 * @return array
-	 */
+    /**
+     * @return array
+     * @throws \Exception
+     */
 	public function error(){
 		throw new \Exception('error');
 	}

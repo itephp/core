@@ -17,6 +17,7 @@ namespace ItePHP\Core;
 
 use ItePHP\Provider\Session;
 use ItePHP\Component\Form\FileUploaded;
+use Pactum\ConfigContainer;
 
 /**
  * Provider for request.
@@ -75,7 +76,7 @@ class HTTPRequest implements Request{
 
 	/**
 	 *
-	 * @var Config
+	 * @var ConfigContainer
 	 */
 	private $config;
 
@@ -172,7 +173,7 @@ class HTTPRequest implements Request{
     /**
      * {@inheritdoc}
      */
-	public function setConfig(Config $config){
+	public function setConfig(ConfigContainer $config){
 		$this->config=$config;
 	}
 

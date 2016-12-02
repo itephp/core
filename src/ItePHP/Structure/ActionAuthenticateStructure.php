@@ -15,8 +15,7 @@
 
 namespace ItePHP\Structure;
 
-use ItePHP\Config\ConfigBuilder;
-use ItePHP\Config\ConfigBuilderNode;
+use Pactum\ConfigBuilder;
 
 /**
  * Structure for session actions.
@@ -29,16 +28,14 @@ class ActionAuthenticateStructure implements Structure{
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-		$actionSessionNode=new ConfigBuilderNode('authenticate');
-		$actionSessionNode->addAttribute('unauth-redirect',false);
-		$actionSessionNode->addAttribute('auth-redirect',false);
+	    $configBuilder->getArray('action')
+        ->getValue()
+            ->addObject('authenticate')
+                ->addBoolean('unauth-redirect',false)
+                ->addBoolean('auth-redirect',false);
 
-		$actionNode=$configBuilder->getNode('action');		
-		$actionNode->addNode($actionSessionNode);
+	    $configBuilder->addObject('authenticate')
+            ->addNumber('max-time',0);
 
-		$sessionNode=new ConfigBuilderNode('authenticate');
-		$sessionNode->addAttribute('max-time',0);
-
-		$configBuilder->addNode($sessionNode);
 	}
 }

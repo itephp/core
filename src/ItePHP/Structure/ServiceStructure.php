@@ -14,9 +14,8 @@
  */
 
 namespace ItePHP\Structure;
-
-use ItePHP\Config\ConfigBuilder;
-use ItePHP\Config\ConfigBuilderNode;
+use Pactum\ConfigBuilder;
+use Pactum\ConfigBuilderObject;
 
 /**
  * Structure for services.
@@ -30,21 +29,14 @@ class ServiceStructure implements Structure{
      */
 	public function doConfig(ConfigBuilder $configBuilder){
 
-		$argumentNode=new ConfigBuilderNode('argument');
-		$argumentNode->addAttribute('type');
-		$argumentNode->addAttribute('value');
-
-		$methodNode=new ConfigBuilderNode('method');
-		$methodNode->addAttribute('name');
-		$methodNode->addNode($argumentNode);
-
-		$serviceNode=new ConfigBuilderNode('service');
-		$serviceNode->addAttribute('name');
-		$serviceNode->addAttribute('class');
-		$serviceNode->addAttribute('singleton','true');
-
-		$serviceNode->addNode($methodNode);
-
-		$configBuilder->addNode($serviceNode);
-	}
+        $configBuilder->addArray('service',new ConfigBuilderObject())->getValue()
+            ->addString('class')
+            ->addString('name')
+            ->addBoolean('singleton',true)
+            ->addArray('method',new ConfigBuilderObject())->getValue()
+            ->addString('name')
+            ->addArray('argument',new ConfigBuilderObject())->getValue()
+            ->addString('type')
+            ->addString('value'); //FIXME change to addMixed
+    }
 }

@@ -2,12 +2,11 @@
 
 <content>
 
-	<import file="actions.xml" />
-	<import file="commands.xml" />
-	<import file="services.xml" />
-	<import file="events.xml" />
-	<import file="snippets.xml" />
-	<import file="presenters.xml" />
-	<import file="variables.xml" />
+	<import value="actions.xml" />
+	<import value="commands.xml" />
+	<import value="services.xml" />
+	<import value="events.xml" />
+	<import value="presenters.xml" />
+	<import value="variables.xml" />
 
 </content>

@@ -19,7 +19,7 @@ use ItePHP\Core\Request;
 use ItePHP\Core\HeaderNotFoundException;
 use ItePHP\Component\Form\FileUploaded;
 use ItePHP\Core\FileNotUploadedException;
-use ItePHP\Core\Config;
+use Pactum\ConfigContainer;
 
 /**
  * Provider for request.
@@ -34,18 +34,19 @@ class RequestTest implements Request{
 	private $arguments=[];
 	private $url;
 	private $headers=[];
-	private $clientIp;
 	private $files=[];
 	private $body;
 	private $host;
 
 	/**
 	 *
-	 * @var Config
+	 * @var ConfigContainer
 	 */
 	private $config;
 
-	public function __construct($url,$type){
+    private $type;
+
+    public function __construct($url,$type){
 		$this->url=$url;
 		$this->type=$type;
 		$this->host='localhost';
@@ -53,12 +54,13 @@ class RequestTest implements Request{
 
 	}
 
-	/**
-	 * Get uploaded file
-	 * @param string $name - field name
-	 * @return mixed
-	 * @since 0.12.0
-	 */
+    /**
+     * Get uploaded file
+     * @param string $name - field name
+     * @return mixed
+     * @throws FileNotUploadedException
+     * @since 0.12.0
+     */
 	public function getFile($name){
 		if(!isset($this->files[$name])){
 			throw new FileNotUploadedException($name);
@@ -120,7 +122,7 @@ class RequestTest implements Request{
     /**
      * {@inheritdoc}
      */
-	public function setConfig(Config $config){
+	public function setConfig(ConfigContainer $config){
 		$this->config=$config;
 	}
 

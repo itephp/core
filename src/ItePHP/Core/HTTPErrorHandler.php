@@ -18,6 +18,7 @@ namespace ItePHP\Core;
 use ItePHP\Error\ErrorHandler;
 use ItePHP\Presenter\HTML as HTMLPresenter;
 use ItePHP\DependencyInjection\DependencyInjection;
+use Pactum\ConfigContainer;
 
 /**
  *
@@ -78,14 +79,17 @@ class HTTPErrorHandler implements ErrorHandler{
 	 */
 	private function getPresenter($url){
         /**
-         * @var Config $config
+         * @var ConfigContainer $config
          */
         $config=$this->dependencyInjection->get('config');
-		foreach($config->getNodes('error') as $error){
-			if(!preg_match('/^'.$error->getAttribute('pattern').'$/',$url)){
+		foreach($config->getArray('error') as $error){
+            /**
+             * @var ConfigContainer $error
+             */
+			if(!preg_match('/^'.$error->getValue('pattern').'$/',$url)){
 				continue;
 			}
-			$presenterName=$error->getAttribute('presenter');
+			$presenterName=$error->getValue('presenter');
             /**
              * @var Presenter $presenterObject
              */

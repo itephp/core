@@ -15,7 +15,7 @@
 
 namespace ItePHP\Structure;
 
-use ItePHP\Config\ConfigBuilder;
+use Pactum\ConfigBuilder;
 
 /**
  * Structure interface.

@@ -14,9 +14,8 @@
  */
 
 namespace ItePHP\Structure;
-
-use ItePHP\Config\ConfigBuilder;
-use ItePHP\Config\ConfigBuilderNode;
+use Pactum\ConfigBuilder;
+use Pactum\ConfigBuilderObject;
 
 /**
  * Structure for commands.
@@ -29,20 +28,13 @@ class CommandStructure implements Structure{
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-		$argumentNode=new ConfigBuilderNode('argument');
-		$argumentNode->addAttribute('type');
-		$argumentNode->addAttribute('value');
-
-		$methodNode=new ConfigBuilderNode('method');
-		$methodNode->addAttribute('name');
-		$methodNode->addNode($argumentNode);
-
-		$commandNode=new ConfigBuilderNode('command');
-		$commandNode->addAttribute('class');
-		$commandNode->addAttribute('name');
-
-		$commandNode->addNode($methodNode);
-
-		$configBuilder->addNode($commandNode);
+	    $configBuilder->addArray('command',new ConfigBuilderObject())->getValue()
+            ->addString('class')
+            ->addString('name')
+            ->addArray('method',new ConfigBuilderObject())->getValue()
+                ->addString('name')
+                ->addArray('argument',new ConfigBuilderObject())->getValue()
+                    ->addString('type')
+                    ->addString('value'); //FIXME change to addMixed
 	}
 }

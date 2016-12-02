@@ -14,9 +14,9 @@
  */
 
 namespace ItePHP\Structure;
+use Pactum\ConfigBuilder;
+use Pactum\ConfigBuilderObject;
 
-use ItePHP\Config\ConfigBuilder;
-use ItePHP\Config\ConfigBuilderNode;
 
 /**
  * Structure for errors.
@@ -29,10 +29,8 @@ class ErrorStructure implements Structure{
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-		$errorNode=new ConfigBuilderNode('error');
-		$errorNode->addAttribute('pattern');
-		$errorNode->addAttribute('presenter');
-
-		$configBuilder->addNode($errorNode);
+	    $configBuilder->addArray('error',new ConfigBuilderObject())->getValue()
+            ->addString('pattern')
+            ->addString('presenter');
 	}
 }

@@ -1,7 +1,8 @@
 <?php
 
 $vendors=[
-    'Via'=>'vendor/iteracja/via/src',
+    'Via'=>'vendor/newclass/via/src',
+    'Pactum'=>'vendor/newclass/pactum/src',
     'ItePHP'=>'src',
 ];
 

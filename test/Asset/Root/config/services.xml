@@ -4,7 +4,7 @@
 
 	<service name="test" class="Test\Asset\Root\Service\TestService">
 		<method name="__construct">
-			<argument type="primitive" value="@var" />
+			<argument type="primitive" value="@{var}" />
 		</method>
 	</service>
 

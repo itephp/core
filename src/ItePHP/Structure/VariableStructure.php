@@ -14,9 +14,8 @@
  */
 
 namespace ItePHP\Structure;
-
-use ItePHP\Config\ConfigBuilder;
-use ItePHP\Config\ConfigBuilderNode;
+use Pactum\ConfigBuilder;
+use Pactum\ConfigBuilderObject;
 
 /**
  * Structure for snippets.
@@ -29,10 +28,8 @@ class VariableStructure implements Structure{
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-		$variableNode=new ConfigBuilderNode('variable');
-		$variableNode->addAttribute('name');
-		$variableNode->addAttribute('value');
-
-		$configBuilder->addNode($variableNode);
+	    $configBuilder->addArray('variable',new ConfigBuilderObject())->getValue()
+            ->addString('name')
+            ->addString('value'); //FIXME change to addMixed
 	}
 }

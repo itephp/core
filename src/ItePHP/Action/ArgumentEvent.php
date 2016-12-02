@@ -19,9 +19,9 @@ use ItePHP\Mapper\MapperAbstract;
 use ItePHP\Core\ExecuteActionEvent;
 use ItePHP\Core\InvalidConfigValueException;
 use ItePHP\Core\Request;
-use ItePHP\Core\Config;
 use ItePHP\Core\Container;
 use ItePHP\Validator\ValidatorAbstract;
+use Pactum\ConfigContainer;
 
 /**
  * Event to forward http param ($_POST[],$_GET[],url) to controller method.
@@ -52,7 +52,7 @@ class ArgumentEvent{
 	public function onExecuteAction(ExecuteActionEvent $event){
 		$request=$event->getRequest();
 		$position=1;
-		foreach($request->getConfig()->getNodes('argument') as $argument){
+		foreach($request->getConfig()->getArray('argument') as $argument){
 			$this->validateArgument($request,$argument,$position++);				
 		}
 	}
@@ -61,14 +61,14 @@ class ArgumentEvent{
 	 * Validate argument.
 	 *
 	 * @param Request $request
-	 * @param Config $config argument
+	 * @param ConfigContainer $config argument
 	 * @param int $position
 	 * @throws InvalidConfigValueException
 	 * @throws InvalidArgumentException
 	 */
-	private function validateArgument(Request $request , $config , $position){
+	private function validateArgument(Request $request , ConfigContainer $config , $position){
 		$value=null;
-		switch($config->getAttribute('storage')){
+		switch($config->getValue('storage')){
 			case 'url':
 				$value=$this->validateUrl($request , $config , $position);
 			break;
@@ -79,11 +79,11 @@ class ArgumentEvent{
 				$value=$this->validateGetPost($request->getQuery() , $config , $position);
 			break;
 			default:
-				throw new InvalidConfigValueException('storage',$config->getAttribute('storage'));
+				throw new InvalidConfigValueException('storage',$config->getValue('storage'));
 
 		}
 
-		$validatorName=$config->getAttribute('validator');
+		$validatorName=$config->getValue('validator');
 		if($validatorName!==''){
             /**
              * @var ValidatorAbstract $validatorObject
@@ -91,11 +91,11 @@ class ArgumentEvent{
 			$validatorObject=new $validatorName();
 			$error=$validatorObject->validate($value);
 			if($error){
-				throw new InvalidArgumentException($position,$config->getAttribute('name'),$error);				
+				throw new InvalidArgumentException($position,$config->getValue('name'),$error);
 			}
 		}
 
-		$mapperName=$config->getAttribute('mapper');
+		$mapperName=$config->getValue('mapper');
 		if($mapperName!==''){
             /**
              * @var MapperAbstract $mapper
@@ -103,7 +103,7 @@ class ArgumentEvent{
 			$mapper=new $mapperName($this->container);
 			$value=$mapper->cast($value);
 		}
-		$request->setArgument($config->getAttribute('name'),$value);
+		$request->setArgument($config->getValue('name'),$value);
 
 	}
 
@@ -111,22 +111,22 @@ class ArgumentEvent{
 	 * Validate url.
 	 *
 	 * @param Request $request
-	 * @param Config $config argument
+	 * @param ConfigContainer $config argument
 	 * @param int $position
 	 * @return string
 	 * @throws RequiredArgumentException
 	 */
-	private function validateUrl(Request $request , $config , $position){
+	private function validateUrl(Request $request , ConfigContainer $config , $position){
 		$url=$request->getUrl();
-		$default=$config->getAttribute('default');
-		if(preg_match('/^'.$config->getAttribute('pattern').'$/',$url,$matches) && isset($matches[1])){
+		$default=$config->getValue('default');
+		if(preg_match('/^'.$config->getValue('pattern').'$/',$url,$matches) && isset($matches[1])){
 			return $matches[1];			
 		}
 		else if($default!==false){
-			return $config->getAttribute('default');
+			return $config->getValue('default');
 		}
 		else{
-			throw new RequiredArgumentException($position,$config->getAttribute('name'));			
+			throw new RequiredArgumentException($position,$config->getValue('name'));
 		}
 	}
 
@@ -134,14 +134,14 @@ class ArgumentEvent{
 	 * Validate GET.
 	 *
 	 * @param string[] $data http post/get data
-	 * @param Config $config argument
+	 * @param ConfigContainer $config argument
 	 * @param int $position
 	 * @return string
 	 * @throws RequiredArgumentException
 	 */
-	private function validateGetPost($data , $config , $position){
-		$argumentName=$config->getAttribute('name');
-		$default=$config->getAttribute('default');
+	private function validateGetPost($data , ConfigContainer $config , $position){
+		$argumentName=$config->getValue('name');
+		$default=$config->getValue('default');
 		if(!isset($data[$argumentName])){
 			if($default!==false){
 				return $default;

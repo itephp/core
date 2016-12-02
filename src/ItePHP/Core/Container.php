@@ -32,23 +32,14 @@ class Container{
 	 */
 	private $dependencyInjection;
 
-	/**
-	 * Snippets.
-	 *
-	 * @var object[]
-	 */
-	private $snippets=[];
-    
     /**
-	 * Constructor.
-	 *
-	 * @param DependencyInjection $dependencyInjection
-	 * @param object[] $snippets
-	 */
-	public function __construct(DependencyInjection $dependencyInjection,array $snippets){
+     * Constructor.
+     *
+     * @param DependencyInjection $dependencyInjection
+     */
+	public function __construct(DependencyInjection $dependencyInjection){
 
 		$this->dependencyInjection=$dependencyInjection;
-		$this->snippets=$snippets;
 	}
 
 	/**
@@ -83,21 +74,6 @@ class Container{
 			throw new ServiceNotFoundException($name);
 		}
 	}
-
-	/**
-	 *
-	 * @param string $method
-	 * @return object
-	 * @throws MethodNotFoundException
-	 */
-	public function getSnippet($method){
-		if(!isset($this->snippets[$method])){
-			throw new MethodNotFoundException(get_class($this),$method);
-		}
-
-		return $this->snippets[$method];
-
-    }
 
     /**
      * @return Config

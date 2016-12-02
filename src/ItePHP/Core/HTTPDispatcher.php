@@ -15,6 +15,7 @@
 
 namespace ItePHP\Core;
 
+use Pactum\ConfigContainer;
 use Via\Dispatcher;
 
 /**
@@ -76,17 +77,17 @@ class HTTPDispatcher  implements Dispatcher {
 	/**
 	 * Constructor.
 	 *
-	 * @param Config $config
+	 * @param ConfigContainer $config
 	 * @param Container $container
 	 * @param Request $request
 	 * @param Environment $environment
 	 * @param Presenter[] $presenters
 	 */
-	public function __construct(Config $config, Container $container, Request $request, Environment $environment, array $presenters){
+	public function __construct(ConfigContainer $config, Container $container, Request $request, Environment $environment, array $presenters){
 		$this->config=$config;
-		$this->className=$config->getAttribute('class');
-		$this->methodName=$config->getAttribute('method');
-		$this->presenterName=$config->getAttribute('presenter');
+		$this->className=$config->getValue('class');
+		$this->methodName=$config->getValue('method');
+		$this->presenterName=$config->getValue('presenter');
 		$this->presenters=$presenters;
 		$this->request=$request;
 		$this->container=$container;

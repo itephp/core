@@ -15,11 +15,12 @@
 
 namespace ItePHP\Structure;
 
-use ItePHP\Config\ConfigBuilder;
-use ItePHP\Config\ConfigBuilderNode;
+use Pactum\ConfigBuilder;
+use Pactum\ConfigBuilderObject;
+use Pactum\ConfigBuilderValue;
 
 /**
- * Structure for import.
+ * Structure for actions.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
@@ -29,9 +30,6 @@ class ImportStructure implements Structure{
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-		$importNode=new ConfigBuilderNode('import');
-		$importNode->addAttribute('file');
-
-		$configBuilder->addNode($importNode);
-	}
+        $configBuilder->addArray('import',new ConfigBuilderValue('string'));
+    }
 }

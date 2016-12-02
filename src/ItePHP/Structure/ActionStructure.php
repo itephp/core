@@ -14,9 +14,8 @@
  */
 
 namespace ItePHP\Structure;
-
-use ItePHP\Config\ConfigBuilder;
-use ItePHP\Config\ConfigBuilderNode;
+use Pactum\ConfigBuilder;
+use Pactum\ConfigBuilderObject;
 
 /**
  * Structure for actions.
@@ -29,14 +28,13 @@ class ActionStructure implements Structure{
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-		
-		$actionNode=new ConfigBuilderNode('action');
-		$actionNode->addAttribute('class');
-		$actionNode->addAttribute('method');
-		$actionNode->addAttribute('path');
-        $actionNode->addAttribute('http-method',"GET");
-		$actionNode->addAttribute('presenter');
 
-		$configBuilder->addNode($actionNode);
+        $configBuilder->addArray('action',new ConfigBuilderObject())
+            ->getValue()
+                ->addString('class')
+                ->addString('method')
+                ->addString('path')
+                ->addString('http-method','get,put,post,delete')
+                ->addString('presenter');
 	}
 }

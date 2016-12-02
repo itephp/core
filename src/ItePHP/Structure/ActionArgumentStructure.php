@@ -15,8 +15,8 @@
 
 namespace ItePHP\Structure;
 
-use ItePHP\Config\ConfigBuilder;
-use ItePHP\Config\ConfigBuilderNode;
+use Pactum\ConfigBuilder;
+use Pactum\ConfigBuilderObject;
 
 /**
  * Structure for actions.
@@ -29,15 +29,12 @@ class ActionArgumentStructure implements Structure{
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-		$argumentNode=new ConfigBuilderNode('argument');
-		$argumentNode->addAttribute('storage');
-		$argumentNode->addAttribute('name');
-		$argumentNode->addAttribute('pattern','');
-		$argumentNode->addAttribute('validator','');
-		$argumentNode->addAttribute('mapper','');
-		$argumentNode->addAttribute('default',false);
-
-		$actionNode=$configBuilder->getNode('action');		
-		$actionNode->addNode($argumentNode);
+        $configBuilder->getArray('action')->getValue()->addArray('argument',new ConfigBuilderObject())
+            ->getValue()->addString('storage')
+            ->addString('name')
+            ->addString('pattern','')
+            ->addString('validator','')
+            ->addString('mapper','')
+            ->addString('default','');//FIXME change to addMixedZ
 	}
 }

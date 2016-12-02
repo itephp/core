@@ -20,6 +20,7 @@ use ItePHP\Command\CommandInterface;
 use ItePHP\DependencyInjection\DependencyInjection;
 use ItePHP\Command\OutputStreamConsole;
 use ItePHP\Command\CommandExecutor;
+use Pactum\ConfigContainer;
 use Via\Dispatcher;
 
 /**
@@ -56,13 +57,13 @@ class ConsoleDispatcher  implements Dispatcher {
 	/**
 	 * Constructor.
 	 *
-	 * @param Config $config
+	 * @param ConfigContainer $config
 	 * @param DependencyInjection $dependencyInjection
 	 * @param mixed[] $arguments
 	 */
-	public function __construct(Config $config,DependencyInjection $dependencyInjection,$arguments){
+	public function __construct(ConfigContainer $config,DependencyInjection $dependencyInjection,$arguments){
 		$this->config=$config;
-		$this->name=$config->getAttribute('name');
+		$this->name=$config->getValue('name');
 		$this->dependencyInjection=$dependencyInjection;
 		$this->arguments=$arguments;
 	}

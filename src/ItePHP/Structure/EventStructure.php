@@ -14,9 +14,9 @@
  */
 
 namespace ItePHP\Structure;
+use Pactum\ConfigBuilder;
+use Pactum\ConfigBuilderObject;
 
-use ItePHP\Config\ConfigBuilder;
-use ItePHP\Config\ConfigBuilderNode;
 
 /**
  * Structure for events.
@@ -29,23 +29,17 @@ class EventStructure implements Structure{
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-		$argumentNode=new ConfigBuilderNode('argument');
-		$argumentNode->addAttribute('type');
-		$argumentNode->addAttribute('value');
+        $configBuilder->addArray('event',new ConfigBuilderObject())->getValue()
+            ->addString('class')
+            ->addArray('method',new ConfigBuilderObject())->getValue()
+            ->addString('name')
+            ->addArray('argument',new ConfigBuilderObject())->getValue()
+            ->addString('type')
+            ->addString('value'); //FIXME change to addMixed
 
-		$methodNode=new ConfigBuilderNode('method');
-		$methodNode->addAttribute('name');
-		$methodNode->addNode($argumentNode);
-
-		$bindNode=new ConfigBuilderNode('bind');
-		$bindNode->addAttribute('name');
-		$bindNode->addAttribute('method');
-
-		$eventNode=new ConfigBuilderNode('event');
-		$eventNode->addAttribute('class');
-		$eventNode->addNode($methodNode);
-		$eventNode->addNode($bindNode);
-
-		$configBuilder->addNode($eventNode);
-	}
+        $configBuilder->getArray('event')->getValue()
+            ->addArray('bind',new ConfigBuilderObject())->getValue()
+            ->addString('name')
+            ->addString('method');
+    }
 }
