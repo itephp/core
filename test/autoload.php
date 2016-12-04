@@ -4,6 +4,7 @@ $vendors=[
     'Via'=>'vendor/newclass/via/src',
     'Pactum'=>'vendor/newclass/pactum/src',
     'Onus'=>'vendor/newclass/onus/src',
+    'Judex'=>'vendor/newclass/judex/src',
     'ItePHP'=>'src',
 ];
 

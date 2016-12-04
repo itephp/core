@@ -34,9 +34,9 @@ class ServiceStructure implements Structure{
             ->addString('name')
             ->addBoolean('singleton',true)
             ->addArray('method',new ConfigBuilderObject())->getValue()
-            ->addString('name')
-            ->addArray('argument',new ConfigBuilderObject())->getValue()
-            ->addString('type')
-            ->addString('value'); //FIXME change to addMixed
+                ->addString('name')
+                ->addArray('argument',new ConfigBuilderObject())->getValue()
+                    ->addString('type')
+                    ->addMixed('value');
     }
 }

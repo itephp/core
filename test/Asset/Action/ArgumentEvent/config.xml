@@ -15,9 +15,20 @@
 	</action>
 
 	<action class="Asset\Root\Controller\TestController" method="argument" path="\/argument" presenter="ItePHP\Presenter\HTML">
-		<argument storage="get" name="var" default="123321222" validator="ItePHP\Validator\TelephoneValidator" />
-		<argument storage="post" name="data2" validator="ItePHP\Validator\TelephoneValidator" />
-		<argument storage="url" name="id" pattern="\/test\/([0-9]+)"  validator="ItePHP\Validator\TelephoneValidator" />
+		<argument storage="get" name="var" default="123321222">
+			<validator class="Judex\Validator\PhoneNumberValidator" />
+			<validator class="Judex\Validator\NotEmptyValidator" />
+		</argument>
+		<argument storage="post" name="data2">
+			<validator class="Judex\Validator\PhoneNumberValidator">
+				<method name="__construct">
+					<argument type="primitive" value="Custom message." />
+				</method>
+			</validator>
+		</argument>
+		<argument storage="url" name="id" pattern="\/test\/([0-9]+)">
+			<validator class="Judex\Validator\PhoneNumberValidator" />
+		</argument>
 	</action>
 
 	<action class="Asset\Root\Controller\TestController" method="argument" path="\/argument" presenter="ItePHP\Presenter\HTML">

@@ -16,8 +16,8 @@ use Test\Asset\RequestTest;
 class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 	
 	public function testOnExecuteAction(){
-
-		$container=new Container(new ClassLoader(),[]);
+        $classLoader=new ClassLoader();
+		$container=new Container($classLoader,[]);
 
 		$request=new RequestTest('/test/1','POST');
 		$request->setQuery(['var'=>'3']);
@@ -26,7 +26,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 		$config=$this->getConfig();
 		$request->setConfig($config->getArray('action')[0]);
 
-		$event=new ArgumentEvent($container);
+		$event=new ArgumentEvent($container,$classLoader);
 		$executeActionEvent=new ExecuteActionEvent($request);
 		$event->onExecuteAction($executeActionEvent);
 		$arguments=$request->getArguments();
@@ -37,15 +37,15 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testOnExecuteActionDefault(){
-
-		$container=new Container(new ClassLoader(),[]);
+        $classLoader=new ClassLoader();
+		$container=new Container($classLoader,[]);
 
 		$request=new RequestTest('/test','POST');
 
 		$config=$this->getConfig();
 		$request->setConfig($config->getArray('action')[1]);
 
-		$event=new ArgumentEvent($container);
+		$event=new ArgumentEvent($container,$classLoader);
 		$executeActionEvent=new ExecuteActionEvent($request);
 		$event->onExecuteAction($executeActionEvent);
 		$arguments=$request->getArguments();
@@ -57,7 +57,8 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 
 	public function testOnExecuteActionValidator(){
 
-		$container=new Container(new ClassLoader(),[]);
+	    $classLoader=new ClassLoader();
+		$container=new Container($classLoader);
 
 		$request=new RequestTest('/test/999999999','POST');
 		$request->setData(['data2'=>'123321123']);
@@ -65,7 +66,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 		$config=$this->getConfig();
 		$request->setConfig($config->getArray('action')[2]);
 
-		$event=new ArgumentEvent($container);
+		$event=new ArgumentEvent($container,$classLoader);
 		$executeActionEvent=new ExecuteActionEvent($request);
 		$event->onExecuteAction($executeActionEvent);
 		$arguments=$request->getArguments();
@@ -75,8 +76,8 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testOnExecuteActionValidatorInvalidArgumentException(){
-
-		$container=new Container(new ClassLoader(),[]);
+        $classLoader=new ClassLoader();
+		$container=new Container($classLoader);
 
 		$request=new RequestTest('/test/1','POST');
 		$request->setData(['data2'=>'123321123']);
@@ -84,7 +85,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 		$config=$this->getConfig();
 		$request->setConfig($config->getArray('action')[2]);
 
-		$event=new ArgumentEvent($container);
+		$event=new ArgumentEvent($container,$classLoader);
 		$executeActionEvent=new ExecuteActionEvent($request);
 		$responseMessage='';
 		try{
@@ -95,12 +96,12 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 			$responseMessage=$e->getMessage();
 		}
 
-		$this->assertEquals('Invalid argument "id": Invalid telephone format.',$responseMessage);
+		$this->assertEquals('Invalid argument "id": Value is not valid format phone number 000000000.',$responseMessage);
 	}
 
 	public function testOnExecuteActionMapper(){
-
-		$container=new Container(new ClassLoader(),[]);
+        $classLoader=new ClassLoader();
+		$container=new Container($classLoader);
 
 		$request=new RequestTest('/test/1','POST');
 		$request->setQuery(['var'=>'3']);
@@ -109,7 +110,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 		$config=$this->getConfig();
 		$request->setConfig($config->getArray('action')[3]);
 
-		$event=new ArgumentEvent($container);
+		$event=new ArgumentEvent($container,$classLoader);
 		$executeActionEvent=new ExecuteActionEvent($request);
 
 		$event->onExecuteAction($executeActionEvent);
@@ -122,8 +123,8 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testOnExecuteActionMapperException(){
-
-		$container=new Container(new ClassLoader(),[]);
+        $classLoader=new ClassLoader();
+		$container=new Container($classLoader,[]);
 
 		$request=new RequestTest('/test/s','POST');
 		$request->setQuery(['var'=>'3']);
@@ -132,7 +133,7 @@ class ArgumentEventTest extends \PHPUnit_Framework_TestCase{
 		$config=$this->getConfig();
 		$request->setConfig($config->getArray('action')[3]);
 
-		$event=new ArgumentEvent($container);
+		$event=new ArgumentEvent($container,$classLoader);
 		$executeActionEvent=new ExecuteActionEvent($request);
 		$responseMessage='';
 		try{

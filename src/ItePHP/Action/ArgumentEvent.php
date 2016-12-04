@@ -20,7 +20,11 @@ use ItePHP\Core\ExecuteActionEvent;
 use ItePHP\Core\InvalidConfigValueException;
 use ItePHP\Core\Request;
 use ItePHP\Core\Container;
-use ItePHP\Validator\ValidatorAbstract;
+use Judex\AbstractValidator;
+use Judex\ValidatorManager;
+use Onus\ClassLoader;
+use Onus\MetadataClass;
+use Onus\MetadataMethod;
 use Pactum\ConfigContainer;
 
 /**
@@ -35,13 +39,19 @@ class ArgumentEvent{
 	 * @var Container
 	 */
 	private $container;
+    /**
+     * @var ClassLoader
+     */
+    private $classLoader;
 
-	/**
-	 *
-	 * @param Container $container 
-	 */
-	public function __construct(Container $container){
+    /**
+     *
+     * @param Container $container
+     * @param ClassLoader $classLoader
+     */
+	public function __construct(Container $container,ClassLoader $classLoader){
 		$this->container=$container;
+		$this->classLoader=$classLoader;
 	}
 
 	/**
@@ -83,16 +93,17 @@ class ArgumentEvent{
 
 		}
 
-		$validatorName=$config->getValue('validator');
-		if($validatorName!==''){
-            /**
-             * @var ValidatorAbstract $validatorObject
-             */
-			$validatorObject=new $validatorName();
-			$error=$validatorObject->validate($value);
-			if($error){
-				throw new InvalidArgumentException($position,$config->getValue('name'),$error);
-			}
+		$validators=$config->getArray('validator');
+		if($validators){
+		    $validatorManager=new ValidatorManager();
+		    foreach($validators as $validator){
+		        $validatorManager->addValidator($this->getValidator($validator));
+            }
+
+            $result=$validatorManager->validate($value);
+            if(!$result->isValid()){
+                throw new InvalidArgumentException($position,$config->getValue('name'),implode(', ',$result->getErrors()));
+            }
 		}
 
 		$mapperName=$config->getValue('mapper');
@@ -106,6 +117,39 @@ class ArgumentEvent{
 		$request->setArgument($config->getValue('name'),$value);
 
 	}
+
+    /**
+     * @param ConfigContainer $validatorConfig
+     * @return AbstractValidator
+     */
+	private function getValidator($validatorConfig){
+	    $className=$validatorConfig->getValue('class');
+	    $localClassLoader=new ClassLoader();
+
+	    $metadata=new MetadataClass('main',$className);
+        $localClassLoader->register($metadata);
+	    foreach($validatorConfig->getArray('method') as $method){
+            /**
+             * @var ConfigContainer $method
+             */
+            $metadataMethod=$metadata->addMethod($method->getValue('name'));
+
+	        foreach($method->getArray('argument') as $argument){
+                /**
+                 * @var ConfigContainer $argument
+                 */
+	            $type=$argument->getValue('type');
+	            $value=$argument->getValue('value');
+	            if($type===MetadataMethod::REFERENCE_TYPE){
+	                $value=$this->classLoader->get($value);
+                }
+
+	            $metadataMethod->addArgument($type,$value);
+            }
+        }
+
+        return $localClassLoader->get('main');
+    }
 
 	/**
 	 * Validate url.

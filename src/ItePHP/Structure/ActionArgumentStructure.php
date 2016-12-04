@@ -33,8 +33,15 @@ class ActionArgumentStructure implements Structure{
             ->getValue()->addString('storage')
             ->addString('name')
             ->addString('pattern','')
-            ->addString('validator','')
             ->addString('mapper','')
-            ->addString('default','');//FIXME change to addMixedZ
+            ->addMixed('default','')
+            ->addArray('validator',new ConfigBuilderObject())->getValue()
+                ->addString('class')
+                ->addArray('method',new ConfigBuilderObject())->getValue()
+                    ->addString('name')
+                    ->addArray('argument',new ConfigBuilderObject())->getValue()
+                    ->addString('type')
+                    ->addMixed('value');
+
 	}
 }

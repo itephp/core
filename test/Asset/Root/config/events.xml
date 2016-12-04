@@ -13,7 +13,8 @@
 	<event class="ItePHP\Action\ArgumentEvent">
 		<method name="__construct">
 			<argument type="reference" value="container" />
-		</method>		
+			<argument type="reference" value="classLoader" />
+		</method>
 		<bind name="executeAction" method="onExecuteAction" />
 	</event>
 

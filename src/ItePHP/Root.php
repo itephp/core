@@ -105,6 +105,7 @@ class Root{
 		$this->container=new Container($classLoader);
 		$classLoader->addInstance('container',$this->container);
 		$classLoader->addInstance('environment',$this->environment);
+        $classLoader->addInstance('classLoader',$classLoader);
 		$classLoader->addInstance('config',$this->config);
 
 		$this->registerEventManager($classLoader);
@@ -149,6 +150,7 @@ class Root{
 		$this->container=new Container($classLoader);
 		$classLoader->addInstance('container',$this->container);
 		$classLoader->addInstance('environment',$this->environment);
+        $classLoader->addInstance('classLoader',$classLoader);
 		$classLoader->addInstance('config',$this->config);
 
 		$this->registerServices($classLoader);
