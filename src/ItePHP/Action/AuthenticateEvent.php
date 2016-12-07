@@ -42,7 +42,9 @@ class AuthenticateEvent{
          * @var ConfigContainer[] $authenticate
          */
 		$authenticate=$config->getObject('authenticate');
-        $this->maxTime=$authenticate->getValue('max-time');
+		if($authenticate){
+            $this->maxTime=$authenticate->getValue('max-time');
+        }
 
 	}
 
