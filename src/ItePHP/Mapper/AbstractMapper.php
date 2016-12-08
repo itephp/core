@@ -16,12 +16,14 @@
 namespace ItePHP\Mapper;
 
 use ItePHP\Core\Container;
+use ItePHP\Core\ServiceNotFoundException;
+
 /**
  * Base class for mapper. Cast value to another value
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-abstract class MapperAbstract{
+abstract class AbstractMapper{
 
 	/**
 	 * ExecuteResources
@@ -39,7 +41,17 @@ abstract class MapperAbstract{
 		$this->container=$container;
 	}
 
-	/**
+    /**
+     *
+     * @param string $name service name
+     * @return object
+     * @throws ServiceNotFoundException
+     */
+    public function getService($name){
+        return $this->getService($name);
+    }
+
+    /**
 	 * Cast value to another value.
 	 *
 	 * @param mixed $value

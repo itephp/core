@@ -15,14 +15,14 @@
 
 namespace Test\Asset\Action\ArgumentEvent;
 
-use ItePHP\Mapper\MapperAbstract;
+use ItePHP\Mapper\AbstractMapper;
 
 /**
  * Base class for mapper. Cast value to another value.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class NumberMapper extends MapperAbstract{
+class NumberMapper extends AbstractMapper{
 
     /**
      * {@inheritdoc}

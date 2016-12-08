@@ -15,7 +15,7 @@
 
 namespace ItePHP\Action;
 
-use ItePHP\Mapper\MapperAbstract;
+use ItePHP\Mapper\AbstractMapper;
 use ItePHP\Core\ExecuteActionEvent;
 use ItePHP\Core\InvalidConfigValueException;
 use ItePHP\Core\Request;
@@ -109,7 +109,7 @@ class ArgumentEvent{
 		$mapperName=$config->getValue('mapper');
 		if($mapperName!==''){
             /**
-             * @var MapperAbstract $mapper
+             * @var AbstractMapper $mapper
              */
 			$mapper=new $mapperName($this->container);
 			$value=$mapper->cast($value);
