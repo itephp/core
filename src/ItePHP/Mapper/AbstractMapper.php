@@ -48,7 +48,7 @@ abstract class AbstractMapper{
      * @throws ServiceNotFoundException
      */
     public function getService($name){
-        return $this->getService($name);
+        return $this->container->getService($name);
     }
 
     /**
