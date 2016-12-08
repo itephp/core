@@ -403,7 +403,7 @@ class Root{
             /**
              * @var ConfigContainer $serviceNode
              */
-			$metadataClass=$this->getMetadataClass('service.'.$serviceNode->getValue('name'),$serviceNode,$serviceNode->getValue('singleton')==="true");
+			$metadataClass=$this->getMetadataClass('service.'.$serviceNode->getValue('name'),$serviceNode,$serviceNode->getValue('singleton'));
 			$classLoader->register($metadataClass);
 		}
 	}
