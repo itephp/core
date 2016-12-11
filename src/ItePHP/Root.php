@@ -194,9 +194,11 @@ class Root{
 	 * Init framework config
 	 */
 	private function initConfig(){
-	    $cacheFilePath=$this->environment->getCachePath().'/config.class';
+	    $cacheFilePath=$this->environment->getCachePath().'/Config.class';
 	    if(file_exists($cacheFilePath)){
-	        $this->config=unserialize($cacheFilePath);
+	        require_once $cacheFilePath;
+            $className='Pactum\\Data\\Config';
+            $this->config=new $className();
 	        return;
         }
 
@@ -273,10 +275,9 @@ class Root{
 			$structureObj->doConfig($mainConfig);
 		}
 		$container=$mainConfig->parse();
+        file_put_contents($this->environment->getCachePath().'/Config.php','<?php '.$container->getConfigCode());
 		$this->config=$container->getConfig();
-        file_put_contents($cacheFilePath,serialize($this->config));
         //for dev
-        file_put_contents($this->environment->getSrcPath().'/Config.php','<?php '.$container->getConfigCode());
 	}
 
 	/**
