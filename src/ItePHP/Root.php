@@ -44,6 +44,7 @@ use Pactum\ConfigBuilderValue;
 use Pactum\ConfigContainer;
 use Pactum\ParserProcess;
 use Pactum\Reader\XMLReader;
+use Pactum\Data\Config;
 use Via\Action\HTTPAction;
 use Via\Action\StringAction;
 use Via\RouteNotFoundException;
@@ -65,7 +66,7 @@ class Root{
 
 	/**
 	 *
-	 * @var ConfigContainer
+	 * @var Config
 	 */
 	private $config;
 
@@ -193,6 +194,12 @@ class Root{
 	 * Init framework config
 	 */
 	private function initConfig(){
+	    $cacheFilePath=$this->environment->getCachePath().'/config.class';
+	    if(file_exists($cacheFilePath)){
+	        $this->config=unserialize($cacheFilePath);
+	        return;
+        }
+
 		//config structure
 		$structureConfig=new ConfigBuilder();
 
@@ -265,7 +272,11 @@ class Root{
 			$structureObj=new $structureValue();
 			$structureObj->doConfig($mainConfig);
 		}
-		$this->config=$mainConfig->parse();
+		$container=$mainConfig->parse();
+		$this->config=$container->getConfig();
+        file_put_contents($cacheFilePath,serialize($this->config));
+        //for dev
+        file_put_contents($this->environment->getSrcPath().'/Config.php','<?php '.$container->getConfigCode());
 	}
 
 	/**
