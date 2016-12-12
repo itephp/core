@@ -15,6 +15,9 @@
 
 namespace ItePHP;
 
+use Config\Config;
+use Config\Config\Action;
+use Config\Config\Event;
 use ItePHP\Core\EventManager;
 use ItePHP\Core\Presenter;
 use ItePHP\Core\Request;
@@ -41,10 +44,8 @@ use Onus\MetadataMethod;
 use Pactum\ConfigBuilder;
 use Pactum\ConfigBuilderObject;
 use Pactum\ConfigBuilderValue;
-use Pactum\ConfigContainer;
 use Pactum\ParserProcess;
 use Pactum\Reader\XMLReader;
-use Pactum\Data\Config;
 use Via\Action\HTTPAction;
 use Via\Action\StringAction;
 use Via\RouteNotFoundException;
@@ -194,12 +195,15 @@ class Root{
 	 * Init framework config
 	 */
 	private function initConfig(){
-	    $cacheFilePath=$this->environment->getCachePath().'/Config.class';
+	    $cacheFilePath=$this->environment->getCachePath().'/config.php';
 	    if(file_exists($cacheFilePath)){
-	        require_once $cacheFilePath;
-            $className='Pactum\\Data\\Config';
-            $this->config=new $className();
-	        return;
+	        try{
+                $this->config=unserialize(file_get_contents($cacheFilePath));
+                return;
+            }
+            catch(\Exception $e){//invalid restore cache
+	            unlink($cacheFilePath);
+            }
         }
 
 		//config structure
@@ -210,7 +214,7 @@ class Root{
 
         $structureConfig->addArray('structure',new ConfigBuilderValue("string"));
 
-		$structureContainer=$structureConfig->parse();
+		$structureContainer=$structureConfig->getContainer();
 
 		$xmlReader=new XMLReader($this->environment->getConfigPath().'/'.$this->environment->getName().'.xml');
 		$mainConfig=new ConfigBuilder();
@@ -235,7 +239,7 @@ class Root{
              * @var ConfigBuilderObject $value
              */
             foreach($process->getValue() as $value){
-                $variables[$value->getValue('name')]=$value->getValue('value');
+                $variables[$value['name']]=$value['value'];
             }
 
         });
@@ -244,7 +248,7 @@ class Root{
             if(in_array($process->getType(),['string','boolean','mixed','number']) && is_string($process->getValue())){
 
                 $value=$process->getValue();
-                preg_match_all('/@\{(.+?)\}/',$process->getValue(),$matches);
+                preg_match_all('/@\{(.+?)\}/',$value,$matches);
                 for($i=0; $i<count($matches[0]); $i++){
                     if(is_string($variables[$matches[1][$i]]) && $value!==$matches[0][$i]){
                         $value=str_replace($matches[0][$i],$variables[$matches[1][$i]],$value);
@@ -267,16 +271,16 @@ class Root{
 
         //$xmlReader=new XMLReader($this->environment->getConfigPath().'/'.$importValue);
 
-        foreach($structureContainer->getArray('structure') as $structureValue){
+        foreach($structureContainer->getData('structure') as $structureValue){
             /**
              * @var Structure $structureObj
              */
 			$structureObj=new $structureValue();
 			$structureObj->doConfig($mainConfig);
 		}
-		$container=$mainConfig->parse();
-        file_put_contents($this->environment->getCachePath().'/Config.php','<?php '.$container->getConfigCode());
-		$this->config=$container->getConfig();
+		$container=$mainConfig->getClass($this->environment->getSrcPath().'/Config','Config');//FIXME adde method without generate class
+        file_put_contents($cacheFilePath,serialize($container));
+		$this->config=$container;
         //for dev
 	}
 
@@ -309,7 +313,7 @@ class Root{
 	private function createHttpRouter(ClassLoader $classLoader, Request $request){
 		$router=new Router();
 		$presenters=$this->getPresenters($classLoader);
-		foreach($this->config->getArray('action') as $actionObject){
+		foreach($this->config->getAction() as $actionObject){
 		    $this->addHttpMethodActions($router,$actionObject,$request,$presenters);
 		}
 
@@ -318,13 +322,13 @@ class Root{
 
     /**
      * @param Router $router
-     * @param ConfigContainer $actionNode
+     * @param Action $actionNode
      * @param Request $request
      * @param Presenter[] $presenters
      */
-	private function addHttpMethodActions($router,$actionNode,$request,$presenters){
-        $path=$actionNode->getValue('path');
-        $httpMethods=$actionNode->getValue('http-method');
+	private function addHttpMethodActions($router, Action $actionNode, $request, $presenters){
+        $path=$actionNode->getPath();
+        $httpMethods=$actionNode->getHttpMethod();
 	    foreach (explode(",",$httpMethods) as $httpMethod){
             $router->addAction(new HTTPAction($path,$httpMethod),
                 new HTTPDispatcher($actionNode,
@@ -345,11 +349,8 @@ class Root{
 	 */
 	private function getPresenters(ClassLoader $classLoader){
 		$presenters=[];
-		foreach($this->config->getArray('presenter') as $presenterNode){
-            /**
-             * @var ConfigContainer $presenterNode
-             */
-			$presenters[$presenterNode->getValue('name')]=$classLoader->get('presenter.'.$presenterNode->getValue('name'));
+		foreach($this->config->getPresenter() as $presenterNode){
+			$presenters[$presenterNode->getName()]=$classLoader->get('presenter.'.$presenterNode->getName());
 		}
 
 		return $presenters;
@@ -364,11 +365,8 @@ class Root{
 	private function createConsoleRouter(ClassLoader $classLoader, $commandArguments){
 		$router=new Router();
 
-		foreach($this->config->getArray('command') as $commandNode){
-            /**
-             * @var ConfigContainer $commandNode
-             */
-			$router->addAction(new StringAction($commandNode->getValue('name')),
+		foreach($this->config->getCommand() as $commandNode){
+			$router->addAction(new StringAction($commandNode->getName()),
 				new ConsoleDispatcher($commandNode,
 					$classLoader,
 					$commandArguments
@@ -393,12 +391,9 @@ class Root{
      * @param ClassLoader $classLoader
      */
 	private function registerEvents(ClassLoader $classLoader){
-		foreach($this->config->getArray('event') as $eventNode){
-            /**
-             * @var ConfigContainer $eventNode
-             */
+		foreach($this->config->getEvent() as $eventNode){
 
-			$name=$eventNode->getValue('class');
+			$name=$eventNode->getClass();
 			$metadataClass=$this->getMetadataClass($name,$eventNode);
 			$classLoader->register($metadataClass);
 
@@ -411,11 +406,8 @@ class Root{
 	 * @param ClassLoader $classLoader
 	 */
 	private function registerServices(ClassLoader $classLoader){
-		foreach($this->config->getArray('service') as $serviceNode){
-            /**
-             * @var ConfigContainer $serviceNode
-             */
-			$metadataClass=$this->getMetadataClass('service.'.$serviceNode->getValue('name'),$serviceNode,$serviceNode->getValue('singleton'));
+		foreach($this->config->getService() as $serviceNode){
+			$metadataClass=$this->getMetadataClass('service.'.$serviceNode->getName(),$serviceNode,$serviceNode->isSingleton());
 			$classLoader->register($metadataClass);
 		}
 	}
@@ -425,11 +417,8 @@ class Root{
 	 * @param ClassLoader $classLoader
 	 */
 	private function registerPresenters(ClassLoader $classLoader){
-		foreach($this->config->getArray('presenter') as $presenterNode){
-            /**
-             * @var ConfigContainer $presenterNode
-             */
-			$metadataClass=$this->getMetadataClass('presenter.'.$presenterNode->getValue('name'),$presenterNode);
+		foreach($this->config->getPresenter() as $presenterNode){
+			$metadataClass=$this->getMetadataClass('presenter.'.$presenterNode->getName(),$presenterNode);
 			$classLoader->register($metadataClass);
 		}
 	}
@@ -439,30 +428,24 @@ class Root{
 	 * @param ClassLoader $classLoader
 	 */
 	private function registerCommands(ClassLoader $classLoader){
-		foreach($this->config->getArray('command') as $commandNode){
-            /**
-             * @var ConfigContainer $commandNode
-             */
-			$metadataClass=$this->getMetadataClass('command.'.$commandNode->getValue('name'),$commandNode);
+		foreach($this->config->getCommand() as $commandNode){
+			$metadataClass=$this->getMetadataClass('command.'.$commandNode->getName(),$commandNode);
 			$classLoader->register($metadataClass);
 		}
 	}
 
-	/**
-	 *
-	 * @param ConfigContainer $eventNode
-	 * @param ClassLoader $classLoader
-	 */
-	private function eventManagerBind(ConfigContainer $eventNode,ClassLoader $classLoader){
+    /**
+     *
+     * @param Event $eventNode
+     * @param ClassLoader $classLoader
+     */
+	private function eventManagerBind(Event $eventNode,ClassLoader $classLoader){
 		$eventManager=$this->container->getEventManager();
-		foreach($eventNode->getArray('bind') as $bindNode){
-            /**
-             * @var ConfigContainer $bindNode
-             */
+		foreach($eventNode->getBind() as $bindNode){
 			$eventManager->register(
-				$bindNode->getValue('name'),
-				$classLoader->get($eventNode->getValue('class')),
-				$bindNode->getValue('method')
+				$bindNode->getName(),
+				$classLoader->get($eventNode->getClass()),
+				$bindNode->getMethod()
 			);
 		}
 	}
@@ -470,13 +453,13 @@ class Root{
     /**
      *
      * @param string $name
-     * @param ConfigContainer $classNode
+     * @param object $classNode
      * @param bool $singleton
      * @return MetadataClass
      */
-	private function getMetadataClass($name,ConfigContainer $classNode,$singleton=true){
-		$metadataClass=new MetadataClass($name,$classNode->getValue('class'),$singleton);
-		foreach($classNode->getArray('method') as $methodNode){
+	private function getMetadataClass($name,$classNode,$singleton=true){
+		$metadataClass=new MetadataClass($name,$classNode->getClass(),$singleton);
+		foreach($classNode->getMethod() as $methodNode){
 			$metadataMethod=$this->getMetadataDependencyMethod($methodNode);
 			$metadataClass->register($metadataMethod);
 		}
@@ -486,16 +469,16 @@ class Root{
 
 	/**
 	 *
-	 * @param ConfigContainer $methodNode
+	 * @param object $methodNode
 	 * @return MetadataMethod
 	 */
-	private function getMetadataDependencyMethod(ConfigContainer $methodNode){
-		$metadataMethod=new MetadataMethod($methodNode->getValue('name'));
-		foreach($methodNode->getArray('argument') as $argumentNode){
+	private function getMetadataDependencyMethod( $methodNode){
+		$metadataMethod=new MetadataMethod($methodNode->getName());
+		foreach($methodNode->getArgument() as $argumentNode){
             /**
-             * @var ConfigContainer $argumentNode
+             * @var object $argumentNode
              */
-			$metadataMethod->addArgument($argumentNode->getValue('type'),$argumentNode->getValue('value'));
+			$metadataMethod->addArgument($argumentNode->getType(),$argumentNode->getValue());
 		}
 
 		return $metadataMethod;

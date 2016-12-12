@@ -15,12 +15,12 @@
 
 namespace ItePHP\Core;
 
+use Config\Config\Command;
 use ItePHP\Command\CommandInterface;
 
 use ItePHP\Command\OutputStreamConsole;
 use ItePHP\Command\CommandExecutor;
 use Onus\ClassLoader;
-use Pactum\ConfigContainer;
 use Via\Dispatcher;
 
 /**
@@ -44,7 +44,7 @@ class ConsoleDispatcher  implements Dispatcher {
 
 	/**
 	 *
-	 * @var ConfigContainer
+	 * @var Command
 	 */
 	protected $config;
 
@@ -54,16 +54,16 @@ class ConsoleDispatcher  implements Dispatcher {
 	 */
 	protected $arguments;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param ConfigContainer $config
-	 * @param ClassLoader $classLoader
-	 * @param mixed[] $arguments
-	 */
-	public function __construct(ConfigContainer $config, ClassLoader $classLoader, $arguments){
+    /**
+     * Constructor.
+     *
+     * @param Command $config
+     * @param ClassLoader $classLoader
+     * @param mixed[] $arguments
+     */
+	public function __construct(Command $config, ClassLoader $classLoader, $arguments){
 		$this->config=$config;
-		$this->name=$config->getValue('name');
+		$this->name=$config->getName();
 		$this->classLoader=$classLoader;
 		$this->arguments=$arguments;
 	}
