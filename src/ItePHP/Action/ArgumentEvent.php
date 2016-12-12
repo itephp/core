@@ -15,6 +15,8 @@
 
 namespace ItePHP\Action;
 
+use Config\Config\Action\Argument;
+use Config\Config\Action\Argument\Validator;
 use ItePHP\Mapper\AbstractMapper;
 use ItePHP\Core\ExecuteActionEvent;
 use ItePHP\Core\InvalidConfigValueException;
@@ -25,7 +27,6 @@ use Judex\ValidatorManager;
 use Onus\ClassLoader;
 use Onus\MetadataClass;
 use Onus\MetadataMethod;
-use Pactum\ConfigContainer;
 
 /**
  * Event to forward http param ($_POST[],$_GET[],url) to controller method.
@@ -62,7 +63,7 @@ class ArgumentEvent{
 	public function onExecuteAction(ExecuteActionEvent $event){
 		$request=$event->getRequest();
 		$position=1;
-		foreach($request->getConfig()->getArray('argument') as $argument){
+		foreach($request->getConfig()->getArgument() as $argument){
 			$this->validateArgument($request,$argument,$position++);				
 		}
 	}
@@ -71,14 +72,14 @@ class ArgumentEvent{
 	 * Validate argument.
 	 *
 	 * @param Request $request
-	 * @param ConfigContainer $config argument
+	 * @param Argument $config argument
 	 * @param int $position
 	 * @throws InvalidConfigValueException
 	 * @throws InvalidArgumentException
 	 */
-	private function validateArgument(Request $request , ConfigContainer $config , $position){
+	private function validateArgument(Request $request , Argument $config , $position){
 		$value=null;
-		switch($config->getValue('storage')){
+		switch($config->getStorage()){
 			case 'url':
 				$value=$this->validateUrl($request , $config , $position);
 			break;
@@ -89,11 +90,11 @@ class ArgumentEvent{
 				$value=$this->validateGetPost($request->getQuery() , $config , $position);
 			break;
 			default:
-				throw new InvalidConfigValueException('storage',$config->getValue('storage'));
+				throw new InvalidConfigValueException('storage',$config->getStorage());
 
 		}
 
-		$validators=$config->getArray('validator');
+		$validators=$config->getValidator();
 		if($validators){
 		    $validatorManager=new ValidatorManager();
 		    foreach($validators as $validator){
@@ -102,11 +103,11 @@ class ArgumentEvent{
 
             $result=$validatorManager->validate($value);
             if(!$result->isValid()){
-                throw new InvalidArgumentException($position,$config->getValue('name'),implode(', ',$result->getErrors()));
+                throw new InvalidArgumentException($position,$config->getName(),implode(', ',$result->getErrors()));
             }
 		}
 
-		$mapperName=$config->getValue('mapper');
+		$mapperName=$config->getMapper();
 		if($mapperName!==''){
             /**
              * @var AbstractMapper $mapper
@@ -114,32 +115,26 @@ class ArgumentEvent{
 			$mapper=new $mapperName($this->container);
 			$value=$mapper->cast($value);
 		}
-		$request->setArgument($config->getValue('name'),$value);
+		$request->setArgument($config->getName(),$value);
 
 	}
 
     /**
-     * @param ConfigContainer $validatorConfig
+     * @param Validator $validatorConfig
      * @return AbstractValidator
      */
-	private function getValidator($validatorConfig){
-	    $className=$validatorConfig->getValue('class');
+	private function getValidator(Validator $validatorConfig){
+	    $className=$validatorConfig->getClass();
 	    $localClassLoader=new ClassLoader();
 
 	    $metadata=new MetadataClass('main',$className);
         $localClassLoader->register($metadata);
-	    foreach($validatorConfig->getArray('method') as $method){
-            /**
-             * @var ConfigContainer $method
-             */
-            $metadataMethod=$metadata->addMethod($method->getValue('name'));
+	    foreach($validatorConfig->getMethod() as $method){
+            $metadataMethod=$metadata->addMethod($method->getName());
 
-	        foreach($method->getArray('argument') as $argument){
-                /**
-                 * @var ConfigContainer $argument
-                 */
-	            $type=$argument->getValue('type');
-	            $value=$argument->getValue('value');
+	        foreach($method->getArgument() as $argument){
+	            $type=$argument->getType();
+	            $value=$argument->getValue();
 	            if($type===MetadataMethod::REFERENCE_TYPE){
 	                $value=$this->classLoader->get($value);
                 }
@@ -148,29 +143,33 @@ class ArgumentEvent{
             }
         }
 
-        return $localClassLoader->get('main');
+        /**
+         * @var AbstractValidator $main
+         */
+        $main=$localClassLoader->get('main');
+        return $main;
     }
 
 	/**
 	 * Validate url.
 	 *
 	 * @param Request $request
-	 * @param ConfigContainer $config argument
+	 * @param Argument $config argument
 	 * @param int $position
 	 * @return string
 	 * @throws RequiredArgumentException
 	 */
-	private function validateUrl(Request $request , ConfigContainer $config , $position){
+	private function validateUrl(Request $request , Argument $config , $position){
 		$url=$request->getUrl();
-		$default=$config->getValue('default');
-		if(preg_match('/^'.$config->getValue('pattern').'$/',$url,$matches) && isset($matches[1])){
+		$default=$config->getDefault();
+		if(preg_match('/^'.$config->getPattern().'$/',$url,$matches) && isset($matches[1])){
 			return $matches[1];			
 		}
 		else if($default!==false){
-			return $config->getValue('default');
+			return $config->getDefault();
 		}
 		else{
-			throw new RequiredArgumentException($position,$config->getValue('name'));
+			throw new RequiredArgumentException($position,$config->getName());
 		}
 	}
 
@@ -178,14 +177,14 @@ class ArgumentEvent{
 	 * Validate GET.
 	 *
 	 * @param string[] $data http post/get data
-	 * @param ConfigContainer $config argument
+	 * @param Argument $config argument
 	 * @param int $position
 	 * @return string
 	 * @throws RequiredArgumentException
 	 */
-	private function validateGetPost($data , ConfigContainer $config , $position){
-		$argumentName=$config->getValue('name');
-		$default=$config->getValue('default');
+	private function validateGetPost($data , Argument $config , $position){
+		$argumentName=$config->getName();
+		$default=$config->getDefault();
 		if(!isset($data[$argumentName])){
 			if($default!==false){
 				return $default;
