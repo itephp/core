@@ -11,11 +11,11 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "newclass/via": "^v1.0",
+        "newclass/via": "dev-develop",
         "newclass/pactum": "dev-develop",
-        "newclass/onus": "^v1.0",
-        "newclass/forma": "^1.0",
-        "newclass/mensam": "^1.0"
+        "newclass/onus": "dev-develop",
+        "newclass/forma": "dev-develop",
+        "newclass/mensam": "dev-develop"
         },
     "autoload": {
         "psr-4": { "ItePHP\\": "src/ItePHP" }
