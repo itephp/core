@@ -14,8 +14,8 @@
  */
 
 namespace ItePHP\Core;
+use Config\Config\Action;
 use ItePHP\Component\Form\FileUploaded;
-use Pactum\ConfigContainer;
 
 /**
  * Interface for request
@@ -149,14 +149,14 @@ interface Request{
 
 	/**
 	 *
-	 * @return ConfigContainer
+	 * @return Action
 	 */
 	public function getConfig();
 
 	/**
 	 *
-	 * @param ConfigContainer $config
+	 * @param Action $config
 	 */
-	public function setConfig(ConfigContainer $config);
+	public function setConfig(Action $config);
 
 }

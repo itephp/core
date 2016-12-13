@@ -15,8 +15,9 @@
 
 namespace ItePHP\Core;
 
+use Config\Config;
+use Config\Config\Action;
 use ItePHP\Provider\Session;
-use Pactum\ConfigContainer;
 
 /**
  * Provider for request.
@@ -75,7 +76,7 @@ class EmptyRequest implements Request{
 
 	/**
 	 *
-	 * @var ConfigContainer
+	 * @var Config
 	 */
 	private $config;
 
@@ -160,7 +161,7 @@ class EmptyRequest implements Request{
     /**
      * {@inheritdoc}
      */
-	public function setConfig(ConfigContainer $config){
+	public function setConfig(Action $config){
 		$this->config=$config;
 	}
 

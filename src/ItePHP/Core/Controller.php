@@ -15,7 +15,7 @@
 
 namespace ItePHP\Core;
 
-use Pactum\ConfigContainer;
+use Config\Config;
 
 /**
  * Main class for project controllers
@@ -72,7 +72,7 @@ abstract class Controller{
     }
 
     /**
-     * @return ConfigContainer
+     * @return Config
      */
     public function getConfig(){
         return $this->container->getConfig();

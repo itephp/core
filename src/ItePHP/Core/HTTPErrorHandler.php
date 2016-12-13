@@ -15,10 +15,10 @@
 
 namespace ItePHP\Core;
 
+use Config\Config;
 use ItePHP\Error\ErrorHandler;
 use ItePHP\Presenter\HTML as HTMLPresenter;
 use Onus\ClassLoader;
-use Pactum\ConfigContainer;
 
 /**
  *
@@ -56,7 +56,7 @@ class HTTPErrorHandler implements ErrorHandler{
 			error_log($exception->getMessage()." ".$exception->getFile()."(".$exception->getLine().")");
 		}
 
-		$presenter=$this->getPresenter($this->request->getUrl());
+ 		$presenter=$this->getPresenter($this->request->getUrl());
 
 		$response=new Response();
 		$response->setStatusCode(500);
@@ -79,17 +79,14 @@ class HTTPErrorHandler implements ErrorHandler{
 	 */
 	private function getPresenter($url){
         /**
-         * @var ConfigContainer $config
+         * @var Config $config
          */
         $config=$this->classLoader->get('config');
-		foreach($config->getArray('error') as $error){
-            /**
-             * @var ConfigContainer $error
-             */
-			if(!preg_match('/^'.$error->getValue('pattern').'$/',$url)){
+		foreach($config->getError() as $error){
+			if(!preg_match('/^'.$error->getPattern().'$/',$url)){
 				continue;
 			}
-			$presenterName=$error->getValue('presenter');
+			$presenterName=$error->getPresenter();
             /**
              * @var Presenter $presenterObject
              */
@@ -97,7 +94,11 @@ class HTTPErrorHandler implements ErrorHandler{
 			return $presenterObject;
 		}
 
-		return new HTMLPresenter($this->classLoader->get('environment'));
+        /**
+         * @var Environment $environment
+         */
+		$environment=$this->classLoader->get('environment');
+		return new HTMLPresenter($environment);
 
 	}
 
