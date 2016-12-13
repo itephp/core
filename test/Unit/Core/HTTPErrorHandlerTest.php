@@ -17,7 +17,7 @@ use Pactum\Reader\XMLReader;
 
 class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 
-	private function createConfigContainer(){
+	private function createConfig(){
 		$configBuilder=new ConfigBuilder();
 
 		$structure=new ErrorStructure();
@@ -29,7 +29,7 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 		$xmlFileReader=new XMLReader(__DIR__.'/../../Asset/Core/HTTPErrorHandler/config.xml');
 		$configBuilder->addReader($xmlFileReader);
 
-		return $configBuilder->parse();
+		return $configBuilder->getClass();
 	}
 
 	public function testExecuteHTML(){
@@ -65,7 +65,7 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 
 		$dependencyInjection=new ClassLoader();
 		$dependencyInjection->addInstance('environment',$environment);
-		$dependencyInjection->addInstance('config',$this->createConfigContainer());
+		$dependencyInjection->addInstance('config',$this->createConfig());
 		$dependencyInjection->addInstance('eventManager',new EventManager());
 		$dependencyInjection->addInstance('presenter.html',new HTML($environment));
 		$dependencyInjection->addInstance('presenter.json',new JSON($environment));

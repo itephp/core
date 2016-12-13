@@ -167,7 +167,6 @@ class Root{
         $classLoader->addInstance('request',$request);
 
 		$this->reconfigureErrorManager($classLoader,$request);
-
 		try{
 			$dispatcher=$this->createHttpRouter($classLoader,$request)
                 ->createDispatcher(new \Via\Action\HTTPRequest($request->getUrl(),$request->getType()));

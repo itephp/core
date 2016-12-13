@@ -15,11 +15,12 @@
 
 namespace Test\Asset;
 
+use Config\Config;
+use Config\Config\Action;
 use ItePHP\Core\Request;
 use ItePHP\Core\HeaderNotFoundException;
 use ItePHP\Component\Form\FileUploaded;
 use ItePHP\Core\FileNotUploadedException;
-use Pactum\ConfigContainer;
 
 /**
  * Provider for request.
@@ -40,7 +41,7 @@ class RequestTest implements Request{
 
 	/**
 	 *
-	 * @var ConfigContainer
+	 * @var Config
 	 */
 	private $config;
 
@@ -122,7 +123,7 @@ class RequestTest implements Request{
     /**
      * {@inheritdoc}
      */
-	public function setConfig(ConfigContainer $config){
+	public function setConfig(Action $config){
 		$this->config=$config;
 	}
 

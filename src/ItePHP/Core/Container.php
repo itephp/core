@@ -15,9 +15,9 @@
 
 namespace ItePHP\Core;
 
+use Config\Config;
 use Onus\ClassLoader;
 use Onus\InstanceNotFoundException;
-use Pactum\ConfigContainer;
 
 
 /**
@@ -49,7 +49,11 @@ class Container{
 	 * @return Environment
 	 */
 	public function getEnvironment(){
-		return $this->classLoader->get('environment');
+        /**
+         * @var Environment $data
+         */
+		$data=$this->classLoader->get('environment');
+		return $data;
 	}
 
 	/**
@@ -58,7 +62,11 @@ class Container{
 	 * @return EventManager
 	 */
 	public function getEventManager(){
-		return $this->classLoader->get('eventManager');
+        /**
+         * @var EventManager $data
+         */
+	    $data=$this->classLoader->get('eventManager');
+		return $data;
 	}
 
     /**
@@ -77,10 +85,14 @@ class Container{
 	}
 
     /**
-     * @return ConfigContainer
+     * @return Config
      */
     public function getConfig()
     {
-        return $this->classLoader->get('config');
+        /**
+         * @var Config $data
+         */
+        $data=$this->classLoader->get('config');
+        return $data;
     }
 }
