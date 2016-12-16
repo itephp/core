@@ -26,7 +26,7 @@ use ItePHP\Core\Response;
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class File implements Presenter{
+class FilePresenter implements Presenter{
 
     /**
      * @var Environment

@@ -195,7 +195,7 @@ class Root{
 	 */
 	private function initConfig(){
 	    $cacheFilePath=$this->environment->getCachePath().'/config.php';
-	    if(file_exists($cacheFilePath)){
+	    if(!$this->environment->isDebug() && file_exists($cacheFilePath)){
 	        try{
                 $this->config=unserialize(file_get_contents($cacheFilePath));
                 return;

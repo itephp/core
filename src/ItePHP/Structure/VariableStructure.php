@@ -30,6 +30,6 @@ class VariableStructure implements Structure{
 	public function doConfig(ConfigBuilder $configBuilder){
 	    $configBuilder->addArray('variable',new ConfigBuilderObject())->getValue()
             ->addString('name')
-            ->addString('value'); //FIXME change to addMixed
+            ->addMixed('value');
 	}
 }
