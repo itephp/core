@@ -4,15 +4,15 @@
 
 	<authenticate max-time="10" />
 
-	<action class="Controller\TestController" method="required" path="\/required" presenter="ItePHP\Presenter\HTML">
+	<action class="Controller\TestController" method="required" path="\/required" response="ItePHP\Presenter\HTML">
 		<authenticate unauth-redirect="/login" />
 	</action>
 
-	<action class="Controller\TestController" method="notrequired" path="\/notrequired" presenter="ItePHP\Presenter\HTML">
+	<action class="Controller\TestController" method="notrequired" path="\/notrequired" response="ItePHP\Presenter\HTML">
 		<authenticate auth-redirect="/logout" />
 	</action>
 
-	<action class="Controller\TestController" method="notrequired" path="\/notrequired" presenter="ItePHP\Presenter\HTML">
+	<action class="Controller\TestController" method="notrequired" path="\/notrequired" response="ItePHP\Presenter\HTML">
 		<authenticate />
 	</action>
 

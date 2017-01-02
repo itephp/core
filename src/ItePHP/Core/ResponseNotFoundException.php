@@ -19,14 +19,14 @@ namespace ItePHP\Core;
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class PresenterNotFoundException extends \Exception{
+class ResponseNotFoundException extends \Exception{
 
 	/**
 	 *
 	 * @param string $presenterName
 	 */	
 	public function __construct($presenterName){
-		parent::__construct('Presenter '.$presenterName.' not found.');
+		parent::__construct('Response '.$presenterName.' not found.');
 	}
 
 }

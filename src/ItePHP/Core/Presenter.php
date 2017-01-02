@@ -26,8 +26,8 @@ interface Presenter{
 	 * Method with render rules.
 	 *
 	 * @param Request $request
-	 * @param Response $response
+	 * @param AbstractResponse $response
 	 */
-	public function render(Request $request,Response $response);
+	public function render(Request $request, AbstractResponse $response);
 
 }

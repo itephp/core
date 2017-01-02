@@ -16,6 +16,7 @@
 namespace ItePHP\Core;
 
 use Config\Config;
+use ItePHP\Presenter\HTMLResponse;
 
 /**
  * Main class for project controllers
@@ -107,10 +108,10 @@ abstract class Controller{
 
     /**
      * @param string $url
-     * @return Response
+     * @return AbstractResponse
      */
 	public function redirect($url){
-        $response=new Response();
+        $response=new HTMLResponse();
         return $response->redirect($url);
     }
 

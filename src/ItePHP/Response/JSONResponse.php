@@ -13,24 +13,28 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-namespace ItePHP\Structure;
-use Pactum\ConfigBuilder;
-use Pactum\ConfigBuilderObject;
+namespace ItePHP\Presenter;
 
+use ItePHP\Core\AbstractResponse;
 
 /**
- * Structure for errors.
+ * Presenter for json.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class ErrorStructure implements Structure{
+class JSONResponse extends AbstractResponse{
+
+    public function __construct()
+    {
+        $this->setHeader('Content-type','application/json');
+    }
 
     /**
-     * {@inheritdoc}
+     * Generate content like: html, json etc.
+     * @return void
      */
-	public function doConfig(ConfigBuilder $configBuilder){
-	    $configBuilder->addArray('error',new ConfigBuilderObject())->getValue()
-            ->addString('pattern')
-            ->addString('response');
-	}
+    public function renderBody()
+    {
+        echo json_encode($this->getContent());
+    }
 }

@@ -32,7 +32,7 @@ class ExecuteActionEvent{
 	/**
 	 * Response.
 	 *
-	 * @var Response $response
+	 * @var AbstractResponse $response
 	 */
 	private $response;
 
@@ -57,16 +57,16 @@ class ExecuteActionEvent{
 	/**
 	 * Set response.
 	 *
-	 * @param Response $response
+	 * @param AbstractResponse $response
 	 */
-	public function setResponse(Response $response){
+	public function setResponse(AbstractResponse $response){
 		$this->response=$response;
 	}
 
 	/**
 	 * Get response.
 	 *
-	 * @return Response
+	 * @return AbstractResponse
 	 */
 	public function getResponse(){
 		return $this->response;

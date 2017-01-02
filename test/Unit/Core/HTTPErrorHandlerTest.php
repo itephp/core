@@ -8,9 +8,9 @@ use ItePHP\Provider\Session;
 use ItePHP\Core\HTTPRequest;
 use ItePHP\Core\EventManager;
 use ItePHP\Structure\ErrorStructure;
-use ItePHP\Structure\PresenterStructure;
-use ItePHP\Presenter\HTML;
-use ItePHP\Presenter\JSON;
+use ItePHP\Structure\ResponseStructure;
+use ItePHP\Presenter\HTMLResponse;
+use ItePHP\Presenter\JSONResponse;
 use Onus\ClassLoader;
 use Pactum\ConfigBuilder;
 use Pactum\Reader\XMLReader;
@@ -23,7 +23,7 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 		$structure=new ErrorStructure();
 		$structure->doConfig($configBuilder);
 
-		$structure=new PresenterStructure();
+		$structure=new ResponseStructure();
 		$structure->doConfig($configBuilder);
 
 		$xmlFileReader=new XMLReader(__DIR__.'/../../Asset/Core/HTTPErrorHandler/config.xml');
@@ -67,8 +67,8 @@ class HTTPErrorHandlerTest extends \PHPUnit_Framework_TestCase{
 		$dependencyInjection->addInstance('environment',$environment);
 		$dependencyInjection->addInstance('config',$this->createConfig());
 		$dependencyInjection->addInstance('eventManager',new EventManager());
-		$dependencyInjection->addInstance('presenter.html',new HTML($environment));
-		$dependencyInjection->addInstance('presenter.json',new JSON($environment));
+		$dependencyInjection->addInstance('presenter.html',new HTMLResponse($environment));
+		$dependencyInjection->addInstance('presenter.json',new JSONResponse($environment));
 
 		return new HTTPErrorHandler($dependencyInjection,$request);
 	}

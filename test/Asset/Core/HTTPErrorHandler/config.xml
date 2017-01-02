@@ -12,7 +12,7 @@
 		</method>
 	</presenter>
 
-	<error pattern=".*\.json" presenter="json" />
-	<error pattern=".*" presenter="html" />
+	<error pattern=".*\.json" response="json" />
+	<error pattern=".*" response="html" />
 
 </content>

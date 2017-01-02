@@ -2,11 +2,11 @@
 
 <content>
 
-	<action class="Test\Asset\Root\Controller\TestController" method="index" path="/test" http-method="get" presenter="html" />
+	<action class="Test\Asset\Root\Controller\TestController" method="index" path="/test" http-method="get" response="html" />
 
-	<action class="Test\Asset\Root\Controller\TestController" method="error" path="/error" presenter="html" />
+	<action class="Test\Asset\Root\Controller\TestController" method="error" path="/error" response="html" />
 
-	<action class="Test\Asset\Root\Controller\TestController" method="argument" path="/argument" presenter="html">
+	<action class="Test\Asset\Root\Controller\TestController" method="argument" path="/argument" response="html">
 			<argument storage="get" name="var" validator="ItePHP\Validator\TextValidator" />
 	</action>
 

@@ -32,7 +32,7 @@ class ExecutedActionEvent{
 	/**
 	 * Response.
 	 *
-	 * @var Response $response
+	 * @var AbstractResponse $response
 	 */
 	private $response;
 
@@ -40,9 +40,9 @@ class ExecutedActionEvent{
 	 * Constructor.
 	 *
 	 * @param Request $request
-	 * @param Response $response
+	 * @param AbstractResponse $response
 	 */
-	public function __construct(Request $request , Response $response){
+	public function __construct(Request $request , AbstractResponse $response){
 		$this->request=$request;
 		$this->response=$response;
 	}
@@ -50,7 +50,7 @@ class ExecutedActionEvent{
 	/**
 	 * Get response.
 	 *
-	 * @return Response
+	 * @return AbstractResponse
 	 */
 	public function getResponse(){
 		return $this->response;

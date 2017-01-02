@@ -40,7 +40,7 @@ class ErrorManager{
 
 		ini_set('display_errors', 'Off');
 		register_shutdown_function(array($this->dispatcher, 'shutdown'));
-		set_error_handler(array($this->dispatcher, 'error'));
+		set_error_handler(array($this->dispatcher, 'error'),error_reporting());
 		set_exception_handler(array($this->dispatcher,'exception'));
 	}
 

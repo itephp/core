@@ -19,7 +19,6 @@ use Config\Config;
 use Config\Config\Action;
 use Config\Config\Event;
 use ItePHP\Core\EventManager;
-use ItePHP\Core\Presenter;
 use ItePHP\Core\Request;
 use ItePHP\Core\HTTPRequest;
 use ItePHP\Provider\Session;
@@ -158,7 +157,7 @@ class Root{
 		$this->registerServices($classLoader);
 		$this->registerEventManager($classLoader);
 		$this->registerEvents($classLoader);
-		$this->registerPresenters($classLoader);
+		$this->registerResponses($classLoader);
 
 		//request
 		$session=new Session($this->environment);
@@ -311,9 +310,8 @@ class Root{
 	 */
 	private function createHttpRouter(ClassLoader $classLoader, Request $request){
 		$router=new Router();
-		$presenters=$this->getPresenters($classLoader);
 		foreach($this->config->getAction() as $actionObject){
-		    $this->addHttpMethodActions($router,$actionObject,$request,$presenters);
+		    $this->addHttpMethodActions($router,$actionObject,$request,$classLoader);
 		}
 
 		return $router;
@@ -323,9 +321,9 @@ class Root{
      * @param Router $router
      * @param Action $actionNode
      * @param Request $request
-     * @param Presenter[] $presenters
+     * @param ClassLoader $classLoader
      */
-	private function addHttpMethodActions($router, Action $actionNode, $request, $presenters){
+	private function addHttpMethodActions($router, Action $actionNode, $request, ClassLoader $classLoader){
         $path=$actionNode->getPath();
         $httpMethods=$actionNode->getHttpMethod();
 	    foreach (explode(",",$httpMethods) as $httpMethod){
@@ -334,26 +332,12 @@ class Root{
                     $this->container,
                     $request,
                     $this->environment,
-                    $presenters
+                    $classLoader
                 )
             );
         }
 
     }
-
-	/**
-	 *
-	 * @param ClassLoader $classLoader
-	 * @return array
-	 */
-	private function getPresenters(ClassLoader $classLoader){
-		$presenters=[];
-		foreach($this->config->getPresenter() as $presenterNode){
-			$presenters[$presenterNode->getName()]=$classLoader->get('presenter.'.$presenterNode->getName());
-		}
-
-		return $presenters;
-	}
 
 	/**
 	 *
@@ -415,9 +399,9 @@ class Root{
 	 *
 	 * @param ClassLoader $classLoader
 	 */
-	private function registerPresenters(ClassLoader $classLoader){
-		foreach($this->config->getPresenter() as $presenterNode){
-			$metadataClass=$this->getMetadataClass('presenter.'.$presenterNode->getName(),$presenterNode);
+	private function registerResponses(ClassLoader $classLoader){
+		foreach($this->config->getResponse() as $responseNode){
+			$metadataClass=$this->getMetadataClass('response.'.$responseNode->getName(),$responseNode);
 			$classLoader->register($metadataClass);
 		}
 	}

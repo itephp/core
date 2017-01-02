@@ -17,7 +17,7 @@ namespace ItePHP\Presenter;
 
 use ItePHP\Core\Presenter;
 use ItePHP\Core\Request;
-use ItePHP\Core\Response;
+use ItePHP\Core\AbstractResponse;
 use ItePHP\Core\Environment;
 
 /**
@@ -25,35 +25,15 @@ use ItePHP\Core\Environment;
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class HTML implements Presenter{
+class HTMLResponse extends AbstractResponse{
 
-	/**
-	 *
-	 * @var Environment
-	 */
-	private $environment;
 
-	/**
-	 *
-	 * @param Environment $environment
-	 */
-	public function __construct(Environment $environment){
-		$this->environment=$environment;
-	}
-
-	/**
-	 *
-	 * @param Request $request
-	 * @param Response $response
-	 */
-	public function render(Request $request,Response $response){
-		if($this->environment->getName()!=='test'){
-			header('HTTP/1.1 '.$response->getStatusCode().' '.$response->getStatusMessage());			
-
-			foreach($response->getHeaders() as $name=>$value){
-				header($name.': '.$value);
-			}			
-		}
-		echo (string)$response->getContent();
-	}
+    /**
+     * Generate content html.
+     * @return void
+     */
+    public function renderBody()
+    {
+        echo (string)$this->getContent();
+    }
 }

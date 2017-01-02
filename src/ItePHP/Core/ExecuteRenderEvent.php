@@ -16,11 +16,11 @@
 namespace ItePHP\Core;
 
 /**
- * Container with data for event "executePresenter"
+ * Container with data for event "executeRender"
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class ExecutePresenterEvent{
+class ExecuteRenderEvent{
 
 	/**
 	 * Request provider.
@@ -32,7 +32,7 @@ class ExecutePresenterEvent{
 	/**
 	 * Response.
 	 *
-	 * @var Response $response
+	 * @var AbstractResponse $response
 	 */
 	private $response;
 
@@ -40,9 +40,9 @@ class ExecutePresenterEvent{
 	 * Constructor.
 	 *
 	 * @param Request $request
-	 * @param Response $response
+	 * @param AbstractResponse $response
 	 */
-	public function __construct(Request $request,Response $response){
+	public function __construct(Request $request, AbstractResponse $response){
 		$this->request=$request;
 		$this->response=$response;
 	}
@@ -59,16 +59,16 @@ class ExecutePresenterEvent{
 	/**
 	 * Set response.
 	 *
-	 * @param Response $response
+	 * @param AbstractResponse $response
 	 */
-	public function setResponse(Response $response){
+	public function setResponse(AbstractResponse $response){
 		$this->response=$response;
 	}
 
 	/**
 	 * Get response.
 	 *
-	 * @return Response
+	 * @return AbstractResponse
 	 */
 	public function getResponse(){
 		return $this->response;

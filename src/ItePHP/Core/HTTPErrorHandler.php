@@ -17,7 +17,7 @@ namespace ItePHP\Core;
 
 use Config\Config;
 use ItePHP\Error\ErrorHandler;
-use ItePHP\Presenter\HTML as HTMLPresenter;
+use ItePHP\Presenter\HTMLResponse;
 use Onus\ClassLoader;
 
 /**
@@ -56,28 +56,27 @@ class HTTPErrorHandler implements ErrorHandler{
 			error_log($exception->getMessage()." ".$exception->getFile()."(".$exception->getLine().")");
 		}
 
- 		$presenter=$this->getPresenter($this->request->getUrl());
+ 		$presenter=$this->getResponse($this->request->getUrl());
 
-		$response=new Response();
-		$response->setStatusCode(500);
-		$response->setContent($exception);
+		$presenter->setStatusCode(500);
+        $presenter->setContent($exception);
 		if($exception instanceof HTTPException){
-			$response->setStatusCode($exception->getStatusCode());
+            $presenter->setStatusCode($exception->getStatusCode());
 		}
 
-		$event=new ExecutePresenterEvent($this->request,$response);
+		$event=new ExecuteRenderEvent($this->request,$presenter);
 		$this->classLoader->get('eventManager')->fire('executePresenter',$event);
 
-		$presenter->render($this->request,$response);
+		$presenter->render();
 
 	}
 
 	/**
 	 *
 	 * @param string $url
-	 * @return Presenter
+	 * @return AbstractResponse
 	 */
-	private function getPresenter($url){
+	private function getResponse($url){
         /**
          * @var Config $config
          */
@@ -86,20 +85,15 @@ class HTTPErrorHandler implements ErrorHandler{
 			if(!preg_match('/^'.$error->getPattern().'$/',$url)){
 				continue;
 			}
-			$presenterName=$error->getPresenter();
+			$responseName=$error->getResponse();
             /**
-             * @var Presenter $presenterObject
+             * @var AbstractResponse $responseObject
              */
-            $presenterObject=$this->classLoader->get('presenter.'.$presenterName);
-			return $presenterObject;
+            $responseObject=$this->classLoader->get('response.'.$responseName);
+			return $responseObject;
 		}
 
-        /**
-         * @var Environment $environment
-         */
-		$environment=$this->classLoader->get('environment');
-		return new HTMLPresenter($environment);
-
+		return new HTMLResponse();
 	}
 
 }

@@ -47,12 +47,10 @@ class CriticalErrorHandler implements ErrorHandler{
 			return;
 		}
 
-		$presenter=new HTTPErrorPresenter($this->environment);
-		$response=new Response();
-		$response->setContent($exception);
-		$request=new EmptyRequest('',null);
+		$presenter=new HTTPErrorResponse($this->environment);
+		$presenter->setContent($exception);
 
-		$presenter->render($request,$response);
+		$presenter->render();
 
 	}
 

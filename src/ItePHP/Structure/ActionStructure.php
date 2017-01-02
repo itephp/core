@@ -35,6 +35,6 @@ class ActionStructure implements Structure{
                 ->addString('method')
                 ->addString('path')
                 ->addString('http-method','get,put,post,delete')
-                ->addString('presenter');
+                ->addString('response');
 	}
 }

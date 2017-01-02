@@ -23,20 +23,19 @@ use Pactum\ConfigBuilderObject;
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
  */
-class PresenterStructure implements Structure{
+class ResponseStructure implements Structure{
 
     /**
      * {@inheritdoc}
      */
 	public function doConfig(ConfigBuilder $configBuilder){
-
-        $configBuilder->addArray('presenter',new ConfigBuilderObject())->getValue()
+        $configBuilder->addArray('response',new ConfigBuilderObject())->getValue()
             ->addString('class')
             ->addString('name')
             ->addArray('method',new ConfigBuilderObject())->getValue()
             ->addString('name')
             ->addArray('argument',new ConfigBuilderObject())->getValue()
             ->addString('type')
-            ->addString('value'); //FIXME change to addMixed
+            ->addMixed('value');
     }
 }
