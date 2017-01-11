@@ -17,9 +17,9 @@ namespace ItePHP\Action;
 
 use Config\Config;
 use Config\Config\Action\Authenticate;
-use ItePHP\Core\AbstractResponse;
 use ItePHP\Core\ExecuteActionEvent;
 use ItePHP\Core\Request;
+use ItePHP\Response\HTMLResponse;
 
 /**
  * Event for support authenticate user
@@ -112,7 +112,7 @@ class AuthenticateEvent{
 	 * @return AbstractResponse
 	 */
 	private function createResponseRedirect($redirect,Request $request){
-		$response=new AbstractResponse();
+		$response=new HTMLResponse();
 		if($request->isAjax()){
 			$response->setStatusCode(401);
 			$response->setHeader('X-Location',$redirect);

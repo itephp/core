@@ -16,7 +16,7 @@
 namespace ItePHP\Core;
 
 use Config\Config;
-use ItePHP\Presenter\HTMLResponse;
+use ItePHP\Response\HTMLResponse;
 
 /**
  * Main class for project controllers
