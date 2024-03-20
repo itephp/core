@@ -2,12 +2,12 @@
 
 namespace Test\Action;
 
+use ItePHP\Action\ArgumentEvent;
+use ItePHP\Action\InvalidArgumentException;
 use ItePHP\Core\Container;
 use ItePHP\Core\ExecuteActionEvent;
-use ItePHP\Action\ArgumentEvent;
-use ItePHP\Structure\ActionStructure;
 use ItePHP\Structure\ActionArgumentStructure;
-use ItePHP\Action\InvalidArgumentException;
+use ItePHP\Structure\ActionStructure;
 use Onus\ClassLoader;
 use Pactum\ConfigBuilder;
 use Pactum\Reader\XMLReader;

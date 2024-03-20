@@ -2,15 +2,22 @@
 
 namespace Test\Core;
 
-use ItePHP\Core\HTTPErrorHandler;
 use ItePHP\Core\Environment;
-use ItePHP\Provider\Session;
-use ItePHP\Core\HTTPRequest;
 use ItePHP\Core\EventManager;
+<<<<<<< Updated upstream
 use ItePHP\Structure\ErrorStructure;
 use ItePHP\Structure\ResponseStructure;
 use ItePHP\Presenter\HTMLResponse;
 use ItePHP\Presenter\JSONResponse;
+=======
+use ItePHP\Core\HTTPErrorHandler;
+use ItePHP\Core\HTTPRequest;
+use ItePHP\Presenter\HTML;
+use ItePHP\Presenter\JSON;
+use ItePHP\Provider\Session;
+use ItePHP\Structure\ErrorStructure;
+use ItePHP\Structure\PresenterStructure;
+>>>>>>> Stashed changes
 use Onus\ClassLoader;
 use Pactum\ConfigBuilder;
 use Pactum\Reader\XMLReader;

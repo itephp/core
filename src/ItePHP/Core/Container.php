@@ -15,84 +15,99 @@
 
 namespace ItePHP\Core;
 
-use Config\Config;
-use Onus\ClassLoader;
-use Onus\InstanceNotFoundException;
-
+use ItePHP\Exception\ServiceNotFoundException;
+use ItePHP\Exception\MethodNotFoundException;
+use ItePHP\Core\ExecuteResources;
+use ItePHP\Core\EventManager;
 
 /**
- * Container for snippets and services.
+ * Base class for Event, Command and Controller.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
+ * @since 0.1.0
  */
-class Container{
+abstract class Container{
 
 	/**
+	 * Services.
 	 *
-	 * @var ClassLoader
+	 * @var array $services
 	 */
-	private $classLoader;
-
-    /**
-     * Constructor.
-     *
-     * @param ClassLoader $classLoader
-     */
-	public function __construct(ClassLoader $classLoader){
-
-		$this->classLoader=$classLoader;
-	}
+	private $services=array();
 
 	/**
-	 * Get Environment
+	 * Snippets.
 	 *
-	 * @return Environment
+	 * @var array $snippets
 	 */
-	public function getEnvironment(){
-        /**
-         * @var Environment $data
-         */
-		$data=$this->classLoader->get('environment');
-		return $data;
+	private $snippets=array();	
+
+	/**
+	 * Constructor.
+	 *
+	 * @param \ItePHP\Core\ExecuteResources $executeResources
+	 * @since 0.1.0
+	 */
+	public function __construct(ExecuteResources $executeResources,EventManager $eventManager){
+		$this->executeResources=$executeResources;
+		$this->eventManager=$eventManager;
 	}
 
 	/**
 	 * Get Event manager
 	 *
-	 * @return EventManager
+	 * @return \ItePHP\Core\EventManager
 	 */
 	public function getEventManager(){
-        /**
-         * @var EventManager $data
-         */
-	    $data=$this->classLoader->get('eventManager');
-		return $data;
+		return $this->eventManager;
 	}
 
-    /**
-     *
-     * @param string $name service name
-     * @return object
-     * @throws ServiceNotFoundException
-     */
+	/**
+	 * Get enviorment
+	 *
+	 * @return \ItePHP\Core\Enviorment
+	 * @since 0.1.0
+	 */
+	public function getEnviorment(){
+		return $this->executeResources->getEnviorment();
+	}
+
+	/**
+	 * Get service
+	 *
+	 * @param string $name service name
+	 * @return object
+	 * @throws \ItePHP\Exception\ServiceNotFoundException
+	 * @since 0.1.0
+	 */
 	public function getService($name){
-		try{
-			return $this->classLoader->get('service.'.$name);
-		}
-		catch(InstanceNotFoundException $e){
+		$services=$this->executeResources->getServices();
+		if(!isset($services[$name]))
 			throw new ServiceNotFoundException($name);
-		}
+
+		return $services[$name];
 	}
 
-    /**
-     * @return Config
-     */
-    public function getConfig()
-    {
-        /**
-         * @var Config $data
-         */
-        $data=$this->classLoader->get('config');
-        return $data;
+	/**
+	 * Execute snipper method.
+	 *
+	 * @param string $method
+	 * @param array $args
+	 * @return mixed
+	 * @throws \ItePHP\Exception\MethodNotFoundException
+	 * @since 0.1.0
+	 */
+	public function __call($method, $args){
+		$snippets=$this->executeResources->getSnippets();
+		if(isset($snippets[$method])){
+	        return call_user_func_array(array($snippets[$method], $method),
+            array_merge(array($this),$args)
+			);
+
+		}
+		else{
+			throw new MethodNotFoundException(get_class($this),$method);
+		}
+
     }
 }

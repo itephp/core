@@ -15,104 +15,82 @@
 
 namespace ItePHP\Core;
 
-use Config\Config;
-use ItePHP\Response\HTMLResponse;
+use ItePHP\Core\ContenerServices;
+use ItePHP\Core\RequestProvider;
+use ItePHP\Provider\Response;
+use ItePHP\Provider\Session;
+use ItePHP\Exception\ServiceNotFoundException;
+use ItePHP\Exception\MethodNotFoundException;
+use ItePHP\Core\ExecuteResources;
+use ItePHP\Core\EventManager;
 
 /**
  * Main class for project controllers
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
+ * @since 0.1.0
  */
-abstract class Controller{
+abstract class Controller extends Container{
 
 	/**
-	 * Request
+	 * RequestProvider
 	 *
-	 * @var Request $request
+	 * @var \ItePHP\Core\RequestProvider $request
 	 */
 	private $request;
 
 	/**
 	 * SessionProvider
 	 *
-	 * @var SessionProvider $session
+	 * @var \ItePHP\Core\SessionProvider $session
 	 */
 	private $session;
 
 	/**
+	 * Services
 	 *
-	 * @var Container
+	 * @var array $services
 	 */
-	private $container;
+	private $services=array();
+
+	/**
+	 * Snippets
+	 *
+	 * @var array $snippets
+	 */
+	private $snippets=array();	
 
 	/**
 	 * Constructor.
 	 *
-	 * @param Request $request
-	 * @param Container $container
+	 * @param \ItePHP\Core\RequestProvider $request
+	 * @param \ItePHP\Core\ExecuteResources $executeResources
+	 * @param \ItePHP\Core\EventManager $eventManager
+	 * @since 0.1.0
 	 */
-	public function __construct(Request $request,Container $container){
+	public function __construct(RequestProvider $request, ExecuteResources $executeResources,EventManager $eventManager){
 		$this->request=$request;
 		$this->session=$request->getSession();
-		$this->container=$container;
+		parent::__construct($executeResources,$eventManager);
 	}
 
 	/**
+	 * Get request provider object
 	 *
-	 * @return Request
+	 * @return \ItePHP\Core\RequestProvider
+	 * @since 0.1.0
 	 */
 	public function getRequest(){
 		return $this->request;
 	}
 
-    /**
-     * @return Environment
-     */
-    public function getEnvironment(){
-        return $this->container->getEnvironment();
-    }
-
-    /**
-     * @return Config
-     */
-    public function getConfig(){
-        return $this->container->getConfig();
-    }
-    
-    /**
+	/**
+	 * Get session provider object.
 	 *
-	 * @return SessionProvider
+	 * @return \ItePHP\Core\SessionProvider
+	 * @since 0.1.0
 	 */
 	public function getSession(){
 		return $this->session;
 	}
-
-	/**
-	 * Get Event manager
-	 *
-	 * @return EventManager
-	 */
-	public function getEventManager(){
-		return $this->container->getEventManager();
-	}
-
-	/**
-	 * Get service
-	 *
-	 * @param string $name service name
-	 * @return object
-	 */
-	public function getService($name){
-		return $this->container->getService($name);
-	}
-
-    /**
-     * @param string $url
-     * @return AbstractResponse
-     */
-	public function redirect($url){
-        $response=new HTMLResponse();
-        return $response->redirect($url);
-    }
-
 }

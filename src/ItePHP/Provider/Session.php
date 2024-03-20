@@ -16,28 +16,21 @@
 namespace ItePHP\Provider;
 
 use ItePHP\Core\SessionProvider;
-use ItePHP\Action\ValueNotFoundException;
-use ItePHP\Core\Environment;
+use ItePHP\Exception\ValueNotFoundException;
+use ItePHP\Core\Enviorment;
 
 /**
  * Provider for session.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
+ * @since 0.1.0
  */
 class Session implements SessionProvider{
 
-	/**
-     *
-     * @var int
-     */
 	private $id;
 
-	/**
-     *
-     * @param Environment $environment
-     */
-	public function __construct(Environment $environment){
-		if(!$environment->isSilent()){
+	public function __construct(Enviorment $enviorment){
+		if(!$enviorment->isSilent()){
 			session_start();			
 			$this->id=session_id();
 		}
@@ -46,38 +39,21 @@ class Session implements SessionProvider{
 		}
 	}
 
-    /**
-     *
-     * @return string
-     */
 	public function getId(){
 		return $this->id;
 	}
 
-	/**
-     *
-     * @param string $key
-     * @return mixed
-     * @throws ValueNotFoundException
-     */
 	public function get($key){
-		if(!isset($_SESSION[$key])){
-			throw new ValueNotFoundException($key);			
-		}
+		if(!isset($_SESSION[$key]))
+			throw new ValueNotFoundException($key);
 		return $_SESSION[$key];
 	}
 
-	/**
-     *
-     * @param string $key
-     * @param mixed $value
-     */
 	public function set($key,$value){
 		$_SESSION[$key]=$value;
 	}
 
-	/**
-     *
+    /**
      * @param string $key
      * @throws ValueNotFoundException
      */
@@ -91,11 +67,8 @@ class Session implements SessionProvider{
 
 	}
 
-	/**
-     *
-     */
 	public function clear(){
-		$_SESSION=[];
+		$_SESSION=array();
 	}
 
 }

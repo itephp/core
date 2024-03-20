@@ -15,19 +15,25 @@
 
 namespace ItePHP\Core;
 
+use ItePHP\Provider\Response;
+use ItePHP\Contener\Config;
+use ItePHP\Contener\RequestConfig;
+
 /**
  * Interface for generator view
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
+ * @since 0.1.0
  */
 interface Presenter{
 	
 	/**
 	 * Method with render rules.
 	 *
-	 * @param Request $request
-	 * @param AbstractResponse $response
+	 * @param \ItePHP\Contener\RequestConfig $config
+	 * @param \ItePHP\Provider\Response $response
+	 * @since 0.1.0
 	 */
-	public function render(Request $request, AbstractResponse $response);
+	public function render(RequestConfig $config , Response $response);
 
 }

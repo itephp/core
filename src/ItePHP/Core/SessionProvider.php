@@ -15,10 +15,13 @@
 
 namespace ItePHP\Core;
 
+use ItePHP\Exception\ValueNotFoundException;
+
 /**
  * Provider for session.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
+ * @since 0.1.0
  */
 interface SessionProvider{
 
@@ -26,6 +29,7 @@ interface SessionProvider{
 	 * Get id session
 	 *
 	 * @return string
+	 * @since 0.24.0
 	 */
 	public function getId();
 
@@ -34,6 +38,8 @@ interface SessionProvider{
 	 *
 	 * @param string $key
 	 * @return mixed
+	 * @since 0.1.0
+     * @throws ValueNotFoundException
 	 */
 	public function get($key);
 
@@ -42,6 +48,7 @@ interface SessionProvider{
 	 *
 	 * @param string $key
 	 * @param mixed $value
+	 * @since 0.1.0
 	 */
 	public function set($key,$value);
 
@@ -49,11 +56,15 @@ interface SessionProvider{
 	 * Remove session value.
 	 *
 	 * @param string $key
+	 * @since 0.1.0
+     * @throws ValueNotFoundException
 	 */
 	public function remove($key);
 
 	/**
 	 * Remove all session values.
+	 *
+	 * @since 0.1.0
 	 */
 	public function clear();
 

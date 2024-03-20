@@ -15,456 +15,210 @@
 
 namespace ItePHP;
 
-use Config\Config;
-use Config\Config\Action;
-use Config\Config\Event;
+use ItePHP\Contener\GlobalConfig;
+use ItePHP\Contener\ServiceConfig;
+use ItePHP\Core\Enviorment;
+use ItePHP\Core\ErrorHandler;
 use ItePHP\Core\EventManager;
-use ItePHP\Core\Request;
-use ItePHP\Core\HTTPRequest;
-use ItePHP\Provider\Session;
-use ItePHP\Core\Environment;
-
-use ItePHP\Error\ErrorManager;
-
-use ItePHP\Core\HTTPException;
-use ItePHP\Core\CriticalErrorHandler;
-use ItePHP\Core\HTTPErrorHandler;
-use ItePHP\Core\HTTPDispatcher;
-use ItePHP\Core\Container;
-use ItePHP\Core\ConsoleErrorHandler;
-use ItePHP\Core\CommandNotFoundException;
-use ItePHP\Core\ConsoleDispatcher;
-use ItePHP\Structure\ImportStructure;
-use ItePHP\Structure\Structure;
-use ItePHP\Structure\VariableStructure;
-use Onus\ClassLoader;
-use Onus\MetadataClass;
-use Onus\MetadataMethod;
-use Pactum\ConfigBuilder;
-use Pactum\ConfigBuilderObject;
-use Pactum\ConfigBuilderValue;
-use Pactum\ParserProcess;
-use Pactum\Reader\XMLReader;
-use Via\Action\HTTPAction;
-use Via\Action\StringAction;
-use Via\RouteNotFoundException;
-use Via\Router;
+use ItePHP\Core\ExecuteResources;
+use ItePHP\Core\Router;
+use ItePHP\Exception\ServiceNotFoundException;
+use ItePHP\Test\Request as RequestTest;
 
 /**
  * Main class of project
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
- * @version 0.4.0
+ * @since 0.1.0
+ * @version 0.24.0
  */
-class Root{
-	
-	/**
-	 *
-	 * @var Container
-	 */
-	private $container;
+class Root
+{
 
-	/**
-	 *
-	 * @var Config
-	 */
-	private $config;
+    private $errorHandler;
 
-	/**
-	 *
-	 * @var Environment
-	 */
-	private $environment;
+    private $executeResources;
 
-	/**
-	 *
-	 * @var ErrorManager
-	 */
-	private $errorManager;
+    private $eventManager;
 
-	/**
-	 *
-	 * @param Environment $environment
-	 */
-	public function __construct(Environment $environment){
-		$this->environment=$environment;
-	}
-	
-	/**
-	 *
-	 * @param array $command
-	 * @return int
-	 */
-	public function executeCommand($command){
-		//config
-		$this->errorManager=new ErrorManager();
-		$this->errorManager->addHandler(new ConsoleErrorHandler());
-		$classLoader=new ClassLoader();
+    private $router;
 
-		$this->initConfig();
+    public function __construct($debug, $silent, $name)
+    {
+        $enviorment = new Enviorment($debug, $silent, $name);
+        $this->executeResources = new ExecuteResources();
+        $this->executeResources->registerEnviorment($enviorment);
+        $this->router = new Router();
+        $this->eventManager = new EventManager($this->executeResources);
+        $this->errorHandler = new ErrorHandler($this->executeResources, $this->eventManager);
 
-		$this->container=new Container($classLoader);
-		$classLoader->addInstance('container',$this->container);
-		$classLoader->addInstance('environment',$this->environment);
-        $classLoader->addInstance('classLoader',$classLoader);
-		$classLoader->addInstance('config',$this->config);
+        $this->executeResources->registerGlobalConfig(new GlobalConfig(__DIR__.'/../../../../config', $enviorment));
+        $this->registerServices($this->executeResources);
+        $this->registerEvents($this->executeResources);
+        $this->registerSnippets($this->executeResources);
+    }
 
-		$this->registerEventManager($classLoader);
-		$this->registerServices($classLoader);
-		$this->registerEvents($classLoader);
-		$this->registerCommands($classLoader);
 
-		//command
-		$sigint=1;
-		$commandName=$command[0];
-		array_shift($command);
-		$arguments=$command;
-		try{
-			$dispatcher=$this->createConsoleRouter($classLoader,$arguments)->createDispatcher($commandName);
-			$dispatcher->execute();
-			$sigint=0;
-		}
-		catch(RouteNotFoundException $e){
-			$this->errorManager->exception(new CommandNotFoundException($commandName));
-		}
-		catch(\Exception $e){
-			$this->errorManager->exception($e);
-		}
+    public function executeCommand($command)
+    {
+        $sigint = 0;
+        try {
+            $this->executeResources->registerUrl($command[0]);
+            array_shift($command);
+            $dispatcher = $this->router->createCommandDispatcher($this->executeResources->getEnviorment(), $this->executeResources->getGlobalConfig(), $this->executeResources->getUrl(), $command);
+            $dispatcher->execute($this->executeResources, $this->eventManager);
 
-		return $sigint;
-
-	}
-
-	/**
-	 *
-	 * @param string $url
-	 */
-	public function executeRequest($url){
-
-		//config
-		$this->errorManager=new ErrorManager();
-		$this->errorManager->addHandler(new CriticalErrorHandler($this->environment));
-		$classLoader=new ClassLoader();
-
-		$this->initConfig();
-
-		$this->container=new Container($classLoader);
-		$classLoader->addInstance('container',$this->container);
-		$classLoader->addInstance('environment',$this->environment);
-        $classLoader->addInstance('classLoader',$classLoader);
-		$classLoader->addInstance('config',$this->config);
-
-		$this->registerServices($classLoader);
-		$this->registerEventManager($classLoader);
-		$this->registerEvents($classLoader);
-		$this->registerResponses($classLoader);
-
-		//request
-		$session=new Session($this->environment);
-		$request=new HTTPRequest($url,$session);
-
-        $classLoader->addInstance('request',$request);
-
-		$this->reconfigureErrorManager($classLoader,$request);
-		try{
-			$dispatcher=$this->createHttpRouter($classLoader,$request)
-                ->createDispatcher(new \Via\Action\HTTPRequest($request->getUrl(),$request->getType()));
-			$dispatcher->execute();
-		}
-		catch(RouteNotFoundException $e){
-			$this->errorManager->exception(new HTTPException(404,$e->getMessage()));
-		}
-		catch(\Exception $e){
-			$this->errorManager->exception($e);
-		}
-
-	}
-
-	/**
-	 *
-	 * @param string $name
-	 * @return object
-	 */
-	public function getService($name){
-		return $this->$this->container->getService($name);
-	}
-
-	/**
-	 * Init framework config
-	 */
-	private function initConfig(){
-	    $cacheFilePath=$this->environment->getCachePath().'/config.php';
-	    if(!$this->environment->isDebug() && file_exists($cacheFilePath)){
-	        try{
-                $this->config=unserialize(file_get_contents($cacheFilePath));
-                return;
-            }
-            catch(\Exception $e){//invalid restore cache
-	            unlink($cacheFilePath);
-            }
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            $sigint = 1;
         }
 
-		//config structure
-		$structureConfig=new ConfigBuilder();
+        return $sigint;
 
-		$xmlReader=new XMLReader($this->environment->getConfigPath().'/structure.xml');
-		$structureConfig->addReader($xmlReader);
+    }
 
-        $structureConfig->addArray('structure',new ConfigBuilderValue("string"));
-
-		$structureContainer=$structureConfig->getContainer();
-
-		$xmlReader=new XMLReader($this->environment->getConfigPath().'/'.$this->environment->getName().'.xml');
-		$mainConfig=new ConfigBuilder();
-        $mainConfig->addReader($xmlReader);
-        $mainConfig->addFilter(function (ParserProcess $process){//import
-            if($process->getType()!=='string' || $process->getPath()!=='root->import'){
-                return;
+    public function executeRequest()
+    {
+        try {
+            $url = strstr($_SERVER['REQUEST_URI'], '?', true);
+            if (!$url) {
+                $url = $_SERVER['REQUEST_URI'];
             }
+            $this->executeResources->registerUrl($url);
 
-            $xmlReader=new XMLReader($this->environment->getConfigPath().'/'.$process->getValue());
-            $process->addReader($xmlReader);
-
-        });
-
-        $variables=[];
-        $mainConfig->addFilter(function (ParserProcess $process) use (&$variables){
-
-            if($process->getType()!=='array' || $process->getPath()!=='root->variable') {
-                return;
-            }
-            /**
-             * @var ConfigBuilderObject $value
-             */
-            foreach($process->getValue() as $value){
-                $variables[$value['name']]=$value['value'];
-            }
-
-        });
-
-        $mainConfig->addFilter(function (ParserProcess $process) use(&$variables){
-            if(in_array($process->getType(),['string','boolean','mixed','number']) && is_string($process->getValue())){
-
-                $value=$process->getValue();
-                preg_match_all('/@\{(.+?)\}/',$value,$matches);
-                for($i=0; $i<count($matches[0]); $i++){
-                    if(is_string($variables[$matches[1][$i]]) && $value!==$matches[0][$i]){
-                        $value=str_replace($matches[0][$i],$variables[$matches[1][$i]],$value);
-                        continue;
-                    }
-                    $value=$variables[$matches[1][$i]];
-
-                }
-                $process->setValue($value);
-
-            }
-        });
-
-        //config structure
-        $importStructure=new ImportStructure();
-        $importStructure->doConfig($mainConfig);
-
-        $variableStructure=new VariableStructure();
-        $variableStructure->doConfig($mainConfig);
-
-        //$xmlReader=new XMLReader($this->environment->getConfigPath().'/'.$importValue);
-
-        foreach($structureContainer->getData('structure') as $structureValue){
-            /**
-             * @var Structure $structureObj
-             */
-			$structureObj=new $structureValue();
-			$structureObj->doConfig($mainConfig);
-		}
-		$container=$mainConfig->getClass($this->environment->getSrcPath().'/Config','Config');//FIXME adde method without generate class
-        file_put_contents($cacheFilePath,serialize($container));
-		$this->config=$container;
-        //for dev
-	}
-
-	/**
-	 *
-	 * @param ClassLoader $classLoader
-	 * @param Request $request
-	 */
-	private function reconfigureErrorManager(ClassLoader $classLoader, Request $request){
-		$removeHandlers=$this->errorManager->getHandlers();
-
-		$this->errorManager->addHandler(
-			new HTTPErrorHandler(
-				$classLoader,$request
-			)
-		);
-
-		foreach($removeHandlers as $handler){
-			$this->errorManager->removeHandler($handler);
-		}
-
-	}
-
-	/**
-	 *
-	 * @param ClassLoader $classLoader
-	 * @param Request $request
-	 * @return Router
-	 */
-	private function createHttpRouter(ClassLoader $classLoader, Request $request){
-		$router=new Router();
-		foreach($this->config->getAction() as $actionObject){
-		    $this->addHttpMethodActions($router,$actionObject,$request,$classLoader);
-		}
-
-		return $router;
-	}
-
-    /**
-     * @param Router $router
-     * @param Action $actionNode
-     * @param Request $request
-     * @param ClassLoader $classLoader
-     */
-	private function addHttpMethodActions($router, Action $actionNode, $request, ClassLoader $classLoader){
-        $path=$actionNode->getPath();
-        $httpMethods=$actionNode->getHttpMethod();
-	    foreach (explode(",",$httpMethods) as $httpMethod){
-            $router->addAction(new HTTPAction($path,$httpMethod),
-                new HTTPDispatcher($actionNode,
-                    $this->container,
-                    $request,
-                    $this->environment,
-                    $classLoader
-                )
-            );
+            $dispatcher = $this->router->createHttpDispatcher($this->executeResources->getEnviorment(), $this->executeResources->getGlobalConfig(), $this->executeResources->getUrl());
+            $dispatcher->execute($this->executeResources, $this->eventManager);
+        } catch (\Exception $e) {
+            $this->errorHandler->exception($e);
         }
 
     }
 
-	/**
-	 *
-	 * @param ClassLoader $classLoader
-	 * @param array $commandArguments
-	 * @return Router
-	 */
-	private function createConsoleRouter(ClassLoader $classLoader, $commandArguments){
-		$router=new Router();
+    public function executeRequestTest(RequestTest $request)
+    {
+        $url = $request->getUrl();
+        $this->executeResources->registerUrl($url);
+        ob_start();
+        try {
+            $dispatcher = $this->router->createHttpTestDispatcher($this->executeResources->getEnviorment(), $this->executeResources->getGlobalConfig(), $this->executeResources->getUrl());
+            $dispatcher->setRequest($request);
+            $dispatcher->execute($this->executeResources, $this->eventManager);
 
-		foreach($this->config->getCommand() as $commandNode){
-			$router->addAction(new StringAction($commandNode->getName()),
-				new ConsoleDispatcher($commandNode,
-					$classLoader,
-					$commandArguments
-				)
-			);
-		}
+        } catch (\Exception $e) {
+            $this->errorHandler->exception($e);
+        }
+        $content = ob_get_clean();
+        ob_flush();
 
-		return $router;
-	}
+        $this->executeResources->getResponse()
+            ->setContent($content)
+        ;
 
-	/**
-	 *
-	 * @param ClassLoader $classLoader
-	 */
-	private function registerEventManager(ClassLoader $classLoader){
-		$metadataClass=new MetadataClass('eventManager',EventManager::class);
-		$classLoader->register($metadataClass);
-	}
+        return $this->executeResources->getResponse();
 
-    /**
-     *
-     * @param ClassLoader $classLoader
-     */
-	private function registerEvents(ClassLoader $classLoader){
-		foreach($this->config->getEvent() as $eventNode){
+    }
 
-			$name=$eventNode->getClass();
-			$metadataClass=$this->getMetadataClass($name,$eventNode);
-			$classLoader->register($metadataClass);
+    public function getService($name)
+    {
+        $services = $this->executeResources->getServices();
+        if (!isset($services[$name])) {
+            throw new ServiceNotFoundException($name);
+        }
 
-			$this->eventManagerBind($eventNode,$classLoader);
-		}
-	}
+        return $services[$name];
+    }
 
-	/**
-	 *
-	 * @param ClassLoader $classLoader
-	 */
-	private function registerServices(ClassLoader $classLoader){
-		foreach($this->config->getService() as $serviceNode){
-			$metadataClass=$this->getMetadataClass('service.'.$serviceNode->getName(),$serviceNode,$serviceNode->isSingleton());
-			$classLoader->register($metadataClass);
-		}
-	}
+    private function registerEvents(ExecuteResources $executeResources)
+    {
+        foreach ($executeResources->getGlobalConfig()
+                     ->getEvents() as $bind => $configs) {
+            foreach ($configs as $config) {
+                $this->eventManager->register($bind, $config);
+            }
+        }
 
-	/**
-	 *
-	 * @param ClassLoader $classLoader
-	 */
-	private function registerResponses(ClassLoader $classLoader){
-		foreach($this->config->getResponse() as $responseNode){
-			$metadataClass=$this->getMetadataClass('response.'.$responseNode->getName(),$responseNode);
-			$classLoader->register($metadataClass);
-		}
-	}
+    }
 
-	/**
-	 *
-	 * @param ClassLoader $classLoader
-	 */
-	private function registerCommands(ClassLoader $classLoader){
-		foreach($this->config->getCommand() as $commandNode){
-			$metadataClass=$this->getMetadataClass('command.'.$commandNode->getName(),$commandNode);
-			$classLoader->register($metadataClass);
-		}
-	}
+    private function registerServices(ExecuteResources $executeResources)
+    {
+        foreach ($executeResources->getGlobalConfig()
+                     ->getServices() as $service) {
+            $serviceInstance = $this->createServiceInstance($service);
+            $executeResources->registerService($service['name'], $serviceInstance);
+        }
+    }
 
-    /**
-     *
-     * @param Event $eventNode
-     * @param ClassLoader $classLoader
-     */
-	private function eventManagerBind(Event $eventNode,ClassLoader $classLoader){
-		$eventManager=$this->container->getEventManager();
-		foreach($eventNode->getBind() as $bindNode){
-			$eventManager->register(
-				$bindNode->getName(),
-				$classLoader->get($eventNode->getClass()),
-				$bindNode->getMethod()
-			);
-		}
-	}
+    private function registerSnippets(ExecuteResources $executeResources)
+    {
+        foreach ($executeResources->getGlobalConfig()
+                     ->getSnippets() as $snippet => $class) {
+            $executeResources->registerSnippet($snippet, new $class());
+        }
+    }
 
-    /**
-     *
-     * @param string $name
-     * @param object $classNode
-     * @param bool $singleton
-     * @return MetadataClass
-     */
-	private function getMetadataClass($name,$classNode,$singleton=true){
-		$metadataClass=new MetadataClass($name,$classNode->getClass(),$singleton);
-		foreach($classNode->getMethod() as $methodNode){
-			$metadataMethod=$this->getMetadataDependencyMethod($methodNode);
-			$metadataClass->register($metadataMethod);
-		}
+    private function createServiceInstance($data)
+    {
+        $arguments = $this->getConstructArguments($data);
+        $methods = $this->createServiceMethods($data);
+        $reflection = new \ReflectionClass($data['class']);
+        $instance = $reflection->newInstanceArgs($arguments);
 
-		return $metadataClass;
-	}
+        foreach ($data['methods'] as $method) {
+            if ('__construct' === $method['name']) {
+                continue;
+            }
 
-	/**
-	 *
-	 * @param object $methodNode
-	 * @return MetadataMethod
-	 */
-	private function getMetadataDependencyMethod( $methodNode){
-		$metadataMethod=new MetadataMethod($methodNode->getName());
-		foreach($methodNode->getArgument() as $argumentNode){
-            /**
-             * @var object $argumentNode
-             */
-			$metadataMethod->addArgument($argumentNode->getType(),$argumentNode->getValue());
-		}
+            $arguments = $this->createServiceArguments($method);
+            $reflection->getMethod($method['name'])
+                ->invokeArgs($instance, $arguments)
+            ;
+        }
 
-		return $metadataMethod;
-	}
+        return $instance;
+    }
 
+    private function createServiceArguments($data)
+    {
+        $result = [];
+
+        foreach ($data['arguments'] as $argument) {
+            $result[] = $this->getService($argument['type']);
+        }
+
+        return $result;
+    }
+
+    private function getConstructArguments($data)
+    {
+        foreach ($data['methods'] as $method) {
+            if ($method['name'] !== '__construct') {
+                continue;
+            }
+
+            return $this->createServiceArguments($method);
+        }
+
+        return [
+            new ServiceConfig($data['config']),
+            $this->eventManager,
+        ];
+    }
+
+    private function createServiceMethods($data)
+    {
+        if (empty($data['arguments'])) {
+            return [
+                new ServiceConfig($data['config']),
+                $this->eventManager,
+            ];
+        }
+
+        $result = [];
+
+        foreach ($data['arguments'] as $argument) {
+            $result[] = $this->getService($argument['type']);
+        }
+
+        return $result;
+    }
 }

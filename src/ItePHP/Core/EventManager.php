@@ -15,52 +15,75 @@
 
 namespace ItePHP\Core;
 
+use ItePHP\Core\ExecuteResources;
+
 /**
  * Manager for events.
  *
  * @author Michal Tomczak (michal.tomczak@itephp.com)
+ * @since 0.1.0
  */
 class EventManager{
 	
 	/**
-	 * Environment.
+	 * Enviorment.
 	 *
-	 * @var object[][] $events
+	 * @var \ItePHP\Core\ExecuteResources $resources
 	 */
-	private $events=[];
+	private $resources;
+
+	/**
+	 * Enviorment.
+	 *
+	 * @var array $events
+	 */
+	private $events=array();
+
+	/**
+	 * Cache classes.
+	 *
+	 * @var array $cacheClasses
+	 */
+	private $cacheClasses=array();
+
+	/**
+	 * Constructor.
+	 *
+	 * @param \ItePHP\Core\ExecuteResources $resources
+	 * @since 0.1.0
+	 */
+	public function __construct(ExecuteResources $resources){
+		$this->resources=$resources;
+	}
 
 	/**
 	 * Register event.
 	 *
 	 * @param string $event event name
-	 * @param object $obj
-	 * @param string $methodName
+	 * @param array $config event config
+	 * @since 0.1.0
 	 */
-	public function register($event,$obj,$methodName){
-		$this->events+=[
-			$event=>[
-			]
-		];
-		$this->events[$event][]=[
-			'object'=>$obj,
-			'methodName'=>$methodName,
-			];
+	public function register($event,$config){
+		$this->events+=array($event=>array());
+		$this->events[$event][]=$config;
 	}
 
-    /**
-     * Execute event.
-     *
-     * @param $eventName
-     * @param object $infoClass container with event info eg.: \ItePHP\Core\ExecutePresenterEvent
-     * @internal param string $event event name
-     */
-	public function fire($eventName,$infoClass=null){
-		if(isset($this->events[$eventName])){
-			foreach($this->events[$eventName] as $bind=>$data){
-				call_user_func_array([$data['object'], $data['methodName']], [$infoClass]);
+	/**
+	 * Execute event.
+	 *
+	 * @param string $event event name
+	 * @param object $infoClass contener with event info eg.: \ItePHP\Event\ExecutePresenterEvent
+	 * @since 0.1.0
+	 */
+	public function fire($event,$infoClass=null){
+		if(isset($this->events[$event])){
+			foreach($this->events[$event] as $bind=>$config){
+				$className=$config['class'];
+				if(!isset($this->cacheClasses[$className]))
+					$this->cacheClasses[$className]=new $className($this->resources,$this);
+				call_user_func_array(array($this->cacheClasses[$className], $config['method']), array($infoClass,$config['config']));
 			}
 		}
-		//FIXME throw exception?
 	}
 
 }
